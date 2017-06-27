@@ -1,0 +1,27 @@
+{
+    "folders":  
+    [  
+        {  
+            "path": "."  
+        }  
+    ],  
+    "settings":  
+    {  
+        "tab_size": 4,  
+        "translate_tabs_to_spaces": true  
+    },
+
+    "build_systems":  
+    [  
+        {  
+            "name": "Protobuf",  
+            "cmd": [  
+                "$project_path/protoc",  
+                "-I$project_path/protos",  
+                "--java_out=$project_path/generated/java --cpp_out=$project_path/generated/cpp",  
+                "$file"  
+            ],
+            "selector": "source.proto"  
+        }  
+    ]  
+}

@@ -1,0 +1,174 @@
+terminateThread 函数中RII是否会失败。
+
+WiiLog
+????多线程时可能出现log顺序错误？
+解决：log进队列，单独线程处理。？是否存在该问题？有没有必要单独线程？
+
+????程序退出时发送到界面的log字串泄露
+解决：智能指针？
+
+======================================================================
+只要基类函数标明为虚函数，则继承类相应函数自动变为虚函数。包括析构函数。
+
+======================================================================
+20131213 C#内存回收
+======================================================================
+1. 使用Marshal.AllocHGlobal后必须 Marshal.FreeHGloble，否则内存泄漏
+2. new的变量不用后，或者置为NULL，系统自动回收
+3. System.GC.Collect()通知系统回收
+
+测试：
+csulibLangTest, 6T, 24min, 464 500 K
+csulibGenderTest, 6T, 40min, 741 640 K
+======================================================================
+20131203 C#使用指针
+======================================================================
+//////////////////////////////////////////////////////////////////////////
+// examples: how to use pointer
+/*
+CL.Result[] r = new CL.Result[3];
+r[0].ID = 1;
+r[0].Output = 0.5F;
+
+// use pointer
+unsafe
+{                
+    fixed (CUlibLang.Result* pResult = r)
+    {
+        pResult[1].ID = 3;
+        pResult[1].Output = 0.5F;
+    }
+}
+ */
+//////////////////////////////////////////////////////////////////////////
+
+======================================================================
+20131104 DELL PowerEdge R720装机
+======================================================================
+1. BIOS安装:启动硬盘最多只能显示2T。大于2T的raid可分为多个VD。
+   F10进入Lifecycle Controler / Utility Menu
+   设置网卡(可忽略)后退出
+   进入部署OS，创建OEM DRV分区
+   设置RAID, 第一个VD要小于2T
+   下一步，按提示放入系统盘。
+2. UEFI方式：支持大于2T的启动分区，支持多余4个主分区。
+   光盘启动提示boot failed，按F11选boot manager
+   UEFI BOOT MENU, BOOT FROM FILE选择启动文件
+     OPTICAL DRIVER(DVD), EFI, Microsoft, Boot, cdboot.efi
+   确认后进入efi光盘efi引导程序，注意press anykey的光盘引导提示
+3. RAID卡驱动
+   开机自检raid卡之后会有ctrl+s的提示，按^s进入RAID控制器，显示型号PERC H310mini
+   部署OS时OEM DRV分区内含有所有驱动，搜inf文件，内容H310, 找到文件夹M20VR/W
+4. 分区：若之前BIOS分区划分为多个小分区，全部删除后可合并为一个分区。
+   创建95M小分区，MSR分区及主分区。
+   
+======================================================================
+20131104 笔记整理
+======================================================================
+1. ACM CODEC (PCM CODEC)连续调用255次会导致程序异常。
+   解决：调用一定次数后释放资源
+
+2. COM使用中如有未Release资源，即使CoUninitialize也不会释放。
+案例：使用COM转换XXMV->WAV，MediaControl未释放，
+   重复调用255次后程序崩溃，无相关信息。
+   另一项目无问题，debug模式下每次调用转换后output窗口提示unload msacm32.dll
+   推测原因有资源未释放导致。
+
+3. 直接写文件时注意结构体对齐问题。
+struct testStruct 
+{
+	int32 a;	4
+	short b;	
+	char c;		4
+	short d;	4
+	int32 e;	4
+};
+    32位机器上默认32bit对齐，总共占用16字节。
+   直接将该结构体写入文件时情况与内存中相同，但读入时必须以相同对齐结构体长度读入。
+   |- - - -|- - - -|- - - -|- - - -|
+   |   a   | b |c|x| d |x x|   e   |  
+   其中x为废数据，用于对齐填充
+
+4. 默认构造函数及浅拷贝
+   class A
+   复制/拷贝构造：A(const A& another)
+   赋值构造：     A& operator= (const A& another)
+                    {
+                       if (this = &another) 
+                         return this;
+                       else
+                         ...;
+                    }
+   默认浅拷贝，类成员调用相应构造函数，指针对象仅拷贝指针值，不拷贝内容。
+
+5. 静态类成员变量
+   .h    static TYPE className::m_name;
+   .cpp  外部定义成员变量。否则提示error LNK 2001: unresolved external symbol
+         TYPE className::m_name;  // 可同时初始化   
+
+======================================================================
+20130912 测试
+======================================================================
+
+======================================================================
+20130907 视频中提取音频数据
+======================================================================
+Mpg2Wav初步测试通过
+
+MMConvert:
+	CConverter::AddToROT
+	m_spGraphBuild->RenderFile(lpszFileName,NULL);
+	CAudioConverter::SetOutputFileName // store in member
+	WavConverter.SetPositions(m_llFrom,m_llTo);
+	CConverter::DelSyncSource	// cancel timer clock to increase speed
+	WavConverter.Convert();
+	CConverter::OnConvertBegin()	// adjust time format and pos
+	CConverter::RunGraph()
+		IMediaControl::Run()
+		IID_IMediaEvent::GetEventHandle() // for WaitObject
+		IMediaControl::Stop()
+	CConverter::TearGraph()
+	CConverter::RemoveFromROT(void)
+
+WavConverter.Convert()
+	IID_IMediaSeeking m_spMediaSeeking->SetPositions
+	CAudioConverter::BuildGraph
+	CDShow::GetAVRenderer // get video and audio renderer
+	null video renderer
+	change audio render
+change audio render
+	ConnectToMuxer CLSID_SampleGrabber
+	ConnectionMediaType // for file writer
+	pWriter->SetOutputFileName(GetOutputFileName(nIndex));
+	CLSID_SampleGrabber SetCallback
+	// Create Null Renderer and insert into graph
+	CDShow::ConnectFilters(m_spGraphBuild,spSampleGrabber,spNullRenderer);
+	
+	
+======================================================================
+20130904 视频中提取音频数据
+======================================================================
+MPG	-> LAV Splitter	-> Null Render
+			-> LAV Audio Decoder	-> ACM Wrapper	-> WAV Dest	-> File Writer
+
+
+======================================================================
+20130903 视频中提取音频数据
+======================================================================
+GB:
+
+MPG	-> LAV Splitter	-> Null Render
+			-> AC3Filter	-> WAV Dest	-> File Writer
+难点： AC3Filter音频输出格式
+	
+
+
+
+======================================================================
+20130902 视频中提取音频数据
+======================================================================
+ffmpeg:部分转码出错，无法调整WAV码率
+mencoder：无wave头，如何调整采样率？
+direct show: graphedit超过100个filter会闪退。GraphStudioNext：视频pin空时音频不输出
+mmconvert:转为wav，无法调整码率
+当前方案：mmconvert转为wav，读取wave头转换码流，写入ini文件

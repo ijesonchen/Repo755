@@ -1,0 +1,75 @@
+***************************
+服务器：
+
+1. 安装w32 11g版本.两个压缩包，解压到同一个位置。 
+w64版本存在问题，两个压缩包解压后会有相同文件，覆盖则安装过程中会提示文件丢失。
+   默认启用的账户包括SYS SYSTEM SYSMAN 等，密码要求大小写加数字混合。
+2. 卸载：开始菜单\Oracle - OraDb11g_home1\Oracle 安装产品\Universal Installer选择卸载。
+   如果卸载整个数据库，使用
+app\Administrator\product\11.2.0\dbhome_1\deinstall\deinstall.bat
+   卸载时开始的两个选项直接回车就可以。
+3. 新建数据库：开始菜单\Oracle - OraDb11g_home1\配置和移植工具\Database Configuration Assistant
+   新建数据库后，会自动在 开始菜单\Oracle - OraDb11g_home1 下生成 Database Control - [数据库SID]的快捷方式。点击即可打开网页控制台。
+4. 配置用户：sys默认只能作为SYSDBA/SYSOPER登录。ADO连接时需要使用normal登录。
+
+添加用户：
+打开对应的Database Control，使用SYS账户作为SYSDBA登录管理页面，注意数据库实例是不是要配置的数据库。
+点击菜单 "服务器"，进入"安全性"下的"用户", 创建
+1. 一般信息：密码无复杂性要求。
+	默认表空间表：USERS,
+	临时表空间:TEMP.可点击右侧小刷子样的图标选择.
+2. 角色:点编辑列表，CONNECT 默认值（用于连接）, RESOURCE 默认值（用于建表）.
+3. 系统选项：UNLIMITED TABLESPACE(不限空间)。也可在限额下面设置用户空间。二者必须选一。否则用户无法新建表。
+完成后点确定。
+
+***************************
+客户端：
+a) PLSQL Developer (第三方，小巧)：
+    1. 安装对应版本数据库连接驱动：ODTwithODAC。仅安装client部分即可。
+    2. 安装PLSQL Developer。可不打中文补丁。第一次登录后会要求输入注册信息。
+    3. 登录：数据库格式： [servername]/[SID] .如 dellserver/testdb
+       如果连接正常，登录几乎没有耗时。
+    4. object-table可以看到当前的表。注意不同用户创建的表默认互相看不到。右键可以新建表。
+b) oracle sql developer (官方，比较大)：直接运行sqldeveloper.exe即可。首次登录约有数秒延迟。
+
+***************************
+编程实现:
+使用MSADO连接，需要安装对应版本数据库连接驱动ODTwithODAC
+
+ADO连接字串：
+Provider=OraOLEDB.Oracle.1;Persist Security Info=True;Data Source=[tnsname]
+
+[tnsname]取自文件中【数据库名】=后的部分(DESCRIPTION开头的那部分)
+app\[USERNAME]\product\11.2.0\dbhome_1\NETWORK\ADMIN\tnsnames.ora
+
+例如：tnsnames.ora中ORCL数据库部分为
+
+ORCL =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dellserver1)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = orcl)
+    )
+  )
+
+则连接字串为：
+Provider=OraOLEDB.Oracle.1;Persist Security Info=True;
+Data Source=
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dellserver1)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = orcl)
+    )
+  )
+
+
+**************************
+注意事项：
+1. 关于timestamp:
+   时间戳类型，相对日期，其秒数最高可以精确到小数点后9位。
+   程序中可以转换为字串进行操作, FFx中x为秒的小数点位数
+   select：to_char(TimeStampField, 'yyyy-mm-dd hh24:mi:ss.ff9') as TimeStampName
+   where: TimeStampField >= to_timestamp('2014-12-30 18:19:20.123', 'yyyy-mm-dd hh24:mi:ss.ff')
+2. 当使用客户端连接数据库并有更改提交时，ADO执行SQL语句可能会被挂起，直到退出客户端才返回。

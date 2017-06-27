@@ -1,0 +1,1034 @@
+++lib/tempest:configure_tempest:240         ssh_connect_method=floating
+++lib/tempest:configure_tempest:244         is_networking_extension_supported external-net
+++lib/neutron_plugins/services/l3:is_networking_extension_supported:443  local extension=external-net
++++lib/neutron_plugins/services/l3:is_networking_extension_supported:445  openstack --os-cloud devstack-admin --os-region RegionOne extension list --network -c Alias -f value
+++lib/neutron_plugins/services/l3:is_networking_extension_supported:445  EXT_LIST='default-subnetpools
+network-ip-availability
+network_availability_zone
+auto-allocated-topology
+ext-gw-mode
+binding
+agent
+subnet_allocation
+l3_agent_scheduler
+tag
+external-net
+flavors
+net-mtu
+availability_zone
+quotas
+l3-ha
+provider
+multi-provider
+address-scope
+extraroute
+subnet-service-types
+standard-attr-timestamp
+service-type
+l3-flavors
+port-security
+extra_dhcp_opt
+standard-attr-revisions
+pagination
+sorting
+security-group
+dhcp_agent_scheduler
+router_availability_zone
+rbac-policies
+standard-attr-description
+router
+allowed-address-pairs
+project-id
+dvr'
+++lib/neutron_plugins/services/l3:is_networking_extension_supported:446  [[ default-subnetpools
+network-ip-availability
+network_availability_zone
+auto-allocated-topology
+ext-gw-mode
+binding
+agent
+subnet_allocation
+l3_agent_scheduler
+tag
+external-net
+flavors
+net-mtu
+availability_zone
+quotas
+l3-ha
+provider
+multi-provider
+address-scope
+extraroute
+subnet-service-types
+standard-attr-timestamp
+service-type
+l3-flavors
+port-security
+extra_dhcp_opt
+standard-attr-revisions
+pagination
+sorting
+security-group
+dhcp_agent_scheduler
+router_availability_zone
+rbac-policies
+standard-attr-description
+router
+allowed-address-pairs
+project-id
+dvr =~ external-net ]]
+++lib/neutron_plugins/services/l3:is_networking_extension_supported:446  return 0
++++lib/tempest:configure_tempest:246         openstack network list
++++lib/tempest:configure_tempest:246         grep public
++++lib/tempest:configure_tempest:246         awk '{print $2}'
+++lib/tempest:configure_tempest:246         public_network_id=43144ff3-972d-4c9e-bad6-141a2cb9608e
+++lib/tempest:configure_tempest:249         iniset /opt/stack/tempest/etc/tempest.conf DEFAULT use_syslog False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:252         iniset /opt/stack/tempest/etc/tempest.conf oslo_concurrency lock_path /opt/stack/data/tempest
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:253         mkdir -p /opt/stack/data/tempest
+++lib/tempest:configure_tempest:254         iniset /opt/stack/tempest/etc/tempest.conf DEFAULT use_stderr False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:255         iniset /opt/stack/tempest/etc/tempest.conf DEFAULT log_file tempest.log
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:256         iniset /opt/stack/tempest/etc/tempest.conf DEFAULT debug True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:259         iniset /opt/stack/tempest/etc/tempest.conf compute build_timeout 196
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:260         iniset /opt/stack/tempest/etc/tempest.conf volume build_timeout 196
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:263         iniset /opt/stack/tempest/etc/tempest.conf identity uri http://192.168.13.80:5000/v2.0/
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:264         iniset /opt/stack/tempest/etc/tempest.conf identity uri_v3 http://192.168.13.80/identity/v3
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:266         iniset /opt/stack/tempest/etc/tempest.conf identity admin_domain_scope True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:267         [[ True == \T\r\u\e ]]
+++lib/tempest:configure_tempest:268         iniset /opt/stack/tempest/etc/tempest.conf auth admin_username admin
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:269         iniset /opt/stack/tempest/etc/tempest.conf auth admin_password secret
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:270         iniset /opt/stack/tempest/etc/tempest.conf auth admin_project_name admin
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:271         iniset /opt/stack/tempest/etc/tempest.conf auth admin_domain_name Default
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:273         '[' True == False ']'
+++lib/tempest:configure_tempest:279         iniset /opt/stack/tempest/etc/tempest.conf identity auth_version v2
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:282         is_ssl_enabled_service key
+++lib/tls:is_ssl_enabled_service:375        local services=key
+++lib/tls:is_ssl_enabled_service:376        local service=
+++lib/tls:is_ssl_enabled_service:377        '[' False == False ']'
+++lib/tls:is_ssl_enabled_service:378        return 1
+++lib/tempest:configure_tempest:282         is_service_enabled tls-proxy
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 1
+++lib/tempest:configure_tempest:288         iniset /opt/stack/tempest/etc/tempest.conf identity-feature-enabled reseller True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:293         [[ ! -z '' ]]
+++lib/tempest:configure_tempest:296         '[' libvirt = xenserver ']'
+++lib/tempest:configure_tempest:302         iniset /opt/stack/tempest/etc/tempest.conf image-feature-enabled deactivate_image True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:303         '[' True '!=' True ']'
+++lib/tempest:configure_tempest:308         iniset /opt/stack/tempest/etc/tempest.conf compute image_ref d7be3263-9cdb-4078-b72a-59fb7d0f3fb9
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:309         iniset /opt/stack/tempest/etc/tempest.conf compute image_ref_alt d7be3263-9cdb-4078-b72a-59fb7d0f3fb9
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:310         iniset /opt/stack/tempest/etc/tempest.conf compute flavor_ref 42
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:311         iniset /opt/stack/tempest/etc/tempest.conf compute flavor_ref_alt 84
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:312         iniset /opt/stack/tempest/etc/tempest.conf validation connect_method floating
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:313         is_service_enabled n-cell
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 1
+++lib/tempest:configure_tempest:313         is_service_enabled neutron
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 0
+++lib/tempest:configure_tempest:321         [[ -n '' ]]
+++lib/tempest:configure_tempest:331         local tempest_compute_min_microversion=None
+++lib/tempest:configure_tempest:332         local tempest_compute_max_microversion=latest
+++lib/tempest:configure_tempest:335         [[ '' == \c\o\m\p\u\t\e\_\l\e\g\a\c\y ]]
+++lib/tempest:configure_tempest:339         '[' None == None ']'
+++lib/tempest:configure_tempest:340         inicomment /opt/stack/tempest/etc/tempest.conf compute min_microversion
+++inc/ini-config:inicomment:42              local xtrace
++++inc/ini-config:inicomment:43              set +o
++++inc/ini-config:inicomment:43              grep xtrace
+++inc/ini-config:inicomment:43              xtrace='set -o xtrace'
+++inc/ini-config:inicomment:44              set +o xtrace
+++lib/tempest:configure_tempest:344         '[' latest == None ']'
+++lib/tempest:configure_tempest:347         iniset /opt/stack/tempest/etc/tempest.conf compute max_microversion latest
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:351         iniset /opt/stack/tempest/etc/tempest.conf compute-feature-enabled allow_port_security_disabled True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:352         iniset /opt/stack/tempest/etc/tempest.conf compute-feature-enabled personality False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:353         iniset /opt/stack/tempest/etc/tempest.conf compute-feature-enabled resize True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:354         iniset /opt/stack/tempest/etc/tempest.conf compute-feature-enabled live_migration False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:355         iniset /opt/stack/tempest/etc/tempest.conf compute-feature-enabled change_password False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:356         iniset /opt/stack/tempest/etc/tempest.conf compute-feature-enabled block_migration_for_live_migration False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:357         iniset /opt/stack/tempest/etc/tempest.conf compute-feature-enabled attach_encrypted_volume True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:358         is_service_enabled n-cell
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  grep xtrace
++++functions-common:is_service_enabled:2043  set +o
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 1
+++lib/tempest:configure_tempest:377         iniset /opt/stack/tempest/etc/tempest.conf network api_version 2.0
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:378         iniset /opt/stack/tempest/etc/tempest.conf network project_networks_reachable false
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:379         iniset /opt/stack/tempest/etc/tempest.conf network public_network_id 43144ff3-972d-4c9e-bad6-141a2cb9608e
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:380         iniset /opt/stack/tempest/etc/tempest.conf network public_router_id ''
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:381         iniset /opt/stack/tempest/etc/tempest.conf network default_network 10.0.0.0/22
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:382         iniset /opt/stack/tempest/etc/tempest.conf network-feature-enabled ipv6 True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:383         iniset /opt/stack/tempest/etc/tempest.conf network-feature-enabled ipv6_subnet_attributes True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:384         iniset /opt/stack/tempest/etc/tempest.conf network-feature-enabled port_security True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:387         is_service_enabled heat
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 1
+++lib/tempest:configure_tempest:410         SCENARIO_IMAGE_DIR=/home/user/devstack/files/images/cirros-0.3.4-x86_64-uec
+++lib/tempest:configure_tempest:411         iniset /opt/stack/tempest/etc/tempest.conf scenario img_dir /home/user/devstack/files/images/cirros-0.3.4-x86_64-uec
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:412         iniset /opt/stack/tempest/etc/tempest.conf scenario ami_img_file cirros-0.3.4-x86_64-blank.img
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:413         iniset /opt/stack/tempest/etc/tempest.conf scenario ari_img_file cirros-0.3.4-x86_64-initrd
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:414         iniset /opt/stack/tempest/etc/tempest.conf scenario aki_img_file cirros-0.3.4-x86_64-vmlinuz
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:415         iniset /opt/stack/tempest/etc/tempest.conf scenario img_file cirros-0.3.4-x86_64-disk.img
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:418         iniset /opt/stack/tempest/etc/tempest.conf validation run_validation False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:419         iniset /opt/stack/tempest/etc/tempest.conf validation ip_version_for_ssh 4
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:420         iniset /opt/stack/tempest/etc/tempest.conf validation ssh_timeout 196
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:421         iniset /opt/stack/tempest/etc/tempest.conf validation image_ssh_user cirros
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:422         iniset /opt/stack/tempest/etc/tempest.conf validation network_for_ssh private
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:426         iniset /opt/stack/tempest/etc/tempest.conf volume-feature-enabled snapshot_backup True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:428         iniset /opt/stack/tempest/etc/tempest.conf volume-feature-enabled volume_services True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:430         iniset /opt/stack/tempest/etc/tempest.conf volume-feature-enabled api_v3 True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:431         local tempest_volume_min_microversion=None
+++lib/tempest:configure_tempest:432         local tempest_volume_max_microversion=latest
+++lib/tempest:configure_tempest:433         '[' None == None ']'
+++lib/tempest:configure_tempest:434         inicomment /opt/stack/tempest/etc/tempest.conf volume min_microversion
+++inc/ini-config:inicomment:42              local xtrace
++++inc/ini-config:inicomment:43              set +o
++++inc/ini-config:inicomment:43              grep xtrace
+++inc/ini-config:inicomment:43              xtrace='set -o xtrace'
+++inc/ini-config:inicomment:44              set +o xtrace
+++lib/tempest:configure_tempest:439         '[' latest == None ']'
+++lib/tempest:configure_tempest:442         iniset /opt/stack/tempest/etc/tempest.conf volume max_microversion latest
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:445         is_service_enabled c-bak
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 1
+++lib/tempest:configure_tempest:446         iniset /opt/stack/tempest/etc/tempest.conf volume-feature-enabled backup False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:452         [[ -n lvm:lvmdriver-1 ]]
+++lib/tempest:configure_tempest:452         [[ lvm:lvmdriver-1 =~ .*,.* ]]
+++lib/tempest:configure_tempest:472         '[' default '!=' default -o 'Open Source' '!=' 'Open Source' ']'
+++lib/tempest:configure_tempest:476         '[' default '!=' default -o iSCSI '!=' iSCSI ']'
+++lib/tempest:configure_tempest:482         iniset /opt/stack/tempest/etc/tempest.conf dashboard dashboard_url http://192.168.13.80/
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:485         iniset /opt/stack/tempest/etc/tempest.conf cli cli_dir /usr/local/bin
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:488         '[' libvirt = ironic ']'
+++lib/tempest:configure_tempest:508         '[' libvirt = libvirt ']'
+++lib/tempest:configure_tempest:508         '[' qemu = lxc ']'
+++lib/tempest:configure_tempest:521         local service
+++lib/tempest:configure_tempest:522         local tempest_services=key,glance,nova,neutron,cinder,swift,heat,ceilometer,horizon,sahara,ironic,trove
+++lib/tempest:configure_tempest:523         for service in '${tempest_services//,/ }'
+++lib/tempest:configure_tempest:524         is_service_enabled key
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 0
+++lib/tempest:configure_tempest:525         iniset /opt/stack/tempest/etc/tempest.conf service_available key True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:523         for service in '${tempest_services//,/ }'
+++lib/tempest:configure_tempest:524         is_service_enabled glance
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 0
+++lib/tempest:configure_tempest:525         iniset /opt/stack/tempest/etc/tempest.conf service_available glance True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:523         for service in '${tempest_services//,/ }'
+++lib/tempest:configure_tempest:524         is_service_enabled nova
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 0
+++lib/tempest:configure_tempest:525         iniset /opt/stack/tempest/etc/tempest.conf service_available nova True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:523         for service in '${tempest_services//,/ }'
+++lib/tempest:configure_tempest:524         is_service_enabled neutron
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 0
+++lib/tempest:configure_tempest:525         iniset /opt/stack/tempest/etc/tempest.conf service_available neutron True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:523         for service in '${tempest_services//,/ }'
+++lib/tempest:configure_tempest:524         is_service_enabled cinder
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 0
+++lib/tempest:configure_tempest:525         iniset /opt/stack/tempest/etc/tempest.conf service_available cinder True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:523         for service in '${tempest_services//,/ }'
+++lib/tempest:configure_tempest:524         is_service_enabled swift
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 1
+++lib/tempest:configure_tempest:527         iniset /opt/stack/tempest/etc/tempest.conf service_available swift False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:523         for service in '${tempest_services//,/ }'
+++lib/tempest:configure_tempest:524         is_service_enabled heat
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  grep xtrace
++++functions-common:is_service_enabled:2043  set +o
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 1
+++lib/tempest:configure_tempest:527         iniset /opt/stack/tempest/etc/tempest.conf service_available heat False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:523         for service in '${tempest_services//,/ }'
+++lib/tempest:configure_tempest:524         is_service_enabled ceilometer
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 1
+++lib/tempest:configure_tempest:527         iniset /opt/stack/tempest/etc/tempest.conf service_available ceilometer False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:523         for service in '${tempest_services//,/ }'
+++lib/tempest:configure_tempest:524         is_service_enabled horizon
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 0
+++lib/tempest:configure_tempest:525         iniset /opt/stack/tempest/etc/tempest.conf service_available horizon True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:523         for service in '${tempest_services//,/ }'
+++lib/tempest:configure_tempest:524         is_service_enabled sahara
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  grep xtrace
++++functions-common:is_service_enabled:2043  set +o
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 1
+++lib/tempest:configure_tempest:527         iniset /opt/stack/tempest/etc/tempest.conf service_available sahara False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:523         for service in '${tempest_services//,/ }'
+++lib/tempest:configure_tempest:524         is_service_enabled ironic
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 1
+++lib/tempest:configure_tempest:527         iniset /opt/stack/tempest/etc/tempest.conf service_available ironic False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:523         for service in '${tempest_services//,/ }'
+++lib/tempest:configure_tempest:524         is_service_enabled trove
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 1
+++lib/tempest:configure_tempest:527         iniset /opt/stack/tempest/etc/tempest.conf service_available trove False
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:531         '[' libvirt = libvirt ']'
+++lib/tempest:configure_tempest:531         '[' qemu = lxc ']'
+++lib/tempest:configure_tempest:541         local tmp_cfg_file
++++lib/tempest:configure_tempest:542         mktemp
+++lib/tempest:configure_tempest:542         tmp_cfg_file=/tmp/tmp.8re0aUES3I
+++lib/tempest:configure_tempest:543         cd /opt/stack/tempest
+++lib/tempest:configure_tempest:544         [[ False != \T\r\u\e ]]
+++lib/tempest:configure_tempest:545         tox -revenv-tempest --notest
+venv-tempest recreate: /opt/stack/tempest/.tox/tempest
+venv-tempest installdeps: setuptools, -r/opt/stack/tempest/requirements.txt
+venv-tempest develop-inst: /opt/stack/tempest
+venv-tempest installed: Babel==2.3.4,cffi==1.9.1,cliff==2.3.0,cmd2==0.6.9,cryptography==1.6,debtcollector==1.9.0,enum34==1.1.6,extras==1.0.0,fasteners==0.14.1,fixtures==3.0.0,funcsigs==1.0.2,==2.5.1,linecache2==1.0.0,monotonic==1.2,msgpack-python==0.4.8,netaddr==0.7.18,netifaces==0.10.5,os-testr==0.8.0,oslo.concurrency==3.15.0,oslo.config==3.19.0,oslo.context==2.10.0,oslo.i18n==32.0.2,pbr==1.10.0,positional==1.1.1,prettytable==0.7.2,pyasn1==0.1.9,pycparser==2.17,pyinotify==0.9.6,pyparsing==2.1.10,python-dateutil==2.6.0,python-mimeparse==1.6.0,python-subunit==1.2.0,py.18.0,-e git://git.openstack.org/openstack/tempest.git@86cfa35b84be972802170aa78b8f0f1adadf21df#egg=tempest,testrepository==0.0.20,testtools==2.2.0,traceback2==1.4.0,unicodecsv==0.14.1,unitte
+__________________________________________________________________________________________________________________________________ summary ____________________________________________________
+  venv-tempest: skipped tests
+  congratulations :)
+++lib/tempest:configure_tempest:547         tox -evenv-tempest -- pip install -c /opt/stack/requirements/upper-constraints.txt -r requirements.txt
+venv-tempest develop-inst-noop: /opt/stack/tempest
+venv-tempest installed: Babel==2.3.4,cffi==1.9.1,cliff==2.3.0,cmd2==0.6.9,cryptography==1.6,debtcollector==1.9.0,enum34==1.1.6,extras==1.0.0,fasteners==0.14.1,fixtures==3.0.0,funcsigs==1.0.2,==2.5.1,linecache2==1.0.0,monotonic==1.2,msgpack-python==0.4.8,netaddr==0.7.18,netifaces==0.10.5,os-testr==0.8.0,oslo.concurrency==3.15.0,oslo.config==3.19.0,oslo.context==2.10.0,oslo.i18n==32.0.2,pbr==1.10.0,positional==1.1.1,prettytable==0.7.2,pyasn1==0.1.9,pycparser==2.17,pyinotify==0.9.6,pyparsing==2.1.10,python-dateutil==2.6.0,python-mimeparse==1.6.0,python-subunit==1.2.0,py.18.0,-e git://git.openstack.org/openstack/tempest.git@86cfa35b84be972802170aa78b8f0f1adadf21df#egg=tempest,testrepository==0.0.20,testtools==2.2.0,traceback2==1.4.0,unicodecsv==0.14.1,unitte
+venv-tempest runtests: PYTHONHASHSEED='517073549'
+venv-tempest runtests: commands[0] | pip install -c ../requirements/upper-constraints.txt -r requirements.txt
+Ignoring dnspython3: markers 'python_version == "3.4"' don't match your environment
+Ignoring dnspython3: markers 'python_version == "3.5"' don't match your environment
+Requirement already satisfied: PyYAML===3.12 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 21))
+Requirement already satisfied: cliff===2.3.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 91))
+Requirement already satisfied: cmd2===0.6.9 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 93))
+Requirement already satisfied: debtcollector===1.9.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 102))
+Requirement already satisfied: fixtures===3.0.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 131))
+Requirement already satisfied: funcsigs===1.0.2 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 136))
+Requirement already satisfied: jsonschema===2.5.1 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 165))
+Requirement already satisfied: netaddr===0.7.18 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 195))
+Requirement already satisfied: os-testr===0.8.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 223))
+Requirement already satisfied: oslo.concurrency===3.15.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 228))
+Requirement already satisfied: oslo.config===3.19.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 229))
+Requirement already satisfied: oslo.i18n===3.10.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 232))
+Collecting oslo.log===3.16.0 (from -c ../requirements/upper-constraints.txt (line 233))
+  Using cached oslo.log-3.16.0-py2.py3-none-any.whl
+Requirement already satisfied: oslo.serialization===2.14.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 240))
+Requirement already satisfied: oslo.utils===3.18.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 242))
+Requirement already satisfied: paramiko===2.0.2 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 250))
+Requirement already satisfied: pbr===1.10.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 254))
+Requirement already satisfied: prettytable===0.7.2 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 263))
+Requirement already satisfied: pyasn1===0.1.9 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 271))
+Requirement already satisfied: pyinotify===0.9.6 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 279))
+Requirement already satisfied: pyparsing===2.1.10 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 287))
+Requirement already satisfied: python-dateutil===2.6.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 301))
+Requirement already satisfied: python-subunit===1.2.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 331))
+Requirement already satisfied: pytz===2016.7 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 337))
+Requirement already satisfied: retrying===1.3.3 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 354))
+Requirement already satisfied: rfc3986===0.4.1 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 355))
+Requirement already satisfied: six===1.10.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 369))
+Requirement already satisfied: stevedore===1.18.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 385))
+Requirement already satisfied: testrepository===0.0.20 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 394))
+Requirement already satisfied: testtools===2.2.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 397))
+Requirement already satisfied: traceback2===1.4.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 402))
+Requirement already satisfied: unicodecsv===0.14.1 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 409))
+Requirement already satisfied: unittest2===1.1.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 410))
+Collecting urllib3===1.19 (from -c ../requirements/upper-constraints.txt (line 412))
+  Using cached urllib3-1.19-py2.py3-none-any.whl
+Requirement already satisfied: wrapt===1.10.8 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 422))
+Requirement already satisfied: functools32===3.2.3.post2 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 137))
+Requirement already satisfied: Babel===2.3.4 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 3))
+Requirement already satisfied: enum34===1.1.6 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 125))
+Requirement already satisfied: fasteners===0.14.1 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 130))
+Requirement already satisfied: iso8601===0.1.11 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 158))
+Requirement already satisfied: oslo.context===2.10.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 230))
+Requirement already satisfied: msgpack-python===0.4.8 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 192))
+Requirement already satisfied: netifaces===0.10.5 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 196))
+Requirement already satisfied: monotonic===1.2 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 188))
+Collecting cryptography===1.5.3 (from -c ../requirements/upper-constraints.txt (line 99))
+Requirement already satisfied: extras===1.0.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 127))
+Requirement already satisfied: python-mimeparse===1.6.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 316))
+Requirement already satisfied: linecache2===1.0.0 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 178))
+Requirement already satisfied: argparse in /usr/lib/python2.7 (from unittest2===1.1.0->-c ../requirements/upper-constraints.txt (line 410))
+Requirement already satisfied: positional===1.1.1 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 261))
+Requirement already satisfied: cffi===1.9.1 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 87))
+Requirement already satisfied: ipaddress===1.0.17 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 156))
+Requirement already satisfied: setuptools>=11.3 in ./.tox/tempest/lib/python2.7/site-packages (from cryptography===1.5.3->-c ../requirements/upper-constraints.txt (line 99))
+Requirement already satisfied: idna===2.1 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 155))
+Requirement already satisfied: pycparser===2.17 in ./.tox/tempest/lib/python2.7/site-packages (from -c ../requirements/upper-constraints.txt (line 274))
+Installing collected packages: cryptography, oslo.log, urllib3
+  Found existing installation: cryptography 1.6
+    Uninstalling cryptography-1.6:
+      Successfully uninstalled cryptography-1.6
+  Found existing installation: oslo.log 3.17.0
+    Uninstalling oslo.log-3.17.0:
+      Successfully uninstalled oslo.log-3.17.0
+  Found existing installation: urllib3 1.19.1
+    Uninstalling urllib3-1.19.1:
+      Successfully uninstalled urllib3-1.19.1
+Successfully installed cryptography-1.5.3 oslo.log-3.16.0 urllib3-1.19
+__________________________________________________________________________________________________________________________________ summary ____________________________________________________
+  venv-tempest: commands succeeded
+  congratulations :)
+++lib/tempest:configure_tempest:550         iniset /opt/stack/tempest/etc/tempest.conf auth tempest_roles Member
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:551         [[ False == \T\r\u\e ]]
+++lib/tempest:configure_tempest:559         [[ True == \F\a\l\s\e ]]
+++lib/tempest:configure_tempest:563         iniset /opt/stack/tempest/etc/tempest.conf auth use_dynamic_credentials True
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:569         tox -evenv -- tempest verify-config -uro /tmp/tmp.8re0aUES3I
+venv create: /opt/stack/tempest/.tox/venv
+venv installdeps: -r/opt/stack/tempest/requirements.txt, -r/opt/stack/tempest/test-requirements.txt
+venv develop-inst: /opt/stack/tempest
+venv installed: alabaster==0.7.9,appdirs==1.4.0,Babel==2.3.4,cffi==1.9.1,cliff==2.3.0,cmd2==0.6.9,coverage==4.2,cryptography==1.6,debtcollector==1.9.0,docutils==0.12,enum34==1.1.6,extras==1.0=3.2.3.post2,hacking==0.12.0,idna==2.1,ipaddress==1.0.17,iso8601==0.1.11,Jinja2==2.8,jsonschema==2.5.1,keystoneauth1==2.15.0,linecache2==1.0.0,MarkupSafe==0.23,mccabe==0.2.1,mock==2.0.0,monotos-client-config==1.24.0,os-testr==0.8.0,oslo.concurrency==3.15.0,oslo.config==3.19.0,oslo.context==2.10.0,oslo.i18n==3.10.0,oslo.log==3.17.0,oslo.serialization==2.14.0,oslo.utils==3.18.0,oslnal==1.1.1,prettytable==0.7.2,pyasn1==0.1.9,pycparser==2.17,pyflakes==0.8.1,Pygments==2.1.3,pyinotify==0.9.6,pyparsing==2.1.10,python-dateutil==2.6.0,python-mimeparse==1.6.0,python-subunit==1=1.1.3,retrying==1.3.3,rfc3986==0.4.1,six==1.10.0,snowballstemmer==1.2.1,Sphinx==1.3.6,sphinx-rtd-theme==0.1.9,stevedore==1.18.0,-e git://git.openstack.org/openstack/tempest.git@86cfa35b84be9,traceback2==1.4.0,unicodecsv==0.14.1,unittest2==1.1.0,urllib3==1.19.1,wrapt==1.10.8
+venv runtests: PYTHONHASHSEED='3627045306'
+venv runtests: commands[0] | tempest verify-config -uro ../../../tmp/tmp.8re0aUES3I
+Running config verification...
+Config option api_v1 in group image-feature-enabled should be changed to: False
+Config option api_v2 in group image-feature-enabled should be changed to: False
+__________________________________________________________________________________________________________________________________ summary ____________________________________________________
+  venv: commands succeeded
+  congratulations :)
+++lib/tempest:configure_tempest:574         is_service_enabled q-metering
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 1
+++lib/tempest:configure_tempest:575         DISABLE_NETWORK_API_EXTENSIONS+=', metering'
+++lib/tempest:configure_tempest:578         local network_api_extensions=all
+++lib/tempest:configure_tempest:579         [[ ! -z , metering ]]
++++lib/tempest:configure_tempest:581         iniget /tmp/tmp.8re0aUES3I network-feature-enabled api_extensions
++++lib/tempest:configure_tempest:581         tr -d ' '
++++inc/ini-config:iniget:61                  local xtrace
+++++inc/ini-config:iniget:62                  set +o
+++++inc/ini-config:iniget:62                  grep xtrace
++++inc/ini-config:iniget:62                  xtrace='set -o xtrace'
++++inc/ini-config:iniget:63                  set +o xtrace
+++lib/tempest:configure_tempest:581         network_api_extensions=address-scope,agent,allowed-address-pairs,auto-allocated-topology,availability_zone,binding,default-subnetpools,dhcp_agent_sors,l3-ha,l3_agent_scheduler,multi-provider,net-mtu,network-ip-availability,network_availability_zone,pagination,port-security,project-id,provider,quotas,rbac-policies,router,router_availabil-attr-revisions,standard-attr-timestamp,subnet-service-types,subnet_allocation,tag
++++lib/tempest:configure_tempest:583         remove_disabled_extensions address-scope,agent,allowed-address-pairs,auto-allocated-topology,availability_zone,binding,default-subnetpools,dhcp_ag-flavors,l3-ha,l3_agent_scheduler,multi-provider,net-mtu,network-ip-availability,network_availability_zone,pagination,port-security,project-id,provider,quotas,rbac-policies,router,router_avaindard-attr-revisions,standard-attr-timestamp,subnet-service-types,subnet_allocation,tag , metering
++++lib/tempest:remove_disabled_extensions:102  local extensions_list=address-scope,agent,allowed-address-pairs,auto-allocated-topology,availability_zone,binding,default-subnetpools,dhcp_agentavors,l3-ha,l3_agent_scheduler,multi-provider,net-mtu,network-ip-availability,network_availability_zone,pagination,port-security,project-id,provider,quotas,rbac-policies,router,router_availabrd-attr-revisions,standard-attr-timestamp,subnet-service-types,subnet_allocation,tag
++++lib/tempest:remove_disabled_extensions:103  shift
++++lib/tempest:remove_disabled_extensions:104  local 'disabled_exts=, metering'
++++lib/tempest:remove_disabled_extensions:105  remove_disabled_services address-scope,agent,allowed-address-pairs,auto-allocated-topology,availability_zone,binding,default-subnetpools,dhcp_ag-flavors,l3-ha,l3_agent_scheduler,multi-provider,net-mtu,network-ip-availability,network_availability_zone,pagination,port-security,project-id,provider,quotas,rbac-policies,router,router_avaindard-attr-revisions,standard-attr-timestamp,subnet-service-types,subnet_allocation,tag ', metering'
++++functions-common:remove_disabled_services:2078  local xtrace
+++++functions-common:remove_disabled_services:2079  set +o
+++++functions-common:remove_disabled_services:2079  grep xtrace
++++functions-common:remove_disabled_services:2079  xtrace='set -o xtrace'
++++functions-common:remove_disabled_services:2080  set +o xtrace
++++functions-common:remove_disabled_services:2103  _cleanup_service_list ,address-scope,agent,allowed-address-pairs,auto-allocated-topology,availability_zone,binding,default-subnetpools,dhcp_l3-flavors,l3-ha,l3_agent_scheduler,multi-provider,net-mtu,network-ip-availability,network_availability_zone,pagination,port-security,project-id,provider,quotas,rbac-policies,router,router_avtandard-attr-revisions,standard-attr-timestamp,subnet-service-types,subnet_allocation,tag
++++functions-common:_cleanup_service_list:1906  local xtrace
+++++functions-common:_cleanup_service_list:1907  set +o
+++++functions-common:_cleanup_service_list:1907  grep xtrace
++++functions-common:_cleanup_service_list:1907  xtrace='set -o xtrace'
++++functions-common:_cleanup_service_list:1908  set +o xtrace
+++lib/tempest:configure_tempest:583         network_api_extensions=address-scope,agent,allowed-address-pairs,auto-allocated-topology,availability_zone,binding,default-subnetpools,dhcp_agent_sors,l3-ha,l3_agent_scheduler,multi-provider,net-mtu,network-ip-availability,network_availability_zone,pagination,port-security,project-id,provider,quotas,rbac-policies,router,router_availabil-attr-revisions,standard-attr-timestamp,subnet-service-types,subnet_allocation,tag
+++lib/tempest:configure_tempest:585         iniset /opt/stack/tempest/etc/tempest.conf network-feature-enabled api_extensions address-scope,agent,allowed-address-pairs,auto-allocated-topologymode,external-net,extra_dhcp_opt,extraroute,flavors,l3-flavors,l3-ha,l3_agent_scheduler,multi-provider,net-mtu,network-ip-availability,network_availability_zone,pagination,port-security,projeoup,service-type,sorting,standard-attr-description,standard-attr-revisions,standard-attr-timestamp,subnet-service-types,subnet_allocation,tag
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:587         local object_storage_api_extensions=all
+++lib/tempest:configure_tempest:588         [[ ! -z '' ]]
+++lib/tempest:configure_tempest:594         iniset /opt/stack/tempest/etc/tempest.conf object-storage-feature-enabled discoverable_apis all
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 grep xtrace
++++inc/ini-config:iniset:173                 set +o
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:596         local volume_api_extensions=all
+++lib/tempest:configure_tempest:597         [[ ! -z '' ]]
+++lib/tempest:configure_tempest:603         iniset /opt/stack/tempest/etc/tempest.conf volume-feature-enabled api_extensions all
+++inc/ini-config:iniset:172                 local xtrace
++++inc/ini-config:iniset:173                 set +o
++++inc/ini-config:iniset:173                 grep xtrace
+++inc/ini-config:iniset:173                 xtrace='set -o xtrace'
+++inc/ini-config:iniset:174                 set +o xtrace
+++lib/tempest:configure_tempest:606         IFS=' 	
+'
+++extras.d/80-tempest.sh:source:16          echo_summary 'Installing Tempest Plugins'
+++./stack.sh:echo_summary:392               [[ -t 3 ]]
+++./stack.sh:echo_summary:392               [[ True != \T\r\u\e ]]
+++./stack.sh:echo_summary:398               echo -e Installing Tempest Plugins
+++extras.d/80-tempest.sh:source:17          install_tempest_plugins
+2016-11-23 20:06:23.797 | Installing Tempest Plugins
+++lib/tempest:install_tempest_plugins:625   pushd /opt/stack/tempest
+/opt/stack/tempest /opt/stack/tempest
+++lib/tempest:install_tempest_plugins:626   [[ 0 != 0 ]]
+++lib/tempest:install_tempest_plugins:631   popd
+/opt/stack/tempest
+++extras.d/80-tempest.sh:source:23          [[ stack == \u\n\s\t\a\c\k ]]
+++extras.d/80-tempest.sh:source:28          [[ stack == \c\l\e\a\n ]]
++functions-common:run_phase:1889           [[ stack == \s\o\u\r\c\e ]]
++functions-common:run_phase:1892           [[ stack == \o\v\e\r\r\i\d\e\_\d\e\f\a\u\l\t\s ]]
++functions-common:run_phase:1895           run_plugins stack extra
++functions-common:run_plugins:1854         local mode=stack
++functions-common:run_plugins:1855         local phase=extra
++functions-common:run_plugins:1857         local plugins=
++functions-common:run_plugins:1858         local plugin
++./stack.sh:main:1358                      merge_config_group /home/user/devstack/local.conf post-extra
++inc/meta-config:merge_config_group:173    local localfile=/home/user/devstack/local.conf
++inc/meta-config:merge_config_group:173    shift
++inc/meta-config:merge_config_group:174    local matchgroups=post-extra
++inc/meta-config:merge_config_group:176    [[ -r /home/user/devstack/local.conf ]]
++inc/meta-config:merge_config_group:178    local configfile group
++inc/meta-config:merge_config_group:179    for group in '$matchgroups'
+++inc/meta-config:merge_config_group:180    get_meta_section_files /home/user/devstack/local.conf post-extra
+++inc/meta-config:get_meta_section_files:65  local file=/home/user/devstack/local.conf
+++inc/meta-config:get_meta_section_files:66  local matchgroup=post-extra
+++inc/meta-config:get_meta_section_files:68  [[ -r /home/user/devstack/local.conf ]]
+++inc/meta-config:get_meta_section_files:70  awk -v matchgroup=post-extra '
+        /^\[\[.+\|.*\]\]/ {
+            gsub("[][]", "", $1);
+            split($1, a, "|");
+            if (a[1] == matchgroup)
+                print a[2]
+        }
+    ' /home/user/devstack/local.conf
++./stack.sh:main:1365                      [[ -x /home/user/devstack/local.sh ]]
++./stack.sh:main:1374                      service_check
++functions-common:service_check:1650       local service
++functions-common:service_check:1651       local failures
++functions-common:service_check:1652       SCREEN_NAME=stack
++functions-common:service_check:1653       SERVICE_DIR=/opt/stack/status
++functions-common:service_check:1656       [[ ! -d /opt/stack/status/stack ]]
+++functions-common:service_check:1663       ls '/opt/stack/status/stack/*.failure'
+++functions-common:service_check:1663       /bin/true
++functions-common:service_check:1663       failures=
++functions-common:service_check:1671       '[' -n '' ']'
++./stack.sh:main:1378                      check_libs_from_git
++inc/python:check_libs_from_git:212        local lib=
++inc/python:check_libs_from_git:213        local not_installed=
+++inc/python:check_libs_from_git:214        tr , ' '
+++inc/python:check_libs_from_git:214        echo
++inc/python:check_libs_from_git:220        [[ -n '' ]]
++./stack.sh:main:1385                      is_service_enabled n-api
++functions-common:is_service_enabled:2042  local xtrace
+++functions-common:is_service_enabled:2043  set +o
+++functions-common:is_service_enabled:2043  grep xtrace
++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
++functions-common:is_service_enabled:2044  set +o xtrace
++functions-common:is_service_enabled:2072  return 0
++./stack.sh:main:1385                      '[' False == True ']'
++./stack.sh:main:1393                      openstack complete
++./stack.sh:main:1393                      sudo tee /etc/bash_completion.d/osc.bash_completion
+__init__() got an unexpected keyword argument 'project_name'
++./stack.sh:main:1396                      is_service_enabled cinder
++functions-common:is_service_enabled:2042  local xtrace
+++functions-common:is_service_enabled:2043  set +o
+++functions-common:is_service_enabled:2043  grep xtrace
++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
++functions-common:is_service_enabled:2044  set +o xtrace
++functions-common:is_service_enabled:2072  return 0
++./stack.sh:main:1397                      is_ubuntu
++functions-common:is_ubuntu:466            [[ -z deb ]]
++functions-common:is_ubuntu:469            '[' deb = deb ']'
++./stack.sh:main:1398                      echo_summary 'Configuring lvm.conf global device filter'
++./stack.sh:echo_summary:392               [[ -t 3 ]]
++./stack.sh:echo_summary:392               [[ True != \T\r\u\e ]]
++./stack.sh:echo_summary:398               echo -e Configuring lvm.conf global device filter
++./stack.sh:main:1399                      set_lvm_filter
+2016-11-23 20:06:27.495 | Configuring lvm.conf global device filter
++lib/lvm:set_lvm_filter:168                local 'filter_suffix="r|.*|" ]  # from devstack'
++lib/lvm:set_lvm_filter:169                local 'filter_string=global_filter = [ '
++lib/lvm:set_lvm_filter:170                local pv
++lib/lvm:set_lvm_filter:171                local vg
++lib/lvm:set_lvm_filter:172                local line
+++lib/lvm:set_lvm_filter:174                sudo pvs --noheadings -o name
++lib/lvm:set_lvm_filter:174                for pv_info in '$(sudo pvs --noheadings -o name)'
+++lib/lvm:set_lvm_filter:175                sed 's/ //g'
+++lib/lvm:set_lvm_filter:175                echo -e /dev/loop0
+++lib/lvm:set_lvm_filter:175                sed 's/\/dev\///g'
++lib/lvm:set_lvm_filter:175                pv=loop0
++lib/lvm:set_lvm_filter:176                new='"a|loop0|", '
++lib/lvm:set_lvm_filter:177                filter_string='global_filter = [ "a|loop0|", '
++lib/lvm:set_lvm_filter:174                for pv_info in '$(sudo pvs --noheadings -o name)'
+++lib/lvm:set_lvm_filter:175                echo -e /dev/loop1
+++lib/lvm:set_lvm_filter:175                sed 's/\/dev\///g'
+++lib/lvm:set_lvm_filter:175                sed 's/ //g'
++lib/lvm:set_lvm_filter:175                pv=loop1
++lib/lvm:set_lvm_filter:176                new='"a|loop1|", '
++lib/lvm:set_lvm_filter:177                filter_string='global_filter = [ "a|loop0|", "a|loop1|", '
++lib/lvm:set_lvm_filter:174                for pv_info in '$(sudo pvs --noheadings -o name)'
+++lib/lvm:set_lvm_filter:175                echo -e /dev/sda5
+++lib/lvm:set_lvm_filter:175                sed 's/ //g'
+++lib/lvm:set_lvm_filter:175                sed 's/\/dev\///g'
++lib/lvm:set_lvm_filter:175                pv=sda5
++lib/lvm:set_lvm_filter:176                new='"a|sda5|", '
++lib/lvm:set_lvm_filter:177                filter_string='global_filter = [ "a|loop0|", "a|loop1|", "a|sda5|", '
++lib/lvm:set_lvm_filter:179                filter_string='global_filter = [ "a|loop0|", "a|loop1|", "a|sda5|", "r|.*|" ]  # from devstack'
++lib/lvm:set_lvm_filter:181                clean_lvm_filter
++lib/lvm:clean_lvm_filter:156              sudo sed -i 's/^.*# from devstack$//' /etc/lvm/lvm.conf
++lib/lvm:set_lvm_filter:182                sudo sed -i '/# global_filter = \[*\]/a\    global_filter = [ "a|loop0|", "a|loop1|", "a|sda5|", "r|.*|" ]  # from devstack' /etc/lvm/lvm.conf
++lib/lvm:set_lvm_filter:183                echo_summary 'set lvm.conf device global_filter to: global_filter = [ "a|loop0|", "a|loop1|", "a|sda5|", "r|.*|" ]  # from devstack'
++./stack.sh:echo_summary:392               [[ -t 3 ]]
++./stack.sh:echo_summary:392               [[ True != \T\r\u\e ]]
++./stack.sh:echo_summary:398               echo -e set lvm.conf device global_filter to: global_filter = '[' '"a|loop0|",' '"a|loop1|",' '"a|sda5|",' '"r|.*|"' ']' '#' from devstack
++./stack.sh:main:1409                      run_phase stack test-config
+2016-11-23 20:06:27.979 | set lvm.conf device global_filter to: global_filter = [ "a|loop0|", "a|loop1|", "a|sda5|", "r|.*|" ] # from devstack
++functions-common:run_phase:1868           local mode=stack
++functions-common:run_phase:1869           local phase=test-config
++functions-common:run_phase:1870           [[ -d /home/user/devstack/extras.d ]]
++functions-common:run_phase:1871           local extra_plugin_file_name
++functions-common:run_phase:1872           for extra_plugin_file_name in '$TOP_DIR/extras.d/*.sh'
++functions-common:run_phase:1877           local exceptions=80-tempest.sh
++functions-common:run_phase:1878           local extra
+++functions-common:run_phase:1879           basename /home/user/devstack/extras.d/80-tempest.sh
++functions-common:run_phase:1879           extra=80-tempest.sh
++functions-common:run_phase:1880           [[ 80-tempest.sh =~ 80-tempest\.sh ]]
++functions-common:run_phase:1884           [[ -r /home/user/devstack/extras.d/80-tempest.sh ]]
++functions-common:run_phase:1884           source /home/user/devstack/extras.d/80-tempest.sh stack test-config
+++extras.d/80-tempest.sh:source:3           is_service_enabled tempest
+++functions-common:is_service_enabled:2042  local xtrace
++++functions-common:is_service_enabled:2043  set +o
++++functions-common:is_service_enabled:2043  grep xtrace
+++functions-common:is_service_enabled:2043  xtrace='set -o xtrace'
+++functions-common:is_service_enabled:2044  set +o xtrace
+++functions-common:is_service_enabled:2072  return 0
+++extras.d/80-tempest.sh:source:4           [[ stack == \s\o\u\r\c\e ]]
+++extras.d/80-tempest.sh:source:7           [[ stack == \s\t\a\c\k ]]
+++extras.d/80-tempest.sh:source:7           [[ test-config == \i\n\s\t\a\l\l ]]
+++extras.d/80-tempest.sh:source:10          [[ stack == \s\t\a\c\k ]]
+++extras.d/80-tempest.sh:source:10          [[ test-config == \p\o\s\t\-\c\o\n\f\i\g ]]
+++extras.d/80-tempest.sh:source:13          [[ stack == \s\t\a\c\k ]]
+++extras.d/80-tempest.sh:source:13          [[ test-config == \e\x\t\r\a ]]
+++extras.d/80-tempest.sh:source:18          [[ stack == \s\t\a\c\k ]]
+++extras.d/80-tempest.sh:source:18          [[ test-config == \p\o\s\t\-\e\x\t\r\a ]]
+++extras.d/80-tempest.sh:source:23          [[ stack == \u\n\s\t\a\c\k ]]
+++extras.d/80-tempest.sh:source:28          [[ stack == \c\l\e\a\n ]]
++functions-common:run_phase:1889           [[ stack == \s\o\u\r\c\e ]]
++functions-common:run_phase:1892           [[ stack == \o\v\e\r\r\i\d\e\_\d\e\f\a\u\l\t\s ]]
++functions-common:run_phase:1895           run_plugins stack test-config
++functions-common:run_plugins:1854         local mode=stack
++functions-common:run_plugins:1855         local phase=test-config
++functions-common:run_plugins:1857         local plugins=
++functions-common:run_plugins:1858         local plugin
++./stack.sh:main:1415                      set +o xtrace
+
+=========================
+DevStack Component Timing
+=========================
+Total runtime         10210
+
+run_process            60
+test_with_retry         6
+apt-get-update         47
+pip_install           557
+restart_apache_server  36
+wait_for_service       24
+git_timed             5517
+apt-get               2815
+=========================
+
+
+
+This is your host IP address: 192.168.13.80
+This is your host IPv6 address: ::1
+Horizon is now available at http://192.168.13.80/dashboard
+Keystone is serving at http://192.168.13.80/identity/
+The default users are: admin and demo
+The password: secret
+2016-11-23 20:06:28.264 | WARNING: 
+2016-11-23 20:06:28.264 | Using lib/neutron-legacy is deprecated, and it will be removed in the future
+2016-11-23 20:06:28.264 | stack.sh completed in 10210 seconds.
+user@vmmaas1404m01:~/devstack$ ^C
+user@vmmaas1404m01:~/devstack$ 

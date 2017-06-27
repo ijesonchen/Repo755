@@ -1,0 +1,23 @@
+WebService调用测试程序
+
+csWebServiceStatic
+C#测试程序。通过项目添加web引用，使用WebService相应方法
+
+csWebSrv2
+C#测试程序。动态调用 WebService
+
+cWebService
+C++命令行测试程序。使用C++/CLR动态调用 WebService
+
+WebServiceDlg
+MFC DLG测试程序。使用C++/CLR动态调用 WebService，通过编辑框输入WebService地址，参数等。
+
+gsoapCsl
+C++使用gSOAP调用WebService示例
+http://www.webxml.com.cn/WebServices/WeatherWebService.asmx
+注意编码格式，有中文字符时需要使用UTF-8编码，使用MBS编码会导致中文字符全部变为为0x7F
+
+注意:
+gcnew出来的对象使用^，不需释放
+c#中域使用.，如System.WebService，c++中对应::
+引用c#dll时使用 #using <System.dll>

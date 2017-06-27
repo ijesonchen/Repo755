@@ -1,0 +1,8 @@
+avi2wav-2mpg.grf
+	自动renderFile之后的修改，可以转换，但未找到设置转换后码流的方法。
+	后级添加ACM WRAPPER后无法播放声音，原因未知。
+mmconvert.GRF
+	MMConvert的remote graph
+MPG-WAV ACMWRAPPER.grf
+	根据avi2wav-2mpg.grf修改后的链路，更换音频解码filter，可连接acm wapper。测试可用
+	程序既是根据该graph编写。

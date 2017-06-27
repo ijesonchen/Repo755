@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CompletionPortCls", "CompletionPortCls\CompletionPortCls.vcproj", "{852B5A95-35A8-4D9D-A884-2CCDC7C3DAAD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{75B37B00-5329-4200-95D8-7BAD57EE443C}"
+	ProjectSection(SolutionItems) = preProject
+		IO completion port.docx = IO completion port.docx
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{852B5A95-35A8-4D9D-A884-2CCDC7C3DAAD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{852B5A95-35A8-4D9D-A884-2CCDC7C3DAAD}.Debug|Win32.Build.0 = Debug|Win32
+		{852B5A95-35A8-4D9D-A884-2CCDC7C3DAAD}.Release|Win32.ActiveCfg = Release|Win32
+		{852B5A95-35A8-4D9D-A884-2CCDC7C3DAAD}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

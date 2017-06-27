@@ -1,0 +1,11 @@
+##0507#
+wxArt;dumpbin获取依赖的dll,生成后事件输出已被重定向，所以无法使用>输出到文件;分离wxWidgetsDLL
+##0511#
+##0512#
+fedoral live由于使用特殊的结构以支持UEFI启动，所以将镜像解压然后通过syslinux启动镜像会导致问题。
+##0513#
+重装fc，使用简单ext4分区而非LVM，因为LVM无法在windows下挂载。diskinternal linux reader和ext2fsd可支持ext4分区挂载;
+启动菜单按照/boot/grub2/grub.cfg中的顺序启动。参考其中内容可在grub4dos中启动fc。注意grub4dos磁盘形式 root (hd0,n)，n从0开始，grub2从1开始;
+EXP0401,未完成;
+##0602#
+SQLITE;

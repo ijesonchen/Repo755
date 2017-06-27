@@ -1,0 +1,9 @@
+svn:ignore
+
+*.ncb
+*.user
+*.suo
+*.aps
+Temp
+Bin
+Thumbs.db

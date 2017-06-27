@@ -1,0 +1,75 @@
+转换MPG为音频WAV文件。
+根据FilterGraph\MPG-WAV ACMWRAPPER.grf建立链路。
+代码参考MMConvert
+目标码率由WAVEFORMATEX WavFmt控制（pCodec->SetFormat）
+仅转换第一个音频通道。
+
+需要安装解码包XP Codec Pack 2.5.7（内含LAV解码器）
+***********************************************************
+bugs:
+1. 程序推出前sleep(100)，
+   否则LAVfilter会不正常结束,多次运行后会导致系统不正常。
+   目前未找到原因。推测是filter文件写入未结束。
+   最后Release时某些函数返回非0值。
+***********************************************************
+2. MpgWatcher: ReadDirectoryChangesW
+   如果线程处理不及时，该函数会漏掉部分文件
+   解决方法：
+	1. 采用缓存队列或完成端口，单独线程监控改变
+	2. 采用其他方式监控文件夹改变，文件少量时可以考虑枚举文件，根据时间判断
+***********************************************************
+
+
+测试源格式：
+
+Video: MPEG2 Video 720x576 (4:3) 25fps [Video]
+Audio: MPEG Audio 48000Hz stereo 224kbps [Audio]
+
+详细信息：
+General
+Complete name                  : D:\Projects\ExtractAudio\2.mpg
+Format                         : MPEG-PS
+File size                      : 67.7 MiB
+Duration                       : 2mn 12s
+Overall bit rate               : 4 275 Kbps
+
+Video
+ID                             : 224 (0xE0)
+Format                         : MPEG Video
+Format version                 : Version 2
+Format profile                 : Main@Main
+Format settings, BVOP          : No
+Format settings, Matrix        : Custom
+Format settings, GOP           : M=3, N=13
+Duration                       : 2mn 12s
+Bit rate                       : 4 000 Kbps
+Width                          : 720 pixels
+Height                         : 576 pixels
+Display aspect ratio           : 4:3
+Frame rate                     : 25.000 fps
+Standard                       : PAL
+Color space                    : YUV
+Chroma subsampling             : 4:2:0
+Bit depth                      : 8 bits
+Scan type                      : Interlaced
+Scan order                     : Top Field First
+Compression mode               : Lossy
+Bits/(Pixel*Frame)             : 0.386
+Time code of first frame       : 00:00:00:00
+Time code source               : Group of pictures header
+Stream size                    : 62.8 MiB (93%)
+
+Audio
+ID                             : 192 (0xC0)
+Format                         : MPEG Audio
+Format version                 : Version 1
+Format profile                 : Layer 2
+Duration                       : 2mn 12s
+Bit rate mode                  : Constant
+Bit rate                       : 224 Kbps
+Channel count                  : 2 channels
+Sampling rate                  : 48.0 KHz
+Compression mode               : Lossy
+Stream size                    : 3.55 MiB (5%)
+
+

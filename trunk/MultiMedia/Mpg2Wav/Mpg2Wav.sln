@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Mpg2Wav", "Mpg2Wav\Mpg2Wav.vcproj", "{6891ADA4-DBBC-4B76-96EE-79ED40159207}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MpgWatcher", "MpgWatcher\MpgWatcher.vcproj", "{27BE9AA9-949D-4F64-AD4B-1D51F6CABAB5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6891ADA4-DBBC-4B76-96EE-79ED40159207} = {6891ADA4-DBBC-4B76-96EE-79ED40159207}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6891ADA4-DBBC-4B76-96EE-79ED40159207}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6891ADA4-DBBC-4B76-96EE-79ED40159207}.Debug|Win32.Build.0 = Debug|Win32
+		{6891ADA4-DBBC-4B76-96EE-79ED40159207}.Release|Win32.ActiveCfg = Release|Win32
+		{6891ADA4-DBBC-4B76-96EE-79ED40159207}.Release|Win32.Build.0 = Release|Win32
+		{27BE9AA9-949D-4F64-AD4B-1D51F6CABAB5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{27BE9AA9-949D-4F64-AD4B-1D51F6CABAB5}.Debug|Win32.Build.0 = Debug|Win32
+		{27BE9AA9-949D-4F64-AD4B-1D51F6CABAB5}.Release|Win32.ActiveCfg = Release|Win32
+		{27BE9AA9-949D-4F64-AD4B-1D51F6CABAB5}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,40 @@
+Team ACME
+
+EViL Corp.
+
+D4VDPQJ14WXE36CLY4WL1VPJAPAA
+
+-----BEGIN PGP LICENSE AUTHORIZATION-----
+ADIAAAAAAKB5U5JqkFf5i3jeSnpg5oOWv/f26QCgJk0lvMog5rH1oiGiFhKGecDhvdA=
+-----END PGP LICENSE AUTHORIZATION-----
+
+DAX9R5LLPGU4PGM35H3YPW2RELZA
+
+-----BEGIN PGP LICENSE AUTHORIZATION-----
+ADIAAAAAAKAKgYZ+XxzldqcHTWQMieTVRtL4kgCgU0IlMyzsWvjfgaY7frEEFLoHMLE=
+-----END PGP LICENSE AUTHORIZATION-----
+
+
+10:00:56  	  	----- PGP Desktop started -----
+10:00:56  	  	PGP Desktop 10.0.2 (Build 13) (13)
+10:00:56  	  	Today's date is 2014年4月15日
+10:00:57 PGP	 Info	Setting logging level to: normal
+10:01:00 PGP	 Info	Initiating daily maintenance procedures
+10:02:40 Email	 Info	Email proxying is enabled and active
+10:02:40 Email	 Warning	Your current PGP Desktop license does not support proxying
+10:02:40 Email	 Warning	Outgoing email messages will not be secured by PGP
+10:04:55  	  	----- PGP Desktop started -----
+10:04:55  	  	PGP Desktop 10.0.2 (Build 13) (13)
+10:04:55  	  	Today's date is 2014年4月15日
+10:05:25 Email	 Error	Could not preload local keys: can't open file (-11996)
+10:05:25 Email	 Error	Could not init tray structure: can't open file (-11996)
+10:05:25  	  	----- PGP Desktop stopped -----
+10:05:25 Email	 Error	Could not load local policy data: bad parameters (-12000)
+10:05:25 Email	 Error	Could not load local policy data: bad parameters (-12000)
+10:05:29  	  	----- PGP Desktop started -----
+10:05:29  	  	PGP Desktop 10.0.2 (Build 13) (13)
+10:05:29  	  	Today's date is 2014年4月15日
+10:06:00 PGP	 Info	Setting logging level to: normal
+10:06:00 Email	 Info	Email proxying is enabled and active
+10:06:04 PGP	 Info	Initiating daily maintenance procedures
+

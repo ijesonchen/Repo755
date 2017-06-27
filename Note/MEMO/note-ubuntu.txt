@@ -1,0 +1,83 @@
+ubuntu 14.04.2 trusty x64 LTS
+-------------------------------------------
+安装
+-------------------------------------------
+
+-------------------------------------------
+中文输入法
+1. 系统自带输入法
+system settings, text entry
+左下+号添加，input source选Chinese (Pinyin)，add即可
+输入法切换快捷键 switch to next source using:
+单击，按ctrl+space(显示为Control L)即可指定为ctrl+空格切换输入法
+2. 搜狗输入法
+按照安装指南，14.04应该可以直接安装（推测是指中国版自带fcitx)。
+但是www.ubuntu.com/download下载的ubuntu默认输入框架为ibus，会提示fcitx依赖有问题。
+
+1) 安装fcitx
+按照说明添加源 ppa:fcitx-team/nightly（参考安装指南中12.04）
+更新源或使用命令
+sudo apt-get update
+安装fcitx：software center找到fcitx安装或使用命令
+sudo apt-get fcitx
+2) 下载并安装搜狗输入法
+http://pinyin.sogou.com/linux/
+下载deb包安装，双击即可安装。
+3) 修改输入框架
+system settings, language support
+keybord input method system改为fcitx
+注销或重启
+4) fcitx中添加搜狗输入法
+
+
+
+
+
+-------------------------------------------
+安装chrome
+
+**************下载离线包
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+(不翻墙也可下载）
+sudo dpkg -i google-chrome-stable_current_amd64.deb 
+
+会提示缺少依赖。据说使用apt-get install安装依赖即可。（未测试）
+**************在线安装
+1. 添加key
+wget https://dl.google.com/linux/linux_signing_key.pub
+sudo apt-key add linux_signing_key.pub 
+2. 添加并更新源
+sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+sudo apt-get update
+3. 安装
+安装稳定版Chrome，在终端输入：sudo apt-get install google-chrome-stable
+安装Beta版Chrome，在终端输入：sudo apt-get install google-chrome-beta
+安装不稳定版Chrome，在终端输入：sudo apt-get install google-chrome-unstable
+
+********备注
+由于先使用离线包安装，提示缺少依赖后专用在线安装
+sudo apt-get install google-chrome-stable
+之后提示
+google-chrome-stable is already the newest version.
+You might want to run 'apt-get -f install' to correct these:
+The following packages have unmet dependencies:
+ google-chrome-stable : Depends: libappindicator1 but it is not going to be installed
+E: Unmet dependencies. Try 'apt-get -f install' with no packages (or specify a solution).
+然后运行命令
+sudo apt-get -f install
+提示
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+Correcting dependencies... Done
+The following extra packages will be installed:
+  libappindicator1 libindicator7
+The following NEW packages will be installed:
+  libappindicator1 libindicator7
+0 upgraded, 2 newly installed, 0 to remove and 263 not upgraded.
+1 not fully installed or removed.
+Need to get 39.9 kB of archives.
+After this operation, 201 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y 
+自动修复依赖
+

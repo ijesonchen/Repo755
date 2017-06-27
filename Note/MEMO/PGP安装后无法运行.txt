@@ -1,0 +1,66 @@
+PGP10.0.2 最终中文纪念版
+修改“我的文档”路径导致程序安装后程序运行后无反应，无法注册。
+
+*********************************************************
+问题：
+安装PGP，中文，安装完后不重启，使用Keygen生成序列号并打补丁，重启。
+正常情况下，运行PGP Desktop应该跳出注册向导。
+但是实际情况是重启后运行PGP Desktop，无反应。运行PGPtray.exe无反应。
+任务管理器可以看到程序有运行过。
+
+查看日志：
+路径：C:\Documents and Settings\%user%\Application Data\PGP Corporation\PGP\PGPlog.txt
+
+*A 10:20:34 ----- PGP Desktop \u24320?\u22987? -----
+*A 10:20:34 PGP Desktop 10.0.2 (Build 13) (13)
+*A 10:20:34 \u20170?\u26085?\u26159? 2014\u24180?4\u26376?15\u26085?
+EE 10:20:34 \u19981?\u33021?\u39044?\u36733?\u26412?\u22320?\u23494?\u38053?: \u23548?\u20837?\u30340?\u23545?\u35937?\u27809?\u33021?Unicode\u19968?\u33268?\u25110?\u36716?\u25442?\u26399?\u38388?Unicode\u26684?\u24335?\u21270?\u22833?\u36133? (-11937)
+EE 10:20:34 \u19981?\u33021?\u21021?\u22987?\u21270?\u25176?\u30424?\u32467?\u26500?: \u23548?\u20837?\u30340?\u23545?\u35937?\u27809?\u33021?Unicode\u19968?\u33268?\u25110?\u36716?\u25442?\u26399?\u38388?Unicode\u26684?\u24335?\u21270?\u22833?\u36133? (-11937)
+*A 10:20:34 ----- PGP Desktop \u20572?\u27490? -----
+EE 10:20:34 \u19981?\u33021?\u36733?\u20837?\u26412?\u22320?\u31574?\u30053?\u25968?\u25454?: \u26080?\u25928?\u21442?\u25968? (-12000)
+EE 10:20:34 \u19981?\u33021?\u36733?\u20837?\u26412?\u22320?\u31574?\u30053?\u25968?\u25454?: \u26080?\u25928?\u21442?\u25968? (-12000)
+*A 10:20:34 ----- PGP Desktop \u20572?\u27490? -----
+
+为转义字符，其内容为
+10:20:34  	  	----- PGP Desktop 开始 -----
+10:20:34  	  	PGP Desktop 10.0.2 (Build 13) (13)
+10:20:34  	  	今日是 2014年4月15日
+10:20:34 邮件	 错误	不能预载本地密钥: 导入的对象没能Unicode一致或转换期间Unicode格式化失败 (-11937)
+10:20:34 邮件	 错误	不能初始化托盘结构: 导入的对象没能Unicode一致或转换期间Unicode格式化失败 (-11937)
+10:20:34  	  	----- PGP Desktop 停止 -----
+10:20:34 邮件	 错误	不能载入本地策略数据: 无效参数 (-12000)
+10:20:34 邮件	 错误	不能载入本地策略数据: 无效参数 (-12000)
+10:20:34  	  	----- PGP Desktop 停止 -----
+
+改安装英文版可以看到原文的log内容
+10:04:55  	  	----- PGP Desktop started -----
+10:04:55  	  	PGP Desktop 10.0.2 (Build 13) (13)
+10:04:55  	  	Today's date is 2014年4月15日
+10:05:25 Email	 Error	Could not preload local keys: can't open file (-11996)
+10:05:25 Email	 Error	Could not init tray structure: can't open file (-11996)
+10:05:25  	  	----- PGP Desktop stopped -----
+10:05:25 Email	 Error	Could not load local policy data: bad parameters (-12000)
+10:05:25 Email	 Error	Could not load local policy data: bad parameters (-12000)
+10:05:29  	  	----- PGP Desktop started -----
+
+****************************************************************************
+原因：更改了“我的文档”的默认路径，导致PGP启动的时候无法定位密钥文件。
+
+****************************************************************************
+解决方法1：恢复“我的文档”为默认路径：
+	桌面，我的文档 点右键，属性，目标文件夹位置 点 “还原默认值”，之后重新运行PGPtray.exe。
+解决方法2：修改PGP配置文件。先运行一次PGPtray.exe。然后修改PGPprefs.xml。
+	文件位置：C:\Documents and Settings\%user%\Application Data\PGP Corporation\PGP\PGPprefs.xml
+	使用UltraEdit打开PGPprefs.xml（notepad打开会有换行问题），找到
+    <key>privateKeyringFile</key>
+    <string></string>
+    <key>publicKeyringFile</key>
+    <string></string>
+	修改为相应的密钥文件，如
+    <key>privateKeyringFile</key>
+    <string>%mydocpath%\PGP\secring.skr</string>
+    <key>publicKeyringFile</key>
+    <string>%mydocpath%\PGP\pubring.pkr</string>
+	其中secring.skr和pubring.pkr是相应的私钥和公钥文件，第一次安装时为两个空文件，PGP向导提示创建新的密钥是会自动生成相应内容。
+	
+

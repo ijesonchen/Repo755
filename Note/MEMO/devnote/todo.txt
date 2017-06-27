@@ -1,0 +1,37 @@
+*************DONE*************
+wxVcprojAuiEditor
++)WXUSINGDLL选项，
++)list控件，显示宏定义（路径硬编码）
+debug	release
+宏定义	宏定义
+
+
+wxVcprojAuiEditor
+自动生成dll配置：
+复制debug/release为debug dll/relase dll，并配置为使用dll(WXUSINGDLL，vc_dll)
+
+dumpbin生成后事件
+
+
+wxConfig存储复杂数据？多层级结构
+用来实现wxVcprojAuiEditor的复杂功能
+
+
+
+linux
+
+
+多项式
+
+sqlite
+
+*************TODO*************
+最大子列和：n3,n2,nlgn,n
+求中位数
+git
+
+glog
+
+sqdailymoney
+
+

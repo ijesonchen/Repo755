@@ -1,0 +1,244 @@
+#include <stdio.h>
+
+const int MAX_NODE = 50;
+char bMidOrder[MAX_NODE] = {0};
+char szPreOrder[MAX_NODE] = {0};
+char szMidOrder[MAX_NODE] = {0};
+int nNode = 0;
+// char szPreOrder[MAX_NODE] = "ABDFGHIEC";
+// char szMidOrder[MAX_NODE] = "FDHGIBEAC";
+// int nNode = 9;
+
+void SetFlag(char data)
+{
+	for (int ii = 0; ii < nNode; ++ii)
+	{
+		if (szMidOrder[ii] == data)
+		{
+			bMidOrder[ii] = 1;
+			return;
+		}
+	}
+
+	printf("error!");
+	return;
+}
+
+int GetIndex(char data)
+{
+	for (int ii = 0; ii < nNode; ++ii)
+	{
+		if (szMidOrder[ii] == data)
+		{
+			return ii;
+		}
+	}
+
+	printf("error!");
+	return -1;
+}
+
+bool IsLeft(char chPre, char chNow)
+{
+	int nPre = GetIndex(chPre);
+	int nNow = GetIndex(chNow);
+	if (nNow < nPre)
+	{
+		return true;
+	}
+	if (nNow > nPre)
+	{
+		return false;
+	}
+
+	printf("error.");
+	return false;
+}
+
+char GetLeftFlag(char chNow)
+{
+	int nNow = GetIndex(chNow);
+	for (int ii = nNow - 1; ii >= 0; --ii)
+	{
+		if (bMidOrder[ii])
+		{
+			return szMidOrder[ii];
+		}
+	}
+
+	printf("error!");
+	return -1;
+}
+
+struct Node
+{
+	char data;
+	Node* left;
+	Node* right;
+
+	Node(): data(0), left(0), right(0){};
+
+	~Node()
+	{
+		if (left) {	delete left; left = 0;}
+		if (right) { delete right; right = 0;}
+	}
+};
+
+Node* GetNode(Node* pNode, char data)
+{
+	Node* pRet = 0;
+	if (pNode && 
+		pNode->data == data)
+	{
+		return pNode;
+	}
+	if (pNode->left &&
+		(pRet = GetNode(pNode->left, data)))
+	{
+		return pRet;
+	}
+	if (pNode->right &&
+		(pRet = GetNode(pNode->right, data)))
+	{
+		return pRet;
+	}
+
+	// should not get there
+	return pRet;
+}
+
+void PreOrder(Node* pNode)
+{
+	if (pNode)
+	{
+		printf("%c ", pNode->data);
+	}
+	if (pNode->left)
+	{
+		PreOrder(pNode->left);
+	}
+	if (pNode->right)
+	{
+		PreOrder(pNode->right);
+	}
+}
+
+void MidOrder(Node* pNode)
+{
+	if (pNode->left)
+	{
+		MidOrder(pNode->left);
+	}
+	if (pNode)
+	{
+		printf("%c ", pNode->data);
+	}
+	if (pNode->right)
+	{
+		MidOrder(pNode->right);
+	}
+}
+
+#include <queue>
+void BuildTree(Node*& pNode, int nLevel)
+{
+	if (pNode)
+	{
+		return;
+	}
+	pNode = new Node();
+	pNode->data = 'a';
+
+	std::deque<Node*> dqNodes1;
+	std::deque<Node*> dqNodes2;
+	dqNodes1.push_back(pNode);
+	int idx = 1;
+	for (int ii = 1; ii < nLevel; ++ii)
+	{
+		while (dqNodes1.size())
+		{
+			Node* p = dqNodes1.front();
+			dqNodes1.pop_front();
+			p->left = new Node();
+			p->left->data = 'a' + idx;
+			dqNodes2.push_back(p->left);
+			++idx;
+			p->right = new Node();
+			p->right->data = 'a' + idx;
+			dqNodes2.push_back(p->right);
+			++idx;
+		}
+		dqNodes1 = dqNodes2;
+		dqNodes2.clear();
+	}
+}
+
+int TreeHight(Node* pTree, int nHight)
+{
+	if (!pTree)
+	{
+		return nHight - 1;
+	}
+	if (pTree->left || pTree->right)
+	{
+		nHight++;
+		int n1 = TreeHight(pTree->left, nHight);
+		int n2 = TreeHight(pTree->right, nHight);
+		return n1 > n2 ? n1 : n2;
+	}
+	return nHight;
+}
+
+int main(void)
+{
+	// read data
+	scanf("%d\n", &nNode);
+	for (int ii = 0; ii < nNode; ++ii)
+	{
+		scanf("%c", &szPreOrder[ii]);
+	}
+	getchar();
+	for (int ii = 0; ii < nNode; ++ii)
+	{
+		scanf("%c", &szMidOrder[ii]);
+	}
+	//
+
+	Node* pTree = 0;
+	
+	if (nNode)
+	{
+		pTree = new Node();
+		char chPre = szPreOrder[0];
+		SetFlag(chPre);
+		pTree->data = chPre;
+
+		Node* pNode = pTree;
+
+		for (int ii = 1; ii < nNode; ++ii)
+		{
+			char chNow = szPreOrder[ii];
+			SetFlag(chNow);
+			if (IsLeft(chPre, chNow))
+			{
+				pNode->left = new Node();
+				pNode = pNode->left;
+				pNode->data = chNow;
+			}
+			else
+			{
+				char chParent = GetLeftFlag(chNow);
+				pNode = GetNode(pTree, chParent);
+				pNode->right = new Node();
+				pNode = pNode->right;
+				pNode->data = chNow;
+			}
+			chPre = chNow;
+		}
+	}
+	printf("%d", TreeHight(pTree, 1));
+
+	return 0;
+	
+}

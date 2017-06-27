@@ -1,0 +1,279 @@
+
+
+======================================================================
+20131225 CWinThread, AfxCreateThread, _beginthread, CreateThread 区别1
+======================================================================
+
+//////////////////////////////////////////////////////////////////////////
+1. 添加C++类而非MFC类，继承CWinThread。优点：直接delete，自动CloseHandle 缺点：调试无法看到线程函数名
+	CWinThread::m_pThreadParams 是传递给线程函数ThreadFunc的参数。。
+2. 使用CreateThread。 优点：调试可以看到线程函数名，简单。 缺点：需要CloseHandle.
+3. CWinThread, AfxBeginThread, _beginthread都是对CreateThread的封装
+
+//////////////////////////////////////////////////////////////////////////
+	CWinThread相关：
+调用者线程（一般是主线程）调用CWinThread::CreateThread创建新线程
+	即CWinThread::CreateThread运行在调用者线程上
+AFX_THREAD_STARTUP运行在新建线程
+
+结构：
+1. _AFX_THREAD_STARTUP
+	pThread: CWinThread对象
+	hEvent1: _AFX_THREAD_STARTUP通知CWinThread::CreateThread
+	hEvent2: CWinThread::CreateThread通知_AFX_THREAD_STARTUP
+2. _ptiddata
+	_initaddr: _AfxThreadEntry入口地址
+	_initarg: _AFX_THREAD_STARTUP参数地址
+
+流程：
+1. CWinThread线程函数保存在m_pfnThreadProc中
+2. CWinThread::CreateThread创建同步事件并调用_beginthread，
+	函数入口_AfxThreadEntry，参数_AFX_THREAD_STARTUP包含CWinThread实例
+3. _beginthread调用CreateThread API
+	线程入口_threadstartex，参数_ptiddata包含入口_AFX_THREAD_STARTUP
+	因此，调试时线程名显示为_threadstartex
+4. _AfxThreadEntry带有参数_AFX_THREAD_STARTUP
+		等到同步事件后，调用pThread->m_pfnThreadProc
+
+======================================================================
+20130823 编译时输出提示信息
+======================================================================
+// to generate warning message
+#define __STR2__(x) #x
+#define __STR1__(x) __STR2__(x)
+#define ___SHOWMSG __FILE__ "("__STR1__(__LINE__)") : +++++++++++ : "
+
+#pragma message(___SHOWMSG" message to be output")
+
+======================================================================
+20130821 enum内部成员名不能重复，相当于常量
+======================================================================
+	enum enumA
+	{
+		e1,
+		e2,
+	};
+
+	enum enumB
+	{
+		e1,
+		e3,
+	};
+会提示重复定义：
+  error C2365: 'e1' : redefinition; previous definition was 'enumerator'
+
+======================================================================
+20130821 CString和string互转
+======================================================================
+	string* stra = new string;
+	wstring* strw = new wstring;
+	*stra = "string ansi";
+	*strw = L"string wide";
+
+	CString strc1;
+	CString strc2;
+
+	// string转换为CString
+	strc1 = (*stra).c_str();
+	strc2 = (*strw).c_str();
+
+	delete stra;
+	delete strw;
+
+	stra = new string;
+	strw = new wstring;
+
+	// CString转换为string
+	*stra = ((CStringA)strc1).GetString();
+	*strw = strc2.GetBuffer(0);
+
+======================================================================
+20130821 win32程序获取可执行程序全路径及可执行程序名
+======================================================================
+	// 程序全路径 argv[0]
+	wprintf(L"%s", argv[0]);
+
+	// 程序名
+	wstring wstr(argv[0]);
+	wstr = wstr.substr(1 + wstr.find_last_of('\\'));
+
+
+======================================================================
+20130821 NOTE：
+======================================================================
+使用SetConsoleCtrlHandler可决定程序响应控制键行为，类似消息队列，但只有控制信息：
+CTRL_C_EVENT
+CTRL_BREAK_EVENT
+CTRL_CLOSE_EVENT
+CTRL_LOGOFF_EVENT
+CTRL_SHUTDOWN_EVENT
+
+======================================================================
+20130821 NOTE：
+======================================================================
+SOCKET相关：
+  sockopt函数
+  可以考虑禁用socket接收缓存以减少内存赋值，降低CPU消耗。
+  但不建议关闭发送缓存（为什么？？）
+  设置linger以决定socket关闭行为:立即强制关闭abortive，延迟关闭，优雅关闭graceful
+
+======================================================================
+20130821 NOTE：
+======================================================================
+对于大并发但小数据量服务器端程序，windows可采用IOCP模型，Linux采用epoll模型
+个人理解：关于IOCP模型
+  IOCP端口类似一个管道，用于搜集IO事件，FIFO模式
+  IOCP模型时将所有SOCKET事件放入一个IOCP端口，包括connect send recv等。
+  多个工作线程等待IOCP端口事件，并处理，LIFO模式。
+    (设置CPU亲和性有无必要？如何设置比较好？仅设置最后N(N=CPU核心数)个线程？)
+  重复利用多个线程进行socket并行处理以提高系统效能。
+  lpCompletionKey用于线程传递参数用，一般作为自定义结构体指针
+  可以考虑增加timer以确定恶意链接(仅连接而不收发消息)
+
+======================================================================
+20130821 NOTE：
+======================================================================
+最内层函数打断点，查看调用堆栈(call stack)可以查看函数调用关系
+
+======================================================================
+20130821 NOTE：
+======================================================================
+for/while循环条件判断处不宜使用函数调用
+否则每次循环都会重新计算，降低效率（默认编译器不会自动优化）
+参考代码 20130821 获取代码的运行时间（时钟周期数）
+
+======================================================================
+20130821 NOTE：
+======================================================================
+printf输出整形时，long使用%ld，long long使用%lld
+
+======================================================================
+20130821 获取代码的运行时间（时钟周期数）
+======================================================================
+	// 获取代码运行时间（时钟周期数）
+	// PURPOSE: Acquire time cost of a very small piece of code
+	// NOTE: QueryPerformanceCounter will also cost CPU cycles 
+	// (about 500 cycles on E8200)
+	// SetThreadAffinityMask， QueryPerformanceCounter
+
+	// set main thread run on only one process to avoid counter difference between processors
+	SetThreadAffinityMask(theApp.m_hThread, 1);
+
+	LARGE_INTEGER nFreq;
+	LARGE_INTEGER nCounter1;
+	LARGE_INTEGER nCounter2;
+	LARGE_INTEGER nCounter3;
+	nFreq.QuadPart = 0;
+	nCounter1.QuadPart = 0;
+	nCounter2.QuadPart = 0;
+	nCounter3.QuadPart = 0;
+	QueryPerformanceFrequency(&nFreq);
+	QueryPerformanceCounter(&nCounter1);
+	const wchar_t* pw = (wchar_t*)argv[0];
+	unsigned nCount = wcslen(pw);
+	unsigned nOffset = 0;
+	for (unsigned ii = 0; ii < nCount; ii++)
+	{
+		if (pw[ii] == '\\')
+		{
+			nOffset = ii;
+		}
+	} // for
+
+	QueryPerformanceCounter(&nCounter2);
+	wcslen(argv[0]);
+	QueryPerformanceCounter(&nCounter3);
+
+	LARGE_INTEGER nCounter;
+	nCounter.QuadPart = nCounter2.QuadPart - nCounter1.QuadPart;
+
+	printf("%lld, %lld", nCounter.QuadPart, nCounter3.QuadPart - nCounter2.QuadPart);
+
+
+======================================================================
+20130411 CString通过网络发送时获取内容
+======================================================================
+
+	char pbuf[1000];
+	CString str1 = L"test";
+	int n1 = (str1.GetLength() + 1) * sizeof(TCHAR);
+	memcpy(pbuf, (LPCTSTR)str1, n1);
+	CStringA str2 = (CStringA)str1;
+	int n2 = (str2.GetLength() + 1) * sizeof(TCHAR);
+	memcpy(pbuf, (LPCSTR)str2, n2);
+	void* p1 = (void*)(LPCTSTR)str1;
+	void* p2 = (void*)(LPCSTR)str2;
+
+======================================================================
+结构体写入
+======================================================================
+	// 结构体直接写入文件时和在内存中一样存在对齐问题。
+	// 考虑跨平台问题，文件读取结构体一般按成员赋值，而非直接内存拷贝。
+	CFile file(L"d:\\0410\\audio\\test.bin", CFile::modeReadWrite);	// shoule be create if not exit
+	struct _tmpstru 
+	{
+		int a;
+		short b;
+		char c;
+		short d;
+		int e;
+	}t;
+	int n = sizeof(_tmpstru);	// 16
+	t.a = 0x11223344;
+	t.b = 0x5566;
+	t.c = 0x77;
+	t.d = 0x8899;
+	t.e = 0xaabbddee;
+	// memory:
+	// 0x 44332211|665577xx|9988xxxx|EEDDBBAA
+	// file is the same as memory
+	file.Write(&t, sizeof(_tmpstru));
+
+
+======================================================================
+20130401 hzmv-wav 音频流/媒体流结构体
+======================================================================
+
+StreamFormat
+
+typedef struct _AMMediaType
+    {
+    GUID majortype;	CLSID_WDM	{73647561-0000-0010-8000-00aa00389b71}
+    GUID subtype;	00000001-0000-0010-8000-00aa00389b71
+    BOOL bFixedSizeSamples;	1
+    BOOL bTemporalCompression;	0
+    ULONG lSampleSize;		4
+    GUID formattype;		{05589F81-C356-11CE-BF01-00AA0055595A}
+    IUnknown *pUnk;		0
+    ULONG cbFormat;		0x12
+    BYTE *pbFormat;		->01
+    } 	AM_MEDIA_TYPE;
+
+
+
+16bit/8k mono
+
+typedef struct _AMMediaType
+    {
+    GUID majortype;	CLSID_WDM	{73647561-0000-0010-8000-00aa00389b71}	MEDIATYPE_Audio	UUIDS.H
+    GUID subtype;	00000001-0000-0010-8000-00aa00389b71	MEDIASUBTYPE_PCM
+    BOOL bFixedSizeSamples;	1
+    BOOL bTemporalCompression;	0
+    ULONG lSampleSize;		2	
+    GUID formattype;		{05589F81-C356-11CE-BF01-00AA0055595A}	FORMAT_WaveFormatEx
+    IUnknown *pUnk;		0
+    ULONG cbFormat;		0x18
+    BYTE *pbFormat;		->01
+    } 	AM_MEDIA_TYPE;
+
+typedef struct tWAVEFORMATEX
+{
+    WORD        wFormatTag;         1	/* format type */	
+    WORD        nChannels;          1	/* number of channels (i.e. mono, stereo...) */	
+    DWORD       nSamplesPerSec;     8000	/* sample rate */	
+    DWORD       nAvgBytesPerSec;    16000	/* for buffer estimation */	
+    WORD        nBlockAlign;        2	/* block size of data */
+    WORD        wBitsPerSample;     16	/* number of bits per sample of mono data */
+    WORD        cbSize;             0	/* the count in bytes of the size of */
+                                    /* extra information (after cbSize) */
+} WAVEFORMATEX

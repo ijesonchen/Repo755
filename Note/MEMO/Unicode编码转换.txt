@@ -1,0 +1,45 @@
+
+Release:
+函数名		调用数	已用非独占时间百分比
+Unicode2Ansi	1	38.00 (主要集中在setlocale上）
+  setlocale	3	37.07 (反复设置时，仅首次调用耗时较长）
+  wcstombs	2	0.80
+EncodeU8	1	19.18 （wstring_convert首次构造耗时较长)
+EncodeUtf8MS	1	6.28
+DecodeU8	1	6.26
+DecodeUtf8MS	1	5.64
+Ansi2Unicode	1	3.41
+  setlocale	3	1.82
+  mbstowcs	2	1.46
+EncodeAnsi	1	1.22
+DecodeAnsi	1	0.96
+DecodeUtf82	1	0.80
+EncodeUtf82	1	0.51
+
+Debug：
+函数名		调用数	已用非独占时间百分比
+EncodeU8	1	16.82
+EncodeUtf8MS	1	12.85
+Unicode2Ansi	1	11.80 (主要集中在setlocale上）
+DecodeU8	1	9.47
+DecodeUtf8MS	1	9.12
+DecodeUtf82	1	1.63
+Ansi2Unicode	1	1.37
+EncodeAnsi	1	0.72
+DecodeAnsi	1	0.64
+EncodeUtf82	1	0.47
+
+备注：
+EncodeU8/DecodeU8 使用C++11 wstring_convert，类首次构造耗时较长（为再次构造的2倍）
+EncodeUtf82/DecodeUtf82 直接根据UCS2-UTF8编码格式进行转换
+EncodeAnsi/DecodeAnsi 使用CStringA - CString间转换实现
+Unicode2Ansi/Ansi2Unicode 使用c函数实现，但是首次setlocale时耗时较长（为再次调用的10倍以上）
+
+结论：
+utf-8编码实现，使用wstring_convert类耗时是直接按字节编解码方式的20倍左右。windows API效率和直接编解码相近(编码慢2-3倍，解码快2-3倍）
+ansi编解码，不使用setlocale的情况下，使用C函数比MFC转换略快（约2-3倍性能差距）。
+使用直接函数调用比使用C++类快(模板类尤其慢）。
+
+
+
+

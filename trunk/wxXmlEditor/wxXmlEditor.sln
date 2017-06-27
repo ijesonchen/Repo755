@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wxXmlExplorer", "wxXmlExplorer\wxXmlExplorer.vcproj", "{4FAAE098-AD3D-46E5-A759-4ED4C46CBC75}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wxVcprojEditor", "wxVcprojEditor\wxVcprojEditor.vcproj", "{0010F263-F902-48FD-BCB0-F38752B81DD0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OldProject", "OldProject", "{4F703BCA-2F30-4986-A74D-096D5C0853F4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wxVcprojAuiEditor", "wxVcprojAuiEditor\wxVcprojAuiEditor.vcproj", "{B76EAB6D-56B0-41DF-AC43-9A6E44824CDC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug-DLL|Win32 = Debug-DLL|Win32
+		Release|Win32 = Release|Win32
+		Release-DLL|Win32 = Release-DLL|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4FAAE098-AD3D-46E5-A759-4ED4C46CBC75}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4FAAE098-AD3D-46E5-A759-4ED4C46CBC75}.Debug|Win32.Build.0 = Debug|Win32
+		{4FAAE098-AD3D-46E5-A759-4ED4C46CBC75}.Debug-DLL|Win32.ActiveCfg = Debug|Win32
+		{4FAAE098-AD3D-46E5-A759-4ED4C46CBC75}.Debug-DLL|Win32.Build.0 = Debug|Win32
+		{4FAAE098-AD3D-46E5-A759-4ED4C46CBC75}.Release|Win32.ActiveCfg = Release|Win32
+		{4FAAE098-AD3D-46E5-A759-4ED4C46CBC75}.Release|Win32.Build.0 = Release|Win32
+		{4FAAE098-AD3D-46E5-A759-4ED4C46CBC75}.Release-DLL|Win32.ActiveCfg = Release|Win32
+		{4FAAE098-AD3D-46E5-A759-4ED4C46CBC75}.Release-DLL|Win32.Build.0 = Release|Win32
+		{0010F263-F902-48FD-BCB0-F38752B81DD0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0010F263-F902-48FD-BCB0-F38752B81DD0}.Debug|Win32.Build.0 = Debug|Win32
+		{0010F263-F902-48FD-BCB0-F38752B81DD0}.Debug-DLL|Win32.ActiveCfg = Debug|Win32
+		{0010F263-F902-48FD-BCB0-F38752B81DD0}.Debug-DLL|Win32.Build.0 = Debug|Win32
+		{0010F263-F902-48FD-BCB0-F38752B81DD0}.Release|Win32.ActiveCfg = Release|Win32
+		{0010F263-F902-48FD-BCB0-F38752B81DD0}.Release|Win32.Build.0 = Release|Win32
+		{0010F263-F902-48FD-BCB0-F38752B81DD0}.Release-DLL|Win32.ActiveCfg = Release|Win32
+		{0010F263-F902-48FD-BCB0-F38752B81DD0}.Release-DLL|Win32.Build.0 = Release|Win32
+		{B76EAB6D-56B0-41DF-AC43-9A6E44824CDC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B76EAB6D-56B0-41DF-AC43-9A6E44824CDC}.Debug|Win32.Build.0 = Debug|Win32
+		{B76EAB6D-56B0-41DF-AC43-9A6E44824CDC}.Debug-DLL|Win32.ActiveCfg = Debug-DLL|Win32
+		{B76EAB6D-56B0-41DF-AC43-9A6E44824CDC}.Debug-DLL|Win32.Build.0 = Debug-DLL|Win32
+		{B76EAB6D-56B0-41DF-AC43-9A6E44824CDC}.Release|Win32.ActiveCfg = Release|Win32
+		{B76EAB6D-56B0-41DF-AC43-9A6E44824CDC}.Release|Win32.Build.0 = Release|Win32
+		{B76EAB6D-56B0-41DF-AC43-9A6E44824CDC}.Release-DLL|Win32.ActiveCfg = Release-DLL|Win32
+		{B76EAB6D-56B0-41DF-AC43-9A6E44824CDC}.Release-DLL|Win32.Build.0 = Release-DLL|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4FAAE098-AD3D-46E5-A759-4ED4C46CBC75} = {4F703BCA-2F30-4986-A74D-096D5C0853F4}
+		{0010F263-F902-48FD-BCB0-F38752B81DD0} = {4F703BCA-2F30-4986-A74D-096D5C0853F4}
+	EndGlobalSection
+EndGlobal

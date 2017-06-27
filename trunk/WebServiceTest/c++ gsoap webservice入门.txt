@@ -1,0 +1,58 @@
+参考：http://blog.csdn.net/dragoo1/article/details/8594189
+
+
+c++ gsoap webservice入门（一）
+分类： c++ 网络编程 c# 2013-02-20 13:55 1854人阅读 评论(0) 收藏 举报
+1.vs2008,文件，新建，网站，ASP.NET Web 服务，里面有个HelloWorld的方法，生成解决方案后放到iis上
+
+2.c++调用gsoap，执行命令
+
+wsdl2h -o test.h http://localhost/oa3/Service.asmx?wsdl
+
+soapcpp2 -C test.h -I D:\software\gsoap_2.8.14\gsoap-2.8\gsoap\import
+生成Service1Soap.nsmap，soapC.cpp，soapClient.cpp，soapH.h，soapStub.h
+
+连同gSoap工程根目录下的stdsoap2.h，stdsoap2.cpp，总共七个文件添加到客户端project中
+
+3.客户端的main.cpp内容为
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+#include <iostream>  
+using namespace std;  
+#include "soapH.h"  
+#include "ServiceSoap.nsmap"  
+  
+int main()  
+{  
+    const char* server="http://localhost/oa3/Service.asmx";   //webservice地址  
+    struct soap hello_soap;    //soap对象  
+    /*struct */_tempuri__HelloWorld helloWorlld;    //webservice对象  
+    /*struct */_tempuri__HelloWorldResponse helloWorldResponse;    //响应对象  
+    soap_init(&hello_soap);  
+    int result=-1;  
+    //调用接口  
+    result = soap_call___tempuri__HelloWorld(&hello_soap, server, "", &helloWorlld, &helloWorldResponse);  
+    if(hello_soap.error){  
+        //在stderr流中打印soap的错误信息  
+        soap_print_fault(&hello_soap,stderr);  
+        result = hello_soap.error;  
+    }  
+    soap_end(&hello_soap);    // 清空已经并行化的数据  
+    soap_done(&hello_soap);   // 与gSOAP 环境相分离,关闭连接  
+    if (result != 0){  
+        printf("soap error ,errcode = %d ", result);  
+    }else{  
+        //正确返回，打印返回值  
+        printf("%s",helloWorldResponse.HelloWorldResult);  
+    }  
+    return 0;  
+}  
+至此，调用成功
+参考：
+
+http://hi.baidu.com/ueuvtoiitabgkwd/item/7c61a166f90c7e94c4d24914
+
+http://blog.csdn.net/startexcel/article/details/8208135
+
+http://hi.baidu.com/sunflower/item/4fa00b19a14c7f426826bb6a
+版权声明：本文为博主原创文章，未经博主允许不得转载。

@@ -1,0 +1,10 @@
+9
+PUT msg1 5
+PUT msg2 4
+GET
+PUT msg3 2
+PUT msg4 4
+GET
+GET
+GET
+GET

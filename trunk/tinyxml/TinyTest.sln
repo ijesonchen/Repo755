@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyTest", "TinyTest\TinyTest.vcproj", "{750FBB2A-5426-4586-B799-8228DA110DD8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tinyxml2Test", "Tinyxml2Test\Tinyxml2Test.vcproj", "{49C2633C-AA9E-4091-95C3-5C145DABEA9F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{750FBB2A-5426-4586-B799-8228DA110DD8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{750FBB2A-5426-4586-B799-8228DA110DD8}.Debug|Win32.Build.0 = Debug|Win32
+		{750FBB2A-5426-4586-B799-8228DA110DD8}.Release|Win32.ActiveCfg = Release|Win32
+		{750FBB2A-5426-4586-B799-8228DA110DD8}.Release|Win32.Build.0 = Release|Win32
+		{49C2633C-AA9E-4091-95C3-5C145DABEA9F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{49C2633C-AA9E-4091-95C3-5C145DABEA9F}.Debug|Win32.Build.0 = Debug|Win32
+		{49C2633C-AA9E-4091-95C3-5C145DABEA9F}.Release|Win32.ActiveCfg = Release|Win32
+		{49C2633C-AA9E-4091-95C3-5C145DABEA9F}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

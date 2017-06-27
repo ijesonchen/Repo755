@@ -1,0 +1,844 @@
+//////////////////////////////////////////////////////////////////////////
+// 我的程序使用stdio，效率和答案相同
+
+#include <stdio.h>
+//////////////////////////////////////////////////////////////////////////
+// test passed.
+
+int nTotalStudent = 0;
+int nTotalGroup = 0;
+
+const int MAX_STUDENT = 30001;
+
+int pData[MAX_STUDENT];
+
+int GetHeaderID(int id)
+{
+	int n = id;
+
+	while (pData[n] > 0)
+	{
+		n = pData[n];
+	}
+	return n;
+}
+
+int GetMax(void)
+{
+	int nMemberCount = 0;
+	for (int ii = 1; ii <= nTotalStudent; ii++)
+	{
+		if (nMemberCount >= pData[ii])
+		{
+			nMemberCount = pData[ii];
+		}
+	}
+
+	return -nMemberCount;
+}
+
+
+int main(void)
+{
+	scanf("%d %d", &nTotalStudent, &nTotalGroup);
+
+	// init array
+	for (int ii = 1; ii <= nTotalStudent; ++ii)
+	{
+		pData[ii] = 0;
+	}
+
+	// read one group
+	for (int ig = 0; ig < nTotalGroup; ++ig)
+	{
+		// read group member count & first member
+		int cnt = 0;
+		int nheader = 0;
+		int id = 0;
+
+		scanf("%d %d", &cnt, &id);
+		const int nGroupCount = cnt;
+
+		if (pData[id] == 0)
+		{
+			// new group
+			nheader = id;
+			pData[id] = -nGroupCount;
+		}
+		else if (pData[id] < 0)
+		{
+			// already group header
+			nheader = id;
+			pData[id] = pData[id] - nGroupCount + 1;
+		}
+		else
+		{
+			// other group member
+			nheader = GetHeaderID(id);
+			pData[nheader] = pData[nheader] - nGroupCount + 1;
+			pData[id] = nheader;
+		}
+
+		// read rest member
+		for (int im = 1; im < nGroupCount; ++im)
+		{
+			scanf("%d", &id);
+			if (pData[id] == 0)
+			{
+				// new stand-alone member
+				pData[id] = nheader;
+			}
+			else if (pData[id] < 0)
+			{
+				// header member
+				if (id == nheader)
+				{
+					++pData[id];
+				}
+				else
+				{
+					pData[nheader] = pData[nheader] + pData[id] + 1;
+					pData[id] = nheader;
+				}
+			}
+			else
+			{
+				// non-header group member
+				int nAnotherHeader = GetHeaderID(id);
+
+				if (nAnotherHeader == nheader)
+				{
+					// same group
+					++pData[nheader];
+				}
+				else
+				{
+					pData[nheader] = pData[nheader] + pData[nAnotherHeader] + 1;
+					pData[nAnotherHeader] = nheader;
+				}
+			}
+		}
+	}
+
+	printf("%d", GetMax());
+
+
+	return 0;
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////
+// 答案
+#include <stdio.h>
+
+#define MAXN 30000
+
+typedef int DisjSet[MAXN+1];
+typedef int SetType;
+typedef int ElementType;
+
+void Initialization( DisjSet S , int N)
+{ /* 集合初始化 */
+	int i;
+	for ( i = N; i > 0; i -- )
+		S[i] = -1;
+}
+
+int SetUnion( DisjSet S, SetType Root1, SetType Root2 )
+{    /* 集合求并，保证小集合并入大集合 */
+	/* 要求Root1和Root2必须是集合的根 */
+	if ( S[Root2] < S[Root1] ) { /* 如果集合2比较大 */
+		S[Root2] += S[Root1];     /* 集合1并入集合2  */
+		S[Root1] = Root2;
+		return Root2;
+	}
+	else {                         /* 如果集合1比较大 */
+		S[Root1] += S[Root2];     /* 集合2并入集合1  */
+		S[Root2] = Root1;
+		return Root1;
+	}
+}
+
+SetType Find( ElementType X, DisjSet S )
+{ /* 集合查询 */
+	if ( S[X] <= 0 ) /* 找到集合的根 */
+		return X;
+	else
+		return S[X] = Find( S[X], S ); /* 路径压缩 */
+}
+
+void Input_connection( DisjSet S )
+{ /* 将俱乐部朋友关系加入集合 */
+	ElementType u, v;
+	SetType Root1, Root2;
+	int m, i;
+
+	scanf("%d %d", &m, &u);
+	Root1 = Find(u, S); /* 将第1人加入俱乐部 */
+	for (i=1; i<m; i++) {
+		scanf("%d", &v);        
+		Root2 = Find(v, S); 
+		if ( Root1 != Root2 )  /* 如果该学生与第1人不属于同一朋友圈 */
+			Root1 = SetUnion( S, Root1, Root2 );  /* 合并他们的朋友圈 */
+	}
+}
+
+void Check_friends( DisjSet S , int N )
+{ /* 找出最大朋友圈 */
+	int i, max = 1;
+
+	for (i=1; i<=N; i++) { 
+		if ( (S[i]<0) && (max < -S[i]) ) /* 检查根结点 */
+			max = -S[i];
+	}
+	printf("%d\n", max);
+}
+
+int main()
+{
+	DisjSet S;
+	int N, M, i;
+
+	scanf("%d %d\n", &N, &M);
+	Initialization( S, N );
+	for (i=0; i<M; i++)
+		Input_connection( S );
+	Check_friends( S, N );
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////
+// 测试通过，非函数版
+// 使用iostream比使用stdio.h慢（前者0.06s，后者0.03s）
+
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+//////////////////////////////////////////////////////////////////////////
+// test passed.
+
+void myexit(int n)
+{
+	exit(n);
+}
+
+int nTotalStudent = 0;
+int nTotalGroup = 0;
+
+const int MAX_STUDENT = 30001;
+
+struct Relate 
+{
+	int id;
+	int header;
+};
+
+
+Relate pData[MAX_STUDENT];
+
+int GetHeaderID(int id)
+{
+	Relate* pMember = pData + id;
+
+	while (pMember->header > 0)
+	{
+		pMember = pData + pMember->header;
+	}
+	return pMember->id;
+}
+
+int GetMax(void)
+{
+	int nMemberCount = 0;
+	for (int ii = 1; ii <= nTotalStudent; ii++)
+	{
+		Relate* pMember = pData + ii;
+		if (nMemberCount > pMember->header)
+		{
+			nMemberCount = pMember->header;
+		}
+	}
+
+	return -nMemberCount;
+}
+
+
+int main(void)
+{
+	cin >> nTotalStudent >> nTotalGroup;
+
+	// init array
+	for (int ii = 1; ii <= nTotalStudent; ++ii)
+	{
+		pData[ii].id = ii;
+		pData[ii].header=0;
+	}
+
+	// read one group
+	for (int ig = 0; ig < nTotalGroup; ++ig)
+	{
+		// read group member count
+		int cnt = 0;
+		cin >> cnt;
+		const int nGroupCount = cnt;
+
+		int nheader = 0;
+		int id = 0;
+		Relate* pMember = NULL;
+
+		// read first member;
+		cin >> id;
+		pMember = pData + id;
+
+		if (pMember->header == 0)
+		{
+			// new group
+			nheader = id;
+			pMember->header = -nGroupCount;
+		}
+		else if (pMember->header < 0)
+		{
+			// already group header
+			nheader = id;
+			pMember->header = pMember->header - nGroupCount + 1;
+		}
+		else
+		{
+			// other group member
+			nheader = GetHeaderID(id);
+			Relate* pHeader = pData + nheader;
+
+			pHeader->header = pHeader->header - nGroupCount + 1;
+			pMember->header = nheader;
+		}
+
+		// read rest member
+		for (int im = 1; im < nGroupCount; ++im)
+		{
+			cin >> id;
+			pMember = pData + id;
+
+			if (pMember->header == 0)
+			{
+				// new stand-alone member
+				pMember->header = nheader;
+			}
+			else if (pMember->header < 0)
+			{
+				// header member
+				if (pMember->id == nheader)
+				{
+					++pMember->header;
+				}
+				else
+				{
+					pData[nheader].header = pData[nheader].header + pMember->header + 1;
+					pMember->header = nheader;
+				}
+			}
+			else
+			{
+				// non-header group member
+				int nAnotherHeader = GetHeaderID(id);
+
+				if (nAnotherHeader == nheader)
+				{
+					// same group
+					++pData[nheader].header;
+				}
+				else
+				{
+					pData[nheader].header = pData[nheader].header + pData[nAnotherHeader].header + 1;
+					pData[nAnotherHeader].header = nheader;
+				}
+			}
+		}
+	}
+
+	cout << GetMax() << endl;
+
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+//////////////////////////////////////////////////////////////////////////
+// test passed.
+
+void myexit(int n)
+{
+	exit(n);
+}
+
+int nTotalStudent = 0;
+int nTotalGroup = 0;
+
+const int MAX_STUDENT = 30001;
+
+struct Relate 
+{
+	int id;
+
+	Relate() : id(0), header(0){};
+
+	bool Bad(void)
+	{
+		if (id == header || 
+			id <= 0 ||
+			id >= MAX_STUDENT ||
+			header <= -9000)
+		{
+			myexit(210);
+			return true;
+		}
+		return false;
+	}
+
+	bool NotHeader(void)
+	{
+		if (Bad() || header >= 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	void SetHeader(int headerid)
+	{
+		if (id == headerid)
+		{
+			myexit(201);
+		}
+		header = headerid;
+	}
+	int GetHeader(void)
+	{
+		return header;
+	}
+
+	int Add(int cnt)
+	{
+		if (NotHeader())
+		{
+			myexit(203);
+		}
+		if (cnt <= 0)
+		{
+			myexit(202);
+		}
+		header -= cnt;
+		Bad();
+		return -header;
+	}
+
+	int AddDup(int cnt)
+	{
+		if (NotHeader())
+		{
+			myexit(203);
+		}
+		if (cnt <= 0)
+		{
+			myexit(202);
+		}
+		header -= cnt;
+		++header;
+		Bad();
+		return -header;
+	}
+
+	int Count(void)
+	{
+		if (NotHeader())
+		{
+			myexit(204);
+		}
+		if (header <= -10000)
+		{
+			myexit(206);
+		}
+		return -header;
+	}
+	int Desc(void)
+	{
+		if (NotHeader())
+		{
+			myexit(205);
+		}
+		++header;
+		Bad();
+		return -header;
+	}
+protected:
+
+	int header;
+};
+
+
+Relate* const pData = new Relate[MAX_STUDENT];
+
+int GetHeaderID(int id)
+{
+	Relate* pMember = pData + id;
+	if (pMember->id != id)
+	{
+		myexit(101);
+	}
+	while (pMember->GetHeader() > 0)
+	{
+		if (pMember->GetHeader() >= MAX_STUDENT || pMember->id == pMember->GetHeader())
+		{
+			myexit(102);
+		}
+		pMember = pData + pMember->GetHeader();
+	}
+	if (pMember->GetHeader() == 0)
+	{
+		myexit(103);
+	}
+	return pMember->id;
+}
+
+int GetMax(void)
+{
+	int nMemberCount = 0;
+	for (int ii = 1; ii <= nTotalStudent; ii++)
+	{
+		Relate* pMember = pData + ii;
+		if ( pMember->GetHeader() < 0)
+		{
+			if (nMemberCount < pMember->Count())
+			{
+				nMemberCount = pMember->Count();
+			}
+		}
+	}
+
+	return nMemberCount;
+}
+
+
+int main(void)
+{
+	memset(pData, 0, sizeof(Relate) * MAX_STUDENT);
+	cin >> nTotalStudent >> nTotalGroup;
+	if (nTotalStudent >= MAX_STUDENT)
+	{
+		myexit(0);
+	}
+
+
+	// init array
+	for (int ii = 1; ii <= nTotalStudent; ++ii)
+	{
+		pData[ii].id = ii;
+		pData[ii].SetHeader(0);
+	}
+	// check id
+	for (int ii = 0; ii < nTotalStudent; ++ii)
+	{
+		Relate* p = pData + ii;
+		if (p->id != ii)
+		{
+			myexit(-1);
+		}
+	}
+
+	// read one group
+	for (int ig = 0; ig < nTotalGroup; ++ig)
+	{
+		// read group member count
+		int cnt = 0;
+		cin >> cnt;
+		const int nGroupCount = cnt;
+
+		int nheader = 0;
+		int id = 0;
+		Relate* pMember = NULL;
+
+		// read first member;
+		cin >> id;
+		pMember = pData + id;
+
+		if (pMember->GetHeader() == 0)
+		{
+			// new group
+			nheader = pMember->id;
+			pMember->SetHeader(-nGroupCount);
+		}
+		else if (pMember->GetHeader() < 0)
+		{
+			// already group header
+			nheader = pMember->id;
+			pMember->AddDup(nGroupCount);
+		}
+		else
+		{
+			// other group member
+			nheader = GetHeaderID(id);
+			Relate* pHeader = pData + nheader;
+			if (pHeader->NotHeader())
+			{
+				myexit(17);
+			}
+			pHeader->AddDup(nGroupCount);
+			pMember->SetHeader(nheader);
+		}
+
+		if (pData[nheader].NotHeader())
+		{
+			myexit(16);
+		}
+
+		// read rest member
+		for (int im = 1; im < nGroupCount; ++im)
+		{
+			cin >> id;
+			pMember = pData + id;
+
+			if (pMember->GetHeader() == 0)
+			{
+				// new stand-alone member
+				pMember->SetHeader(nheader);
+			}
+			else if (pMember->GetHeader() < 0)
+			{
+				// header member
+				if (pMember->NotHeader())
+				{
+					myexit(18);
+				}
+				if (pMember->id == nheader)
+				{
+					pMember->Desc();
+				}
+				else
+				{
+					int nOldCnt = pMember->Count();
+					pData[nheader].AddDup(nOldCnt);
+					pMember->SetHeader(nheader) ;
+				}
+			}
+			else
+			{
+				// non-header group member
+				int nAnotherHeader = GetHeaderID(id);
+				if (pData[nAnotherHeader].NotHeader())
+				{
+					myexit(20);
+				}
+				if (nAnotherHeader == nheader)
+				{
+					// same group
+					pData[nheader].Desc();
+				}
+				else
+				{
+					int nOldCnt = pData[nAnotherHeader].Count();
+					pData[nheader].AddDup(nOldCnt);
+					pData[nAnotherHeader].SetHeader(nheader)  ;
+				}
+			}
+			if (pData[nheader].NotHeader())
+			{
+				myexit(21);
+			}
+		}
+	}
+
+	cout << GetMax() << endl;
+
+
+	return 0;
+}
+
+
+
+
+
+
+////////////////////////////////////////////
+
+// 复杂测试数据出错，数量大于答案
+
+
+#include <iostream>
+using namespace std;
+#include <cstdlib>
+
+void myexit(int ncode)
+{
+	exit(ncode);
+}
+
+int nStudent = 0; // <= 30000
+int nClub = 0; // <= 1000
+
+struct Circle
+{
+	int id;
+	int nClub;
+};
+
+int FindHeaderIdx(Circle* pCircle, int nIdx)
+{
+	Circle* pMember = pCircle + nIdx;
+	while (pMember->nClub > 0)
+	{
+		if (pMember->nClub > nStudent)
+		{
+			myexit(-2);
+		}
+		if (pMember->nClub == pMember->id)
+		{
+			myexit(-5);
+		}
+		pMember = pCircle + pMember->nClub;
+	}
+	if (pMember->nClub == 0)
+	{
+		myexit(-1);
+	}
+	return pMember - pCircle;
+}
+
+int FindMaxCount(Circle* pCircle, int n)
+{
+	int nMaxCount = 0;
+	for (int ii = 1; ii < n; ++ii)
+	{
+		if (pCircle[ii].nClub < nMaxCount)
+		{
+			nMaxCount = pCircle[ii].nClub;
+		}
+	}
+	return -nMaxCount;
+}
+
+int main(void)
+{
+	std::cin >> nStudent >> nClub;
+
+	// init studentclub
+	Circle* pCircles = new Circle[nStudent + 1];
+	for (int ii = 0; ii <= nStudent; ++ii)
+	{
+		pCircles[ii].id = ii;
+		pCircles[ii].nClub = 0;
+	}
+
+	for (int ii = 0; ii < nClub; ++ii)
+	{
+//		cout <<"**"<<ii<<endl;
+		// read club count
+		int cnt = 0;
+		cin >> cnt;
+
+		int currentheader = 0;
+		int id = 0;
+		Circle* pMember = NULL;
+
+		// read first member
+		cin >> id;
+		pMember = pCircles + id;
+		if (pMember->nClub == 0)
+		{
+			// new circle
+			currentheader = id;
+			pMember->nClub = -cnt;
+		}
+		else
+		{
+			currentheader = FindHeaderIdx(pCircles, id);
+			pCircles[currentheader].nClub -= cnt - 1;
+			if (pCircles->nClub == currentheader)
+			{
+				myexit(-8);
+			}
+			pMember->nClub = currentheader;
+		}
+
+		// read rest member
+		for (int jj = 1; jj < cnt; ++jj)
+		{
+			cin >> id;
+			pMember = pCircles + id;
+			int temp = currentheader;
+			if (pMember->nClub != 0)
+			{
+				// already in club
+				Circle* pCurrentHeader = pCircles + currentheader;
+				// find old header
+				int nOldHeader = FindHeaderIdx(pCircles, id);
+
+				if (nOldHeader != currentheader)
+				{
+					Circle* pOldHeader = pCircles + nOldHeader;
+					// combine
+					if (pOldHeader->nClub >= 0 || pCurrentHeader->nClub >= 0)
+					{
+						myexit(-3);
+					}
+					pOldHeader->nClub += pCurrentHeader->nClub;
+					pCurrentHeader->nClub = nOldHeader;
+
+					currentheader = nOldHeader;
+				}
+				pCurrentHeader = pCircles + currentheader;
+				++pCurrentHeader->nClub;
+				if (pCurrentHeader->nClub >= -1)
+				{
+					myexit(-4);
+				}
+			}
+			if (pMember->id == currentheader)
+			{
+				++pMember->nClub;
+				if (pMember->nClub >= -1)
+				{
+					myexit(-11);
+				}
+			}
+			else
+			{
+				pMember->nClub = currentheader;
+			}
+		}
+	}
+
+	cout << FindMaxCount(pCircles, nStudent) << endl;
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+////////////////////////////////////////////

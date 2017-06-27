@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Framwork">
+      <UniqueIdentifier>{0674b40b-5f8e-4f21-b579-285a896be014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ch1">
+      <UniqueIdentifier>{5feb077d-82dc-4a58-be46-3200d052918f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pub">
+      <UniqueIdentifier>{8edc10e2-55fe-4136-bb8b-5502ea0a81cd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource.h">
+      <Filter>Framwork</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Framwork</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Framwork</Filter>
+    </ClInclude>
+    <ClInclude Include="Alg4Mfc.h">
+      <Filter>Framwork</Filter>
+    </ClInclude>
+    <ClInclude Include="ch1\ch1-1.h">
+      <Filter>ch1</Filter>
+    </ClInclude>
+    <ClInclude Include="ch1\ch1-2.h">
+      <Filter>ch1</Filter>
+    </ClInclude>
+    <ClInclude Include="ch1\ch1-3.h">
+      <Filter>ch1</Filter>
+    </ClInclude>
+    <ClInclude Include="ch1\ch1.h">
+      <Filter>ch1</Filter>
+    </ClInclude>
+    <ClInclude Include="Pub\Pub.h">
+      <Filter>Pub</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Framwork</Filter>
+    </ClCompile>
+    <ClCompile Include="Alg4Mfc.cpp">
+      <Filter>Framwork</Filter>
+    </ClCompile>
+    <ClCompile Include="ch1\ch1-2.cpp">
+      <Filter>ch1</Filter>
+    </ClCompile>
+    <ClCompile Include="ch1\ch1-3.cpp">
+      <Filter>ch1</Filter>
+    </ClCompile>
+    <ClCompile Include="ch1\ch1-1.cpp">
+      <Filter>ch1</Filter>
+    </ClCompile>
+    <ClCompile Include="Pub\Pub.cpp">
+      <Filter>Pub</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Alg4Mfc.rc">
+      <Filter>Framwork</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

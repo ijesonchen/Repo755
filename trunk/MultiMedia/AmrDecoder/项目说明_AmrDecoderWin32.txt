@@ -1,0 +1,17 @@
+解码AMR音频为wave格式
+WAVE具体格式采用硬编码方式，参见转换函数头部WAVEFORMATEX
+语法：xxxDecoder_xxx.exe filename.amr filename.wav
+自动创建目标文件路径
+
+***********************************************
+辅助程序GraphEdit（查看解码链路）
+Microsoft DirectX 9.0 SDK (Summer 2004) -> Utilities -> graphedt.exe
+
+编码器添加流程：
+
+1. 使用GraphEdit查看文件播放时的解码流程
+   记录前端解码链路（除去Default DirectSound Device之外的解码链路）
+2. 在前端解码链路基础上，添加 ACM Wrapper, Wav Dest, FileWriter
+3. 测试链路是否正常
+4. 根据上述解码链路修改解码程序并测试 
+

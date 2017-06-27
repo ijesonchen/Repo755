@@ -1,0 +1,152 @@
+http://www.cnblogs.com/lm3515/archive/2010/10/29/1864456.html
+
+WebService使用的一些总结
+什么是WebService：
+这个不用我在这里废话，网上的资料一搜一大把，如果你没有接触过这方面的知识，你可以先去网上查一下。这里我只想说一下我印象比较深刻的几点：
+
+WebService是基于soap协议的。说实话这个知识刚开始我理解的并不是很到位。这也在很长的时间局限了我在代码过程中的思维。我会在后面一个关于天气预报的实例中进行详细介绍的。总之，所有的webService请求、应答都是建立在soap协议的基础上的，而soap传输数据的载体是xml。关于soap协议的介绍，在W3C上有很详细的教程。
+
+WSDL是WebService的描述语言，它定义了Web Service做什么，怎么做和查询的信息。在验证一个WebService是否好用的时候，我们通常会选则在浏览器中输入http://…….*?wsdl。如果显示出一个xml文件，我们就认为这是好用的，反之就是不可用的。在项目刚刚开始的时候，我也是这么天真的认为的，因为教程上都是这么演示的。但事实并非如此，就如同以下调用天气预报的wsdl。如果你在浏览器中输入http://fhs.6617.com/getweather.asmx?WSDL,它是不显示的，但事实证明这个webservice服务时可以使用的（你可以通过http://fhs.6617.com/getweather.asmx?WSDL生成本地代理类）。这也一直是初学WebService者的一个误区。之所以不能通过浏览器访问，可能原因是服务发布者，或者服务器做了一些限制，就如同互联网上很多服务器，我们可以访问却ping不同一样，服务者做了一些限制。（我的猜测）
+
+怎样使用WebService
+是不是调用WebService时，必须要得到wsdl？必须要生成本地代理类？
+
+在回答这个问题，之前，我想先介绍一下网上一些资源：有很多热心的人，收集了很多常用的WebService，如：http://lqixv.javaeye.com/blog/308407。其中罗列的每一种服务，作者都提供了三种连接：Endpoint Disco WSDL 。其实这就是隐约的告诉我们调用webservice服务的三种途径。
+
+就如同我们的项目，客户端在调用电信WebService上行发短信时，是通过 wsdl生成本地代理类方式实行的。而在接收状态报告下行时，采用的是 Endpoint方式（客户端不需要生成本地代理类，只需要知道Endpoint地址）。
+
+所以wsdl很重要，但并不是必须的，前提你能通过api，规范文档等获取你需要的地址、命名空间的相关信息。
+
+如何调用wsdl生成本地代理类：
+通过wsdl生成本地代理类，有很多方式，既可以通过wsdl2java命令手动生成，也可以通过eclipse的axis2插件、xfire插件等。但是通过项目的实践，觉得尽量还是通过axis2的wsdl2java的命令生成，会省去很多麻烦。比如说，如果你拥有很多的wsdl文件，他们又是相互联系的，这样你通过eclipse的插件生成时，会出现错误。因为它只能一下加载一个wsdl文件。这个问题在项目初期，让我吃了很多的苦头。。。。。
+
+Axis2是一个比较常用的WebService引擎，大家可以通过到http://ws.apache.org/axis2/下载，其中其中axis2-1.4.1-bin.zip文件中包含了Axis2中所有的jar文件,以及命令工具， axis2-1.4.1-war.zip文件则用于将WebService发布到Web容器中，网上有很多axis2教程，在这里不再多说。
+
+天气预报调用实例:
+下面的一个实例是调用天气预报的一个例子，没有采用wsdl生成本地代理类的方式，采用的是通过http请求直接访问服务端点的方法：
+
+步骤是：
+
+1、利用soap向webservice endpoint进行请求，取回请求结果
+
+2、通过dom4J解析返回的xml流，得到所要的信息。
+
+通过这个例子相信大家，会对”webserviice是基于soap协议”的这句话有更深刻的理解，另外在使用dom4J解析xml返回流的过程中，遇到了些麻烦，需要额外引入jaxen-1.1.1.jar包，否则程序会报org/jaxen/JaxenException的错误。并且在XML包含命名空间时，定位元素，需要按照xpath语法来写。
+
+下面是类的源代码：
+
+
+复制代码
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+/**
+ * 类作用调用webservice得到天气预报服务
+ * @author qsw-Myonlystar 2010-1-13上午09:59:45
+ */
+public class Weather {
+    /**
+     * 获取soap请求头，并替换其中的标志符号为用户的输入符号
+     * @param city 用户输入城市名
+     * @return 用户将要发送给服务器的soap请求
+     */
+    private static String getSoapRequest(String city) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                        + "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+                        + "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
+                        + "xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+                        + "<soap:Body>    <getWeatherbyCityName xmlns=\"http://WebXml.com.cn/\">"
+                        + "<theCityName>" + city
+                        + "</theCityName>    </getWeatherbyCityName>"
+                        + "</soap:Body></soap:Envelope>");
+        return sb.toString();
+    }
+    /**
+     * 用户把SOAP请求发送给服务器端，并返回服务器点返回的输入流
+     * @param city 用户输入的城市名称
+     * @return 服务器端返回的输入流，供客户端读取
+     * @throws Exception
+     */
+    public static InputStream getSoapInputStream(String city) throws Exception {
+        try {
+            String soap = getSoapRequest(city);
+            if (soap == null) {
+                return null;
+            }
+            URL url = new URL(
+                    "http://www.webxml.com.cn/WebServices/WeatherWebService.asmx");
+            URLConnection conn = url.openConnection();
+            conn.setUseCaches(false);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Length", Integer.toString(soap
+                    .length()));
+            conn.setRequestProperty("Content-Type", "text/xml; charset=utf-8");
+            conn.setRequestProperty("SOAPAction",
+                    "http://WebXml.com.cn/getWeatherbyCityName");
+            OutputStream os = conn.getOutputStream();
+            OutputStreamWriter osw = new OutputStreamWriter(os, "utf-8");
+            osw.write(soap);
+            osw.flush();
+            osw.close();
+            InputStream is = conn.getInputStream();
+            //System.out.println(is.toString());
+            return is;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    /**
+     * 通过dom4j对服务器端返回的XML进行解析
+     * @param city 用户输入的城市名称
+     * @return 符串 用,分割
+     */
+    public static String getWeather(String city) {
+        Document document=null;
+        SAXReader reader = new SAXReader();
+        String s="";
+        Map map=new HashMap();
+        map.put("design", "http://WebXml.com.cn/");
+        reader.getDocumentFactory().setXPathNamespaceURIs(map);
+        try {
+            InputStream is = getSoapInputStream(city);//得到输入流
+            document=reader.read(is);//将输入流转化为document
+            String t=document.asXML();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        List nodes = document.selectNodes("//design:string");
+        for (Iterator it = nodes.iterator(); it.hasNext();) {
+            Element elm = (Element) it.next();
+            String text=elm.getText();
+            //System.out.println("fsffs"+text);
+            s=s+elm.getText()+"\n";
+        }
+        return s;
+    }
+    /**
+     * 测试函数
+     * @param args
+     */
+    public static void main(String args[]){
+        Weather w=new Weather();
+        System.out.println(w.getWeather("泰安"));
+    }
+}
+
+
+复制代码
+另外向大家推荐一个比较好的网站，http://www.webxml.com.cn/zh_cn/index.aspx。上面又很多好的webservice可以供我们调用。

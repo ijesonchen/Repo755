@@ -1,0 +1,160 @@
+C:\lib\mongo-cxx-driver-legacy-1.0.6>scons --help
+scons: Reading SConscript files ...
+scons: done reading SConscript files.
+usage: scons [OPTION] [TARGET] ...
+
+SCons Options:
+  -b, -d, -e, -m, -S, -t, -w, --environment-overrides, --no-keep-going,
+  --no-print-directory, --print-directory, --stop, --touch
+                              Ignored for compatibility.
+  -c, --clean, --remove       Remove specified targets and dependencies.
+  -C DIR, --directory=DIR     Change to DIR before doing anything.
+  --cache-debug=FILE          Print CacheDir debug info to FILE.
+  --cache-disable, --no-cache
+                              Do not retrieve built targets from CacheDir.
+  --cache-force, --cache-populate
+                              Copy already-built targets into the CacheDir.
+  --cache-readonly            Do not update CacheDir with built targets.
+  --cache-show                Print build actions for files from CacheDir.
+  --config=MODE               Controls Configure subsystem: auto, force,
+                                cache.
+  -D                          Search up directory tree for SConstruct,
+                                build all Default() targets.
+  --debug=TYPE                Print various types of debugging information:
+                                count, duplicate, explain, findlibs, includes,
+                                memoizer, memory, objects, pdb, prepare,
+                                presub, stacktrace, time.
+  --diskcheck=TYPE            Enable specific on-disk checks.
+  --duplicate=DUPLICATE       Set the preferred duplication methods. Must be
+                                one of hard-soft-copy, soft-hard-copy,
+                                hard-copy, soft-copy, copy
+  -f FILE, --file=FILE, --makefile=FILE, --sconstruct=FILE
+                              Read FILE as the top-level SConstruct file.
+  -h, --help                  Print defined help message, or this one.
+  -H, --help-options          Print this message and exit.
+  -i, --ignore-errors         Ignore errors from build actions.
+  -I DIR, --include-dir=DIR   Search DIR for imported Python modules.
+  --implicit-cache            Cache implicit dependencies
+  --implicit-deps-changed     Ignore cached implicit dependencies.
+  --implicit-deps-unchanged   Ignore changes in implicit dependencies.
+  --interact, --interactive   Run in interactive mode.
+  -j N, --jobs=N              Allow N jobs at once.
+  -k, --keep-going            Keep going when a target can't be made.
+  --max-drift=N               Set maximum system clock drift to N seconds.
+  --md5-chunksize=N           Set chunk-size for MD5 signature computation to
+                                N kilobytes.
+  -n, --no-exec, --just-print, --dry-run, --recon
+                              Don't build; just print commands.
+  --no-site-dir               Don't search or use the usual site_scons dir.
+  --profile=FILE              Profile SCons and put results in FILE.
+  -q, --question              Don't build; exit status says if up to date.
+  -Q                          Suppress "Reading/Building" progress messages.
+  --random                    Build dependencies in random order.
+  -s, --silent, --quiet       Don't print commands.
+  --site-dir=DIR              Use DIR instead of the usual site_scons dir.
+  --stack-size=N              Set the stack size of the threads used to run
+                                jobs to N kilobytes.
+  --taskmastertrace=FILE      Trace Node evaluation to FILE.
+  --tree=OPTIONS              Print a dependency tree in various formats: all,
+                                derived, prune, status.
+  -u, --up, --search-up       Search up directory tree for SConstruct,
+                                build targets at or below current directory.
+  -U                          Search up directory tree for SConstruct,
+                                build Default() targets from local SConscript.
+  -v, --version               Print the SCons version number and exit.
+  --warn=WARNING-SPEC, --warning=WARNING-SPEC
+                              Enable or disable warnings.
+  -Y REPOSITORY, --repository=REPOSITORY, --srcdir=REPOSITORY
+                              Search REPOSITORY for source and target files.
+
+Local Options:
+  --mute=MUTE                 do not display commandlines for compiling and
+                                linking, to reduce screen noise
+  --prefix=PREFIX             installation prefix
+  --extra-variant-dirs=EXTRA-VARIANT-DIRS
+                              extra variant dir components, separated by
+                                commas
+  --add-branch-to-variant-dir=ADD-BRANCH-TO-VARIANT-DIR
+                              add current git branch to the variant dir
+  --build-dir=BUILD-DIR       build output directory
+  --variant-dir=VARIANT-DIR   override variant subdirectory
+  --sharedclient=SHAREDCLIENT
+                              build a libmongoclient.so/.dll
+  --release=RELEASE           release build
+  --lto=LTO                   enable link time optimizations (experimental,
+                                except with MSVC)
+  --dynamic-windows=DYNAMIC-WINDOWS
+                              dynamically link on Windows
+  --dynamic-boost=[on|off|auto]
+                              dynamically link boost libraries on Windows
+  --disable-declspec-thread=DISABLE-DECLSPEC-THREAD
+                              don't use __declspec(thread) on Windows
+  --64=FORCE64                whether to force 64 bit
+  --32=FORCE32                whether to force 32 bit
+  --endian=[big|little|auto]  endianness of target platform
+  --cxx=CXX                   compiler to use
+  --cc=CC                     compiler to use for c
+  --cc-use-shell-environment=CC-USE-SHELL-ENVIRONMENT
+                              use $CC from shell for C compiler
+  --cxx-use-shell-environment=CXX-USE-SHELL-ENVIRONMENT
+                              use $CXX from shell for C++ compiler
+  --c++11=[on|off|auto]       enable c++11 support (experimental)
+  --cpppath=CPPPATH           Include path if you have headers in a
+                                nonstandard directory
+  --libpath=LIBPATH           Library path if you have libraries in a
+                                nonstandard directory
+  --extrapath=EXTRAPATH       comma separated list of add'l paths
+                                (--extrapath /opt/foo/,/foo) static linking
+  --extralib=EXTRALIB         comma separated list of libraries  (--extralib
+                                js_static,readline
+  --runtime-library-search-path=RUNTIME-LIBRARY-SEARCH-PATH
+                              comma separated list of dirs to append to PATH
+                                to find dynamic libs at runtime
+  --ssl=SSL                   Enable SSL
+  --libc++=LIBC++             use libc++ (experimental, requires clang)
+  --dbg=[on|off]              Enable runtime debugging checks
+  --opt=[on|off]              Enable compile-time optimization
+  --sanitize=san1,san2,...sanN
+                              enable selected sanitizers
+  --llvm-symbolizer=LLVM-SYMBOLIZER
+                              name of (or path to) the LLVM symbolizer
+  --gcov=GCOV                 compile with flags for gcov
+  --use-sasl-client=USE-SASL-CLIENT
+                              Support SASL authentication in the client
+                                library
+  --build-fast-and-loose=BUILD-FAST-AND-LOOSE
+                              NEVER for production builds
+  --boost-lib-search-suffixes=BOOST-LIB-SEARCH-SUFFIXES
+                              Comma delimited sequence of boost library
+                                suffixes to search
+  --disable-warnings-as-errors=DISABLE-WARNINGS-AS-ERRORS
+                              Don't add -Werror to compiler command line
+  --propagate-shell-environment=PROPAGATE-SHELL-ENVIRONMENT
+                              Pass shell environment to sub-processes (NEVER
+                                for production builds)
+  --gtest-filter=GTEST-FILTER
+                              Pass argument as filter to gtest
+  --mongo-orchestration-preset=MONGO-ORCHESTRATION-PRESET
+                              Pass argument to mongo-orchestration as the
+                                configuration preset
+  --mongo-orchestration-host=MONGO-ORCHESTRATION-HOST
+                              Host mongo-orchestration is running on
+  --mongo-orchestration-port=MONGO-ORCHESTRATION-PORT
+                              Host mongo-orchestration is running on
+  --variables-help=VARIABLES-HELP
+                              Print the help text for SCons variables
+  --win-version-min=[vista|win8|win7|xpsp3|ws03sp2|ws08r2]
+                              minimum Windows version to support
+  --msvc-host-arch=[x86|i386|amd64|emt64|x86_64|ia64]
+                              host architecture for ms toolchain
+  --msvc-script=MSVC-SCRIPT   msvc toolchain setup script, pass no argument to
+                                suppress script execution
+  --msvc-version=MSVC-VERSION
+                              select msvc version
+  --cache=CACHE               Use an object cache rather than a per-build
+                                variant directory (experimental)
+  --cache-dir=CACHE-DIR       Specify the directory to use for caching objects
+                                if --cache is in use
+  --variable-parse-mode=[auto|posix|other]
+                              Select which parsing mode is used to interpret
+                                command line variables

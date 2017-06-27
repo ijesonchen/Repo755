@@ -1,0 +1,59 @@
+General 
+  Output
+		$(SolutionDir)$(ConfigurationName)
+****	$(SolutionDir)bin\run
+	$(SolutionDir)bin\run$(PlatformName)
+  Intermediate
+		$(ConfigurationName)
+	$(SolutionDir)bin\inter\$(ProjectName)_$(ConfigurationName)
+	$(SolutionDir)bin\inter\$(ConfigurationName)
+****	$(SolutionDir)bin\inter\$(ProjectName)_$(ConfigurationName)_$(PlatformName)
+  Build Log
+
+Linker 	-> Genral 
+		$(OutDir)\$(ProjectName).【EXT】
+	$(OutDir)\$(ProjectName)_$(ConfigurationName).【EXT】
+****	$(OutDir)\$(ProjectName)_$(ConfigurationName)_$(PlatformName).【EXT】
+
+生成事件 -> 生成后事件 -> 命令行
+	copy /y $(ProjectDir)\configuration\config.ini $(OutDir)
+	copy /y $(SolutionDir)Documents\ulibRecog.ini $(OutDir)
+
+=======================================
+$(OutDir)	输出目录 (General -> Output Directory)
+$(IntDir)	中间目录 (General -> Intermediate Directory)
+$(SolutionDir)	解决方案路径
+$(TargetName)	输出全路径 (含路径、文件名及扩展名)
+$(ProjectName)	项目名称
+$(ConfigurationName)
+
+=======================================
+$(WXPATH)\include
+$(WXPATH)\include\msvc
+"$(WXPATH)\include";"$(WXPATH)\include\msvc"
+
+msvc/wx/setup.h
+$(WXPATH)\lib\vc_lib (静态链接)
+$(WXPATH)\lib\vc_dll (动态链接)
+
+
+=======================================CS LIB TEST 
+if not exist $(SolutionDir)csulibLangTest\bin\Debug mkdir $(SolutionDir)csulibLangTest\bin\Debug
+copy /y $(ProjectDir)\bin\Debug\csulib*.* $(SolutionDir)csulibLangTest\bin\Debug\
+copy /y $(SolutionDir)bin\run\ulibLang*Debug*.dll  $(SolutionDir)csulibLangTest\bin\Debug\
+copy /y $(SolutionDir)bin\run\ulibLang*Debug*.pdb  $(SolutionDir)csulibLangTest\bin\Debug\
+copy /y $(SolutionDir)Public\ulibRecog.* $(SolutionDir)csulibLangTest\bin\Debug\
+
+if not exist $(SolutionDir)csulibLangTest\bin\Release mkdir $(SolutionDir)csulibLangTest\bin\Release
+copy /y $(ProjectDir)\bin\Relase\csulib*.* $(SolutionDir)csulibLangTest\bin\Release\
+copy /y $(SolutionDir)bin\run\ulibLang*Release*.dll  $(SolutionDir)csulibLangTest\bin\Release\
+copy /y $(SolutionDir)bin\run\ulibLang*Release*.pdb  $(SolutionDir)csulibLangTest\bin\Release\
+copy /y $(SolutionDir)Public\ulibRecog.* $(SolutionDir)csulibLangTest\bin\Release\
+
+
+
+if not exist $(ProjectDir)bin\Debug mkdir $(ProjectDir)bin\Debug
+if exist $(SolutionDir)csulibSpeaker\bin\Debug\csulib*.* copy /y $(SolutionDir)csulibSpeaker\bin\Debug\csulib*.* $(ProjectDir)bin\Debug
+
+if not exist $(ProjectDir)bin\Release mkdir $(ProjectDir)bin\Release
+if exist $(SolutionDir)csulibSpeaker\bin\Release\csulib*.* copy /y $(SolutionDir)csulibSpeaker\bin\Release\csulib*.* $(ProjectDir)bin\Release

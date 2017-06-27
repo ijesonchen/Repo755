@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestCode32", "TestCode32\TestCode32.vcproj", "{551C9E4D-13CE-42AE-9309-6F85CB9A21AE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CppClsTest", "CppClsTest\CppClsTest.vcproj", "{06E7B439-95DB-45C0-AA62-61E488DE62FE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CppMfcTest", "CppMfcTest\CppMfcTest.vcproj", "{12BF9885-67AD-48A3-BB8C-F321FA0F4376}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{551C9E4D-13CE-42AE-9309-6F85CB9A21AE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{551C9E4D-13CE-42AE-9309-6F85CB9A21AE}.Debug|Win32.Build.0 = Debug|Win32
+		{551C9E4D-13CE-42AE-9309-6F85CB9A21AE}.Release|Win32.ActiveCfg = Release|Win32
+		{551C9E4D-13CE-42AE-9309-6F85CB9A21AE}.Release|Win32.Build.0 = Release|Win32
+		{06E7B439-95DB-45C0-AA62-61E488DE62FE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{06E7B439-95DB-45C0-AA62-61E488DE62FE}.Debug|Win32.Build.0 = Debug|Win32
+		{06E7B439-95DB-45C0-AA62-61E488DE62FE}.Release|Win32.ActiveCfg = Release|Win32
+		{06E7B439-95DB-45C0-AA62-61E488DE62FE}.Release|Win32.Build.0 = Release|Win32
+		{12BF9885-67AD-48A3-BB8C-F321FA0F4376}.Debug|Win32.ActiveCfg = Debug|Win32
+		{12BF9885-67AD-48A3-BB8C-F321FA0F4376}.Debug|Win32.Build.0 = Debug|Win32
+		{12BF9885-67AD-48A3-BB8C-F321FA0F4376}.Release|Win32.ActiveCfg = Release|Win32
+		{12BF9885-67AD-48A3-BB8C-F321FA0F4376}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

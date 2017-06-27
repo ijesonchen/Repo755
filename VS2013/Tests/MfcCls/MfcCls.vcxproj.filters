@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{8dd62f73-effd-4f45-910e-1767e63f4365}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{9a40306f-260d-41b5-abcc-93dd830477d6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="test.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="MfcCls.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="PhoneSegParse.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="TelCityParser.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dequecopy.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="mutable.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="smartptr.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="StringTest.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="tmplvararg.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="MfcCls.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="perm.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="atomic.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="teltest.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="PhoneSegParse.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="TelCityParser.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="structarray.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MfcCls.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

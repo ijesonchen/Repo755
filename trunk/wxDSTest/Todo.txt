@@ -1,0 +1,24 @@
+memory leak
+
+
+SLinkList
+
+
+
+
+//////////////////////////////////////////////////////////////////////////
+经验：
+6. when deal with some sequences, think procedure and code as-is.
+   pay special attention to procedure boundary 
+	处理多个序列时，按照实际流程编写代码，尤其注意分段处理的边界部分。
+5. when while() need some pre-work / init-work, try do-while
+4. return int rather than bool, except IsXXX / HasXXX function.
+3. processing exception first, then follow right procedure (return 0 or true last).
+    分支语句中，先处理异常情况，并返回错误，在继续执行正确的路径（最后返回正常值）
+    ref: LkList std member functions    
+2. when locating, step until end then check if reached required node.
+    链表定位时，一直搜索直到条件不满足，然后在判断搜索中断原因：到达所需位置，或者未找到
+    ref: LkList std member functions
+1. to simplify code: while loop condition include all exception, body do repeat work.
+    while循环的条件中包含所有的例外情况，函数体仅执行重复性工作。
+    ref：MergeList1_std

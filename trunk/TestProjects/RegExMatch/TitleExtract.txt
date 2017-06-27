@@ -1,0 +1,128 @@
+#include <stdio.h>
+#include <deque>
+
+const size_t MAX_NAME_LENGTH = 300;
+const int MIN_ALPHA = 2;
+const int MAX_ALPHA = 5;
+const int MIN_DIGIT = 2;
+const int MAX_DIGIT = 6;
+
+enum ChTempl
+{
+	ChTemplOther = 0,
+	ChTemplAlpha,
+	ChTemplLine,
+	ChTemplDigit,
+};
+
+void ExtractTitle(TCHAR* pName)
+{
+	if (!pName)
+	{
+		return;
+	}
+
+	size_t iLoop = strlenT(pName);
+	if (iLoop > MAX_NAME_LENGTH)
+	{
+		iLoop = MAX_NAME_LENGTH;
+	}
+
+	int nAlpha = 0;
+	int nDigit = 0;
+	ChTempl chStage = ChTemplOther;
+
+	TCHAR pAlpha[MAX_ALPHA + 1] = {0};
+	TCHAR pDigit[MAX_DIGIT + 1] = {0};
+	TCHAR chName = 0;
+
+	std::deque<CString> dqNames;
+
+	// alpha -> (line) -> digit -> NONE-digit 并且满足条件，则认为模式匹配
+	for (size_t ii = 0; ii < iLoop; ++ii)
+	{
+		chName = pName[ii];
+
+		if (_istalpha(chName))
+		{
+			if (chStage == ChTemplAlpha)
+			{
+				++nAlpha;
+				if (nAlpha < MAX_ALPHA)
+				{
+					pAlpha[nAlpha] = chName;
+				}
+			}
+			else if (chStage == ChTemplDigit)
+			{
+				// check name
+				if (nAlpha >= MIN_ALPHA &&
+					nAlpha <= MAX_ALPHA &&
+					nDigit >= MIN_DIGIT &&
+					nDigit <= MAX_DIGIT)
+				{
+					// ok
+					CString strName;
+					strName.Format(_T("%s-%s"), pAlpha, pDigit);
+					dqNames.push_back(strName);
+				}
+				else
+				{
+					memset(pAlpha, 0, MAX_ALPHA);
+					nAlpha = 1;
+					pAlpha[nAlpha] = chName;
+				}
+			}
+			else
+			{
+				memset(pAlpha, 0, MAX_ALPHA * sizeof(TCHAR));
+				nAlpha = 1;
+				pAlpha[nAlpha] = chName;
+			}
+
+			chStage = ChTemplAlpha;
+		}
+		else if (_istdigit(chName))
+		{
+			if (chStage == ChTemplDigit)
+			{
+				++nDigit;
+				pDigit[nDigit] = chName;
+			} 
+			else if (chStage == ChTemplAlpha ||
+					chStage == ChTemplLine)
+			{
+				if (nAlpha >= MIN_ALPHA &&
+					nAlpha <= MAX_ALPHA)
+				{
+					chStage == ChTemplDigit;
+					memset(pDigit, 0, MAX_DIGIT * sizeof(TCHAR));
+					nDigit = 1;
+					pDigit[nDigit] = chName;
+				}
+				else
+				{
+					chStage = ChTemplOther;
+				}
+			}
+			else
+			{
+				chStage = ChTemplOther;
+			}
+		}
+		else if (chName == _T('-'))
+		{
+			chStage = ChTemplLine;
+		}
+		else
+		{
+			chStage = ChTemplOther;
+		}
+	}
+}
+
+int main(void)
+{
+
+	return 0;
+}

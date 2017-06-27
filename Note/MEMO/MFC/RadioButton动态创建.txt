@@ -1,0 +1,75 @@
+项目：基于Dialog
+如需完全动态创建，参照CButton* m_pbtn5
+
+.h
+	CButton m_btn1;
+	CButton m_btn2;
+	CButton m_btn3;
+	CButton m_btn4;
+	CButton* m_pbtn5;
+
+.cpp
+
+1. 全局：const int IDC_RADIO_BASE = 2000;
+2. OnInitDialog
+
+	CRect rt(10, 10, 100, 30);
+	
+	// WS_GROUP开头且ID连续的Radio为一组。通过添加WS_GROUP可以分割多组。
+	// 同一组Radio选中一个时会自动取消其它按钮的选中状态。
+
+	int nID = 1;
+	CString strRadio;
+	strRadio.Format(_T("Radio%d"), nID);
+	m_btn1.Create(strRadio, WS_CHILD|WS_VISIBLE|BS_AUTORADIOBUTTON|WS_TABSTOP|WS_GROUP , 
+		rt, this, IDC_RADIO_BASE + nID);
+
+	++nID;
+	rt.top += 20;
+	rt.bottom += 20;
+	strRadio.Format(_T("Radio%d"), nID);
+	m_btn2.Create(strRadio, WS_CHILD|WS_VISIBLE|BS_AUTORADIOBUTTON|WS_TABSTOP, 
+		rt, this, IDC_RADIO_BASE + nID);
+	rt.top += 20;
+	rt.bottom += 20;
+
+	++nID;
+	strRadio.Format(_T("Radio%d"), nID);
+	m_btn3.Create(strRadio, WS_CHILD|WS_VISIBLE|BS_AUTORADIOBUTTON|WS_TABSTOP, 
+		rt, this, IDC_RADIO_BASE + nID);
+	rt.top += 20;
+	rt.bottom += 20;
+
+
+	++nID;
+	strRadio.Format(_T("Radio%d"), nID);
+	m_btn4.Create(strRadio, WS_CHILD|WS_VISIBLE|BS_AUTORADIOBUTTON|WS_TABSTOP, 
+		rt, this, IDC_RADIO_BASE + nID);
+	rt.top += 20;
+	rt.bottom += 20;
+
+	++nID;
+	strRadio.Format(_T("Radio%d"), nID);
+	m_pbtn5 = new CButton();
+	m_pbtn5->Create(strRadio, WS_CHILD|WS_VISIBLE|BS_AUTORADIOBUTTON|WS_TABSTOP, 
+		rt, this, IDC_RADIO_BASE + nID);
+	rt.top += 20;
+	rt.bottom += 20;
+
+3. 获取按钮选中状态
+	int nSel = -1;
+	for (int iId = 1; iId < 6; ++iId)
+	{
+		CButton* pBtn = (CButton*)GetDlgItem(IDC_RADIO_BASE + iId);
+		if (!pBtn)
+		{
+			break;
+		}
+		if (pBtn->GetCheck())
+		{
+			nSel = iId;
+			break;
+		}
+	}
+
+	TRACE("sel: %d\n", nSel);

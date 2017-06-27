@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wxSqliteTest", "wxSqliteTest\wxSqliteTest.vcproj", "{0920867D-45D1-4C37-873F-208A0FAD752A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cslSqlite", "cslSqlite\cslSqlite.vcproj", "{685FFF53-2823-4C2E-AE81-5DD5CC33FC35}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "slShell", "slShell\slShell.vcproj", "{465A44C3-8E78-4DC8-8BED-8891082BBA13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{B44FB857-5D4C-4F15-B796-698836C78C89}"
+	ProjectSection(SolutionItems) = preProject
+		doc\Sqlite开发.docx = doc\Sqlite开发.docx
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "interfaceRoutine", "interfaceRoutine\interfaceRoutine.vcproj", "{F0613223-932A-4C52-B07C-A83A57604074}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug-DLL|Win32 = Debug-DLL|Win32
+		Release|Win32 = Release|Win32
+		Release-DLL|Win32 = Release-DLL|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0920867D-45D1-4C37-873F-208A0FAD752A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0920867D-45D1-4C37-873F-208A0FAD752A}.Debug|Win32.Build.0 = Debug|Win32
+		{0920867D-45D1-4C37-873F-208A0FAD752A}.Debug-DLL|Win32.ActiveCfg = Debug-DLL|Win32
+		{0920867D-45D1-4C37-873F-208A0FAD752A}.Debug-DLL|Win32.Build.0 = Debug-DLL|Win32
+		{0920867D-45D1-4C37-873F-208A0FAD752A}.Release|Win32.ActiveCfg = Release|Win32
+		{0920867D-45D1-4C37-873F-208A0FAD752A}.Release|Win32.Build.0 = Release|Win32
+		{0920867D-45D1-4C37-873F-208A0FAD752A}.Release-DLL|Win32.ActiveCfg = Release-DLL|Win32
+		{0920867D-45D1-4C37-873F-208A0FAD752A}.Release-DLL|Win32.Build.0 = Release-DLL|Win32
+		{685FFF53-2823-4C2E-AE81-5DD5CC33FC35}.Debug|Win32.ActiveCfg = Debug|Win32
+		{685FFF53-2823-4C2E-AE81-5DD5CC33FC35}.Debug|Win32.Build.0 = Debug|Win32
+		{685FFF53-2823-4C2E-AE81-5DD5CC33FC35}.Debug-DLL|Win32.ActiveCfg = Debug|Win32
+		{685FFF53-2823-4C2E-AE81-5DD5CC33FC35}.Debug-DLL|Win32.Build.0 = Debug|Win32
+		{685FFF53-2823-4C2E-AE81-5DD5CC33FC35}.Release|Win32.ActiveCfg = Release|Win32
+		{685FFF53-2823-4C2E-AE81-5DD5CC33FC35}.Release|Win32.Build.0 = Release|Win32
+		{685FFF53-2823-4C2E-AE81-5DD5CC33FC35}.Release-DLL|Win32.ActiveCfg = Release|Win32
+		{685FFF53-2823-4C2E-AE81-5DD5CC33FC35}.Release-DLL|Win32.Build.0 = Release|Win32
+		{465A44C3-8E78-4DC8-8BED-8891082BBA13}.Debug|Win32.ActiveCfg = Debug|Win32
+		{465A44C3-8E78-4DC8-8BED-8891082BBA13}.Debug|Win32.Build.0 = Debug|Win32
+		{465A44C3-8E78-4DC8-8BED-8891082BBA13}.Debug-DLL|Win32.ActiveCfg = Debug|Win32
+		{465A44C3-8E78-4DC8-8BED-8891082BBA13}.Debug-DLL|Win32.Build.0 = Debug|Win32
+		{465A44C3-8E78-4DC8-8BED-8891082BBA13}.Release|Win32.ActiveCfg = Release|Win32
+		{465A44C3-8E78-4DC8-8BED-8891082BBA13}.Release|Win32.Build.0 = Release|Win32
+		{465A44C3-8E78-4DC8-8BED-8891082BBA13}.Release-DLL|Win32.ActiveCfg = Release|Win32
+		{465A44C3-8E78-4DC8-8BED-8891082BBA13}.Release-DLL|Win32.Build.0 = Release|Win32
+		{F0613223-932A-4C52-B07C-A83A57604074}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F0613223-932A-4C52-B07C-A83A57604074}.Debug|Win32.Build.0 = Debug|Win32
+		{F0613223-932A-4C52-B07C-A83A57604074}.Debug-DLL|Win32.ActiveCfg = Debug|Win32
+		{F0613223-932A-4C52-B07C-A83A57604074}.Debug-DLL|Win32.Build.0 = Debug|Win32
+		{F0613223-932A-4C52-B07C-A83A57604074}.Release|Win32.ActiveCfg = Release|Win32
+		{F0613223-932A-4C52-B07C-A83A57604074}.Release|Win32.Build.0 = Release|Win32
+		{F0613223-932A-4C52-B07C-A83A57604074}.Release-DLL|Win32.ActiveCfg = Release|Win32
+		{F0613223-932A-4C52-B07C-A83A57604074}.Release-DLL|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,198 @@
+http://www.cnblogs.com/daniel206/archive/2008/01/16/1041729.html
+
+动态调用 WebService(精) 
+多数时候我们通过 "添加 Web 引用" 创建客户端代理类的方式调用WebService，但在某些情况下我们可能需要在程序运行期间动态调用一个未知的服务。在 .NET Framework 的 System.Web.Services.Description 命名空间中有我们需要的东西。
+
+具体步骤：
+
+1. 从目标 URL 下载 WSDL 数据。
+2. 使用 ServiceDescription 创建和格式化 WSDL 文档文件。
+3. 使用 ServiceDescriptionImporter 创建客户端代理类。
+4. 使用 CodeDom 动态创建客户端代理类程序集。
+5. 利用反射调用相关 WebService 方法。
+
+OK，看看具体的例子。
+
+我们要调用的目标 WebService，其 URL 是 http://localhost:60436/Learn.WEB/WebService.asmx
+
+HelloWorld.asmx 
+[WebService(Namespace = "http://www.rainsts.net/", Description="我的Web服务")]
+[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+public class WebService : System.Web.Services.WebService {
+
+ public WebService () {
+ }
+
+  [WebMethod]
+  public string HelloWorld()
+  {
+    return "Hello Wolrd!";
+  }
+}
+
+1. 动态调用 WebService
+
+客户端动态调用代码
+
+using System.IO;
+using System.Net;
+using System.Reflection;
+using System.CodeDom;
+using System.CodeDom.Compiler;
+using System.Web.Services;
+using System.Web.Services.Description;
+using System.Web.Services.Protocols;
+using System.Xml.Serialization;
+
+// 1. 使用 WebClient 下载 WSDL 信息。
+WebClient web = new WebClient();
+Stream stream = web.OpenRead("http://localhost:60436/Learn.WEB/WebService.asmx?WSDL");
+
+// 2. 创建和格式化 WSDL 文档。
+ServiceDescription description = ServiceDescription.Read(stream);
+
+// 3. 创建客户端代理代理类。
+ServiceDescriptionImporter importer = new ServiceDescriptionImporter();
+
+importer.ProtocolName = "Soap"; // 指定访问协议。
+importer.Style = ServiceDescriptionImportStyle.Client; // 生成客户端代理。
+importer.CodeGenerationOptions = CodeGenerationOptions.GenerateProperties | CodeGenerationOptions.GenerateNewAsync; 
+
+importer.AddServiceDescription(description, null, null); // 添加 WSDL 文档。
+
+// 4. 使用 CodeDom 编译客户端代理类。
+CodeNamespace nmspace = new CodeNamespace(); // 为代理类添加命名空间，缺省为全局空间。
+CodeCompileUnit unit = new CodeCompileUnit();
+unit.Namespaces.Add(nmspace);
+
+ServiceDescriptionImportWarnings warning = importer.Import(nmspace, unit); 
+CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+
+CompilerParameters parameter = new CompilerParameters();
+parameter.GenerateExecutable = false;
+parameter.GenerateInMemory = true;
+parameter.ReferencedAssemblies.Add("System.dll");
+parameter.ReferencedAssemblies.Add("System.XML.dll");
+parameter.ReferencedAssemblies.Add("System.Web.Services.dll");
+parameter.ReferencedAssemblies.Add("System.Data.dll");
+
+CompilerResults result = provider.CompileAssemblyFromDom(parameter, unit);
+
+// 5. 使用 Reflection 调用 WebService。
+if (!result.Errors.HasErrors)
+{
+  Assembly asm = result.CompiledAssembly;
+  Type t = asm.GetType("WebService"); // 如果在前面为代理类添加了命名空间，此处需要将命名空间添加到类型前面。
+
+  object o = Activator.CreateInstance(t);
+  MethodInfo method = t.GetMethod("HelloWorld");
+  Console.WriteLine(method.Invoke(o, null));
+}
+
+2. 生成客户端代理程序集文件
+
+上面的代码通过在内存中创建动态程序集的方式完成了动态调用过程。如果我们希望将客户端代理类生成程序集文件保存到硬盘，则可以进行如下修改。生成程序集文件后，我们可以通过 Assembly.LoadFrom() 载入并进行反射调用。对于需要多次调用的系统，要比每次生成动态程序集效率高出很多。
+
+using System.IO;
+using System.Net;
+using System.CodeDom;
+using System.CodeDom.Compiler;
+using System.Web.Services;
+using System.Web.Services.Description;
+using System.Web.Services.Protocols;
+using System.Xml.Serialization;
+
+// 1. 使用 WebClient 下载 WSDL 信息。
+WebClient web = new WebClient();
+Stream stream = web.OpenRead("http://localhost:60436/Learn.WEB/WebService.asmx?WSDL");
+
+// 2. 创建和格式化 WSDL 文档。
+ServiceDescription description = ServiceDescription.Read(stream);
+
+// 3. 创建客户端代理代理类。
+ServiceDescriptionImporter importer = new ServiceDescriptionImporter();
+
+importer.ProtocolName = "Soap"; // 指定访问协议。
+importer.Style = ServiceDescriptionImportStyle.Client; // 生成客户端代理。
+importer.CodeGenerationOptions = CodeGenerationOptions.GenerateProperties | CodeGenerationOptions.GenerateNewAsync; 
+
+importer.AddServiceDescription(description, null, null); // 添加 WSDL 文档。
+
+// 4. 使用 CodeDom 编译客户端代理类。
+CodeNamespace nmspace = new CodeNamespace(); // 为代理类添加命名空间，缺省为全局空间。
+CodeCompileUnit unit = new CodeCompileUnit();
+unit.Namespaces.Add(nmspace);
+
+ServiceDescriptionImportWarnings warning = importer.Import(nmspace, unit); 
+CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+
+CompilerParameters parameter = new CompilerParameters();
+parameter.GenerateExecutable = false;
+parameter.OutputAssembly = "test.dll"; // 可以指定你所需的任何文件名。
+parameter.ReferencedAssemblies.Add("System.dll");
+parameter.ReferencedAssemblies.Add("System.XML.dll");
+parameter.ReferencedAssemblies.Add("System.Web.Services.dll");
+parameter.ReferencedAssemblies.Add("System.Data.dll");
+
+CompilerResults result = provider.CompileAssemblyFromDom(parameter, unit);
+if (result.Errors.HasErrors)
+{
+  // 显示编译错误信息
+}
+
+调用程序集文件演示
+
+Assembly asm = Assembly.LoadFrom("test.dll");
+Type t = asm.GetType("WebService"); 
+
+object o = Activator.CreateInstance(t);
+MethodInfo method = t.GetMethod("HelloWorld");
+Console.WriteLine(method.Invoke(o, null));
+
+3. 获取客户端代理类源代码
+
+还有一种情形，就是我们需要获得客户端代理类的 C# 源代码。
+
+using System.IO;
+using System.Net;
+using System.CodeDom;
+using System.CodeDom.Compiler;
+using System.Web.Services;
+using System.Web.Services.Description;
+using System.Web.Services.Protocols;
+using System.Xml.Serialization;
+
+// 1. 使用 WebClient 下载 WSDL 信息。
+WebClient web = new WebClient();
+Stream stream = web.OpenRead("http://localhost:60436/Learn.WEB/WebService.asmx?WSDL");
+
+// 2. 创建和格式化 WSDL 文档。
+ServiceDescription description = ServiceDescription.Read(stream);
+
+// 3. 创建客户端代理代理类。
+ServiceDescriptionImporter importer = new ServiceDescriptionImporter();
+
+importer.ProtocolName = "Soap"; // 指定访问协议。
+importer.Style = ServiceDescriptionImportStyle.Client; // 生成客户端代理。
+importer.CodeGenerationOptions = CodeGenerationOptions.GenerateProperties | CodeGenerationOptions.GenerateNewAsync; 
+
+importer.AddServiceDescription(description, null, null); // 添加 WSDL 文档。
+
+// 4. 使用 CodeDom 编译客户端代理类。
+CodeNamespace nmspace = new CodeNamespace(); // 为代理类添加命名空间，缺省为全局空间。
+CodeCompileUnit unit = new CodeCompileUnit();
+unit.Namespaces.Add(nmspace);
+
+ServiceDescriptionImportWarnings warning = importer.Import(nmspace, unit); 
+CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+
+// 5. 保存源代码到文件。当然，你也可以直接保存到内存字符串中。
+TextWriter writer = File.CreateText("test.cs"); // 指定你所需的源代码文件名。
+provider.GenerateCodeFromCompileUnit(unit, writer, null);
+writer.Flush();
+writer.Close();
+
+如果你调用时触发 "WebException: 请求因 HTTP 状态 415 失败: Unsupported Media Type。" 这样的异常，那么恭喜你和我一样郁闷 ，赶紧把服务器端的 WSE 关掉吧。在必须使用 WSE 的情况下，需要对客户端进行调整，至于代码需要你自己去写了。呵呵~~~~ 
+
+
+原文出处:http://www.cnblogs.com/illele/archive/2007/10/20/931317.html

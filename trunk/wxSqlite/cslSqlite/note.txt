@@ -1,0 +1,37 @@
+遍历Sqlite数据库表及记录
+
+1. 打开数据库
+sqlite3_open打开数据库sqlite3* pdb
+2. 获取sqlite_master类型
+sqlite3_exec执行查询
+select DISTINCT type from sqlite_master
+callback中获取的type应当为table, index等
+3. 获取表名
+sqlite3_exec执行查询
+select distinct name from sqlite_master where type = 'table'
+callback中获取到表名
+4. 循环获取每个表的结构（列信息）
+sqlite3_exec执行查询
+PRAGMA table_info(@table_name)
+callback中pnames为：
+"cid","name","type","notnull","dflt_value","pk"
+每次返回表的一个列的信息
+5. 根据表列信息，获取到列名
+列信息name字段对应的为列名。
+6. 查询表数据
+sqlite3_exec执行查询
+select colname1, colname2, ..., colnamen from table_name
+
+
+
+
+注意：
+1. sqlite3_exec的callback函数(查询语句）
+int cbPragmaTable(void* parg, int ncol, char** pvals, char** pnames)
+包括select, progma table_info等查询语句，返回的结果为一个二维表格，parg为sqlite3_exec入参，ncol为结果表列数，pvals为结果表值，pnames为结果表名
+1) 所有值和列名都是字符串形式，即使该列为数值。
+2) pvals可能为空，表示该列为NULL值（不存在）。因此在进行处理时要进行判别
+string val = pvals[i] ? pvals[i] : "";
+2. rowid列
+除了WITHOUT ROWID表之外，所有表都有一个rowid列。如果表具有INTEGER PRIMARY KEY列，则该列为rowid的别名。因此可以对于一般表，可以使用rowid唯一确定某次查询的数据。
+如 select * from authname where rowid > 3 order by rowid limit 2;

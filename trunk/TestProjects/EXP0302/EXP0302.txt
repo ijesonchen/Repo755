@@ -1,0 +1,282 @@
+#include <stdio.h>
+#include <assert.h>
+#include <stack>
+#include <queue>
+
+template<class T>
+class HanoiTower
+{
+protected:
+	char idx;
+	std::stack<T> stDatas;
+public:
+	// 1 based.
+	HanoiTower(char ch, int nDataCount = 0)
+	: idx (ch)
+	{
+		for (int ii = nDataCount; ii > 0; --ii)
+		{
+			Push(ii);
+		}
+	}
+
+	bool Push(T& newData)
+	{
+		if (stDatas.size() && 
+			(stDatas.top() <= newData))
+		{
+			assert(false);
+			return false;
+		}
+		stDatas.push(newData);
+		return true;
+	}
+
+	bool Pop(T& popData)
+	{
+		if (stDatas.size())
+		{
+			popData = stDatas.top();
+			stDatas.pop();
+			return true;
+		}
+		return false;
+	}
+
+	size_t Size(void)
+	{
+		return stDatas.size();
+	}
+
+	bool MoveTo(HanoiTower& another)
+	{
+		if (!stDatas.size())
+		{
+			assert(false);
+			return false;
+		}
+		if (another.stDatas.size() &&
+			(stDatas.top() >= another.stDatas.top()))
+		{
+			assert(false);
+			return false;
+		}
+		another.Push(stDatas.top());
+		stDatas.pop();
+		printf("%c -> %c\n", idx, another.idx);
+		return true;
+	}
+
+	std::string MoveString(HanoiTower& another)
+	{
+		if (!stDatas.size())
+		{
+			assert(false);
+			return false;
+		}
+		if (another.stDatas.size() &&
+			(stDatas.top() >= another.stDatas.top()))
+		{
+			assert(false);
+			return false;
+		}
+		another.Push(stDatas.top());
+		stDatas.pop();
+		std::string strMove << idx << " -> " << another.idx;
+		return strMove;
+	}
+
+	void Swap(HanoiTower& another)
+	{
+		HanoiTower temp = another;
+		another = *this;
+		*this = temp;
+	}
+};
+
+// move a -> c , use b as temp.
+template<class T>
+void HanoiRecur(int nMove, HanoiTower<T>& a, HanoiTower<T>& b, HanoiTower<T>& c)
+{
+	if (nMove <= 0)
+	{
+		assert(false);
+	}
+	else if (nMove == 1)
+	{
+		a.MoveTo(c);
+	}
+	else if (nMove == 2)
+	{
+		a.MoveTo(b);
+		a.MoveTo(c);
+		b.MoveTo(c);
+	}
+	else
+	{
+		HanoiRecur(nMove - 1, a, c, b);
+		a.MoveTo(c);
+		HanoiRecur(nMove - 1, b, a, c);
+	}
+}
+
+
+const int MAX_HANOI_MARK = 3;
+struct HanoiMove
+{
+	struct HanoiMark
+	{
+		int id;
+		char name;
+	};
+
+	HanoiMark hMarks[MAX_HANOI_MARK];
+
+	struct MoveDtail
+	{
+		int nFrom;
+		int nTo;
+		MoveDtail(int nfrom, int nto)
+		: nFrom(nfrom)
+		, nTo(nto)
+		{
+		}
+	};
+
+	HanoiMove()
+	{
+		for (int ii = 0; ii < MAX_HANOI_MARK; ++ii)
+		{
+			hMarks[ii].id = ii;
+		}
+	}
+
+	void SetMarkName(char n0, char n1, char n2)
+	{
+		hMarks[0].name = n0;
+		hMarks[1].name = n1;
+		hMarks[2].name = n2;
+	}
+
+	std::deque<MoveDtail> dqMoves;
+
+	void AddMove(int nfrom, int nto)
+	{
+		dqMoves.push_back(MoveDtail(nfrom, nto));
+	}
+
+	void PrintMove(void)
+	{
+		for (size_t ii = 0, iLoop = dqMoves.size();
+			ii < iLoop; ++ii)
+		{
+			MoveDtail hanoiMove = dqMoves[ii];
+			printf("%c -> %c\n", hMarks[hanoiMove.nFrom].name, hMarks[hanoiMove.nTo].name);
+		}
+	}
+};
+
+
+// move a -> c , use b as temp.
+template<class T>
+void HanoiLoop(HanoiTower<T>& a, HanoiTower<T>& b, HanoiTower<T>& c)
+{
+	int nMove = a.Size();
+
+// 	if (nMove <= 0)
+// 	{
+// 		assert(false);
+// 	}
+// 	else if (nMove == 1)
+// 	{
+// 		a.MoveTo(c);
+// 	}
+// 	else if (nMove == 2)
+// 	{
+// 		a.MoveTo(b);
+// 		a.MoveTo(c);
+// 		b.MoveTo(c);
+// 	}
+// 	else
+// 	{
+// 		HanoiRecur(nMove - 1, a, c, b);
+// 		a.MoveTo(c);
+// 		HanoiRecur(nMove - 1, b, a, c);
+// 	}
+
+// 	if (nMove % 2) // 奇数个
+// 	{
+// 		b.Swap(c);
+// 	}
+
+
+
+	HanoiMove hanoiMove;
+	hanoiMove.AddMove(0, 1);
+	hanoiMove.AddMove(0, 2);
+	hanoiMove.AddMove(1, 2);
+
+	hanoiMove.SetMarkName('a', 'b', 'c');
+	hanoiMove.PrintMove();
+
+
+	hanoiMove.SetMarkName('a', 'c', 'b');
+	hanoiMove.PrintMove();
+
+// 	std::stack<HanoiMove> dqHanoiMoves;
+// 	if (ii = 1)
+// 	{
+// 		dqHanoiMoves.push()
+// 	}
+// 
+// 	std::stack<std::string> dqMoves;
+// 	std::stack<std::string> dqMovesTemp;
+// 
+// 	for (int ii = 1; ii < nMove; ++ii)
+// 	{
+// 		if (ii == 1)
+// 		{
+// 			dqMoves.push(a.MoveString(b));
+// 		}
+// 		else if (ii == 2)
+// 		{
+// 			dqMoves.push(a.MoveString(b));
+// 			dqMoves.push(a.MoveString(c));
+// 			dqMoves.push(b.MoveString(c));
+// 		}
+// 		else
+// 		{
+// 			// i-1 的移动
+// 			dqMovesTemp = dqMoves;
+// 			if (ii % 2)
+// 			{
+// 				// 偶数	
+// 
+// 			}
+// 		}
+// 	}
+
+
+
+}
+
+int main(void)
+{
+	int nTowerHight = 0;
+
+
+
+// 	while (true)
+// 	{
+// 	scanf("%d", &nTowerHight);
+// 	HanoiTower<int> a('a', nTowerHight);
+// 	HanoiTower<int> b('b');
+// 	HanoiTower<int> c('c');
+// 
+// 	HanoiRecur<int>(nTowerHight, a, b, c);
+// 
+// 	printf("\n");
+// 
+// 	}
+	return 0;
+}

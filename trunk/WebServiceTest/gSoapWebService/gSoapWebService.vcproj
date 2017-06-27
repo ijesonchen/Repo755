@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="gb2312"?>
+<VisualStudioProject ProjectType="Visual C++" Version="9.00" Name="gSoapWebService" ProjectGUID="{3ACBA72C-F9D5-4815-84D5-7DEAEBDE7011}" RootNamespace="gSoapWebService" Keyword="MFCProj" TargetFrameworkVersion="196613">
+    <Platforms>
+        <Platform Name="Win32"/>
+    </Platforms>
+    <ToolFiles/>
+    <Configurations>
+        <Configuration Name="Debug|Win32" OutputDirectory="$(SolutionDir)bin\run" IntermediateDirectory="$(SolutionDir)bin\inter\$(ProjectName)_$(ConfigurationName)_$(PlatformName)" ConfigurationType="1" UseOfMFC="1" CharacterSet="1">
+            <Tool Name="VCPreBuildEventTool"/>
+            <Tool Name="VCCustomBuildTool"/>
+            <Tool Name="VCXMLDataGeneratorTool"/>
+            <Tool Name="VCWebServiceProxyGeneratorTool"/>
+            <Tool Name="VCMIDLTool" PreprocessorDefinitions="_DEBUG" MkTypLibCompatible="false" ValidateParameters="true"/>
+            <Tool Name="VCCLCompilerTool" Optimization="0" PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG" MinimalRebuild="true" BasicRuntimeChecks="3" RuntimeLibrary="1" UsePrecompiledHeader="2" WarningLevel="3" DebugInformationFormat="4"/>
+            <Tool Name="VCManagedResourceCompilerTool"/>
+            <Tool Name="VCResourceCompilerTool" PreprocessorDefinitions="_DEBUG" Culture="2052" AdditionalIncludeDirectories="$(IntDir)"/>
+            <Tool Name="VCPreLinkEventTool"/>
+            <Tool Name="VCLinkerTool" LinkIncremental="2" GenerateDebugInformation="true" SubSystem="2" TargetMachine="1" OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName)_$(PlatformName).exe"/>
+            <Tool Name="VCALinkTool"/>
+            <Tool Name="VCManifestTool"/>
+            <Tool Name="VCXDCMakeTool"/>
+            <Tool Name="VCBscMakeTool"/>
+            <Tool Name="VCFxCopTool"/>
+            <Tool Name="VCAppVerifierTool"/>
+            <Tool Name="VCPostBuildEventTool"/>
+        </Configuration>
+        <Configuration Name="Release|Win32" OutputDirectory="$(SolutionDir)bin\run" IntermediateDirectory="$(SolutionDir)bin\inter\$(ProjectName)_$(ConfigurationName)_$(PlatformName)" ConfigurationType="1" UseOfMFC="2" CharacterSet="1" WholeProgramOptimization="1">
+            <Tool Name="VCPreBuildEventTool"/>
+            <Tool Name="VCCustomBuildTool"/>
+            <Tool Name="VCXMLDataGeneratorTool"/>
+            <Tool Name="VCWebServiceProxyGeneratorTool"/>
+            <Tool Name="VCMIDLTool" PreprocessorDefinitions="NDEBUG" MkTypLibCompatible="false" ValidateParameters="true"/>
+            <Tool Name="VCCLCompilerTool" Optimization="2" EnableIntrinsicFunctions="true" PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG" MinimalRebuild="false" RuntimeLibrary="2" EnableFunctionLevelLinking="true" UsePrecompiledHeader="2" WarningLevel="3" DebugInformationFormat="3"/>
+            <Tool Name="VCManagedResourceCompilerTool"/>
+            <Tool Name="VCResourceCompilerTool" PreprocessorDefinitions="NDEBUG" Culture="2052" AdditionalIncludeDirectories="$(IntDir)"/>
+            <Tool Name="VCPreLinkEventTool"/>
+            <Tool Name="VCLinkerTool" LinkIncremental="1" GenerateDebugInformation="true" SubSystem="2" OptimizeReferences="2" EnableCOMDATFolding="2" TargetMachine="1" OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName)_$(PlatformName).exe"/>
+            <Tool Name="VCALinkTool"/>
+            <Tool Name="VCManifestTool"/>
+            <Tool Name="VCXDCMakeTool"/>
+            <Tool Name="VCBscMakeTool"/>
+            <Tool Name="VCFxCopTool"/>
+            <Tool Name="VCAppVerifierTool"/>
+            <Tool Name="VCPostBuildEventTool"/>
+        </Configuration>
+    </Configurations>
+    <References/>
+    <Files>
+        <Filter Name="源文件" Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx" UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+            <File RelativePath=".\gSoapWebService.cpp"/>
+            <File RelativePath=".\gSoapWebServiceDlg.cpp"/>
+            <File RelativePath=".\stdafx.cpp">
+                <FileConfiguration Name="Debug|Win32">
+                    <Tool Name="VCCLCompilerTool" UsePrecompiledHeader="1"/>
+                </FileConfiguration>
+                <FileConfiguration Name="Release|Win32">
+                    <Tool Name="VCCLCompilerTool" UsePrecompiledHeader="1"/>
+                </FileConfiguration>
+            </File>
+        </Filter>
+        <Filter Name="头文件" Filter="h;hpp;hxx;hm;inl;inc;xsd" UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+            <File RelativePath=".\gSoapWebService.h"/>
+            <File RelativePath=".\gSoapWebServiceDlg.h"/>
+            <File RelativePath=".\Resource.h"/>
+            <File RelativePath=".\stdafx.h"/>
+            <File RelativePath=".\targetver.h"/>
+        </Filter>
+        <Filter Name="资源文件" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav" UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+            <File RelativePath=".\res\gSoapWebService.ico"/>
+            <File RelativePath=".\gSoapWebService.rc"/>
+            <File RelativePath=".\res\gSoapWebService.rc2"/>
+        </Filter>
+        <Filter Name="gz01">
+            <File RelativePath=".\FTP\FtpClient.cpp"/>
+            <File RelativePath=".\FTP\FtpClient.h"/>
+            <File RelativePath=".\gSOAP\soapC.cpp">
+                <FileConfiguration Name="Debug|Win32">
+                    <Tool Name="VCCLCompilerTool" UsePrecompiledHeader="0"/>
+                </FileConfiguration>
+                <FileConfiguration Name="Release|Win32">
+                    <Tool Name="VCCLCompilerTool" UsePrecompiledHeader="0"/>
+                </FileConfiguration>
+            </File>
+            <File RelativePath=".\gSOAP\soapClient.cpp">
+                <FileConfiguration Name="Debug|Win32">
+                    <Tool Name="VCCLCompilerTool" UsePrecompiledHeader="0"/>
+                </FileConfiguration>
+                <FileConfiguration Name="Release|Win32">
+                    <Tool Name="VCCLCompilerTool" UsePrecompiledHeader="0"/>
+                </FileConfiguration>
+            </File>
+            <File RelativePath=".\gSOAP\soapH.h"/>
+            <File RelativePath=".\gSOAP\soapStub.h"/>
+            <File RelativePath=".\gSOAP\stdsoap2.cpp">
+                <FileConfiguration Name="Debug|Win32">
+                    <Tool Name="VCCLCompilerTool" UsePrecompiledHeader="0"/>
+                </FileConfiguration>
+                <FileConfiguration Name="Release|Win32">
+                    <Tool Name="VCCLCompilerTool" UsePrecompiledHeader="0"/>
+                </FileConfiguration>
+            </File>
+            <File RelativePath=".\gSOAP\stdsoap2.h"/>
+            <File RelativePath=".\gSOAP\ws_USCOREmaterialSoap.nsmap"/>
+        </Filter>
+        <File RelativePath=".\ReadMe.txt"/>
+    </Files>
+    <Globals>
+        <Global Name="RESOURCE_FILE" Value="gSoapWebService.rc"/>
+    </Globals>
+</VisualStudioProject>

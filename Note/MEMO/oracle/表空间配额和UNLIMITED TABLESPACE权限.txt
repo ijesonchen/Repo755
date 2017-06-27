@@ -1,0 +1,121 @@
+表空间配额和UNLIMITED TABLESPACE权限 (2012-07-20 200908)转载▼
+标签： oracle unlimited tablespace quota resource	分类： ORACLE
+对于一个新建的用户，如果没有分配给unlimited tablespace系统权限的用户，必须先给他们指定限额，之后他们才能在表空间中创建对象，限额可以是：
+A、以兆字节或者千字节为单位的特定值
+B、无限制的
+
+限额是指定标空间中允许的空间容量，默认的情况下，用户在任何表空间中都是没有限额的，可以使用一下三个选项来为用户提供表空间限额：
+A、无限制的：允许用户最大限度的使用表空间中的可用空间
+B、值：用户可以使用的表空间，以千字节或者兆字节为单位。这并不能保证会为用户保留该空间。因此此值可能大于或小于表看三毛中的当前可用表空间
+C、UNLIMITED TABLESPACE系统权限：此系统权限会覆盖所有的单个表空间限额，并向用户提供所有表空间（包括SYSTEM和SYSAUX）的无限制限额（注：授予resource角色的时候也会授予此权限）
+一定不要为用户提供system或sysaux表空间的限额。通常，只有sys和system用户才能在system或sysaux表空间中创建对象。
+对于分配的临时表空间或临时还原表空间则不需要限额。
+
+如果需要为一个用户指定一个限额，可以有两种方法：
+1、在创建用户的时候指定限额：
+CREATE USER ABC IDENTIFIED BY ABC
+DEFAULT TABLESPACE TEST
+TEMPORARY TABLESPACE TEMP
+QUOTA 3M ON TEST;
+2、在创建用户完成之后对用户限额进行指定：
+CREATE USER BCD IDENTIFIED BY BCD
+DEFAULT TABLESPACE TEST;
+ALTER USER BCD QUOTA 3M ON TEST;
+3、更改用户的表空间限额：
+全局：
+grant unlimited tablespace to abc;
+针对某个表空间：
+alter user abc quota unlimited on test;
+回收：
+revoke unlimited tablespace from abc;
+alter user abc quota 0 on test;
+
+
+在此需要注意两个概念：表空间不足和用户配额不足
+这两着不是一个概念。表空间的大小是指实际的用户表空间的大小；配额大小是用户指定使用表空间的大小
+二者的解决方法也不相同。配额问题的解决：alter user abc auota 2g on tablespace_name;表空间不足的话就是扩展表空间或者增加数据文件了。
+
+与表空间限额先关的数据字典：
+dba_ts_quotas：DBA_TS_QUOTAS describes tabelspace quotas for all users
+user_ts_quotas：USER_TS_QUOTAS describes tablespace quotas for the current user. This view does not display the USERNAME column;
+在两个数据字典中，max_bytes字段就是表示表空间限额的值了，单位是B，其中-1代表没有限制，其他的值多少就是多少的限额了。
+
+-----------------昏割线------------------------
+在最后我们需要关于一个比较重要的权限做一个说明，这个系统权限就是UNLIMITED TABLESPACE
+unlimited tablespace的特点：
+1、系统权限unlimited tablespace不能被授予role，只能被授予用户。也就是说，unlimited tablespace系统权限不能包含在一个角色role中
+2、unlimited tablespace没有被包括在resource role和dba role中，但是unlimited tablespace随着resource或者dba的授予而授予用户的。也就是说，如果将role角色授予了某个用户，那么这个用户将会拥有unlimited tablespace系统权限
+3、unlimited tablespace不能伴随这resource被授予role而授予用户。也就是说加入resource角色被授予了role_test角色，然后把role_test授予了test用户，但是此时unlimited tablespace没有被授予test用户
+
+接下来针对这个问题做一个测试吧
+A、首先创建两个用户，并赋予相关的权限：
+SYS@test  CREATE USER TEST01 IDENTIFIED BY test01 DEFAULT TABLESPACE TEST;
+SYS@test  CREATE USER TEST02 IDENTIFIED BY test02 DEFAULT TABLESPACE TEST;
+SYS@test  GRANT CONNECT,CREATE TABLE TO TEST01;
+SYS@test  GRANT CONNECT,RESOURCE TO TEST02;
+SYS@test  GRANT SELECT ON SCOTT.EMP TO TEST01;
+SYS@test  GRANT SELECT ON SCOTT.EMP TO TEST02;
+SYS@test  ALTER USER TEST01 QUOTA 1k ON TEST;
+SYS@test  ALTER USER TEST02 QUOTA 1k ON TEST;
+test01，包含connect角色和create table权限
+test02，包含connect和resource角色
+
+B、连接到两个用户查看相应的权限：
+SYS@test  conn test01test01
+TEST01@test  select  from session_privs;
+PRIVILEGE
+---------------
+CREATE SESSION
+CREATE TABLE
+TEST01@test  select  from user_ts_quotas;
+TABLESPACE_NAME    BYTES  MAX_BYTES  BLOCKS MAX_BLOCKS DRO
+---------------- ------- ---------- ------- ---------- ---
+TEST                   0       8192       0          1 NO
+TEST01@test  conn test02test02
+TEST02@test  select  from session_privs;
+PRIVILEGE
+--------------------
+UNLIMITED TABLESPACE
+CREATE SESSION
+CREATE TABLE
+CREATE CLUSTER
+CREATE SEQUENCE
+CREATE PROCEDURE
+CREATE TRIGGER
+CREATE TYPE
+CREATE OPERATOR
+CREATE INDEXTYPE
+TEST02@test  select  from user_ts_quotas;
+TABLESPACE_NAME    BYTES  MAX_BYTES  BLOCKS MAX_BLOCKS DRO
+---------------- ------- ---------- ------- ---------- ---
+TEST                   0       8192       0          1 NO
+从上面加问号的unlimited tablespace，这个权限只是在test02用户中才有的，可见是在resource分配给test02的时候，系统自动划分过来的对象权限，因为在resource角色中根本就没有包含也不会包含unlimited tablespace对象权限：
+MAI@test  select ROLE,PRIVILEGE from role_sys_privs where role='RESOURCE';
+ROLE       PRIVILEGE
+---------- --------------------
+RESOURCE   CREATE SEQUENCE
+RESOURCE   CREATE TRIGGER
+RESOURCE   CREATE CLUSTER
+RESOURCE   CREATE PROCEDURE
+RESOURCE   CREATE TYPE
+RESOURCE   CREATE OPERATOR
+RESOURCE   CREATE TABLE
+RESOURCE   CREATE INDEXTYPE
+
+3、创建表进行验证权限
+TEST01@test  create table test as select  from scott.emp;
+TEST01@test  insert into test select  from test;
+ORA-01536 space quota exceeded for tablespace 'TEST'
+可能是由于1k的划分实在太小的缘故，在这里执行的话，会直接报ORA-01536错误，不过这个不影响我们的判断，我们切换到test02用户执行同样的操作：
+TEST02@test  create table test as select  from scott.emp;
+Table created.
+创建成功，说明这个用户的unlimited tablespace的对象权限发挥了作用。说明了上面提到的unlimited tablespace对象权限的第一个问题和第二个问题的一半。
+至于上面提及的三个说明，童鞋们可以分别做实验进行测试。
+ 
+ 
+近期有位博友在评论中提到了，对上文的两个疑点，我在此做以解释。
+是我的疏忽，没有在写日志的时候习惯性的加上数据库的版本和平台，在此向大家道歉了，谢谢博友 就是爱问 的支持！
+评论中提到的的两个疑点都是在11g r2中有的功能（已测试，确实如此），在此对其进行补充：
+数据库版本：Oracle Database 10g Enterprise Edition Release 10.2.0.1.0
+操作系统版本：Redhat Linux Enterprise 5.4
+编辑时间：2013年4月19日95043

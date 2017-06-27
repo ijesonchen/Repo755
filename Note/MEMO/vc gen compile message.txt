@@ -1,0 +1,7 @@
+// to generate message
+#define __STR2__(x) #x
+#define __STR1__(x) __STR2__(x)
+#define ___SHOWMSG __FILE__ "("__STR1__(__LINE__)") : +++++++++++ : "
+
+
+#pragma message(___SHOWMSG"this is warning message")

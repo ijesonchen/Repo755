@@ -1,0 +1,90 @@
+debug版程序报Runtime Error! R6030 - CRT not initialized
+编译环境：VS2008 SP1，MFC document
+
+*****************************************************
+处理过程：
+
+程序编译错误？
+重新编译，重启系统，无效。
+
+dll库被修改？
+重新安装VS08运行库，无效。
+
+程序链接接dll问题？
+将Microsoft.VC90.DebugXXX及相应.manifest文件放到运行目录，无效。
+（版本9.0.21022.8 9.0.30729.1都试过）
+
+因为之前某一版本运行正常，在vs中运行debug调试，看装载dll情况。（VS输出窗口，调试）
+发现二者开始的时候DLL加载情况一致，但是有问题的版本在加载某一用户DLL后，接着加载了
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.30729.4148_x-ww_d495ac4e\msvcr90.dll
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.30729.4148_x-ww_d495ac4e\msvcp90.dll
+而之前正常的版本是在之后才加载（接近看到程序界面时）
+因此怀疑问题出在该用户DLL上。
+
+对比发现，两个用户DLL实现的功能一样，并且都是静态链接生成的dll，但是
+正常版本加载的是A用户DLL，分debug版和release版通过#pragram comment指令链接（MainFram.cpp中）。
+报错版本加载的是B用户DLL，直接通过#pragram comment指令链接release版。
+
+推测原因是B用户DLL使用了Relase版crt库导致主程序无法正常初始化CRT。
+
+*****************************************************
+解决方案：
+
+最终测试有两种方案可以解决问题。
+解决方案1：对B用户DLL不使用#pragram comment指令链接方式，而是将相应lib文件加入到项目中。
+测试通过。
+改变：加载DLL库顺序改变（参见程序DLL加载顺序）
+
+解决方案2：代码不变（仍然使用指令链接），但是替换B用户DLL为DEBUG版。因为某些原因，B用户debug版采用的动态链接生成（Release版为静态链接生成）
+测试通过。
+改变：加载DLL库顺序改变（参见程序DLL加载顺序）
+
+
+*****************************************************
+程序DLL加载顺序
+
+正常老版本
+...
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.DebugMFC_1fc8b3b9a1e18e3b_9.0.30729.1_x-ww_c94a3a24\mfc90ud.dll
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.DebugCRT_1fc8b3b9a1e18e3b_9.0.30729.1_x-ww_f863c71f\msvcr90d.dll
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.DebugCRT_1fc8b3b9a1e18e3b_9.0.30729.1_x-ww_f863c71f\msvcp90d.dll
+A用户DLL
+...(加载了一些其他的DLL，包括Microsoft.VC90.MFCLOC Microsoft.Windows.Common-Controls)
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.30729.4148_x-ww_d495ac4e\msvcr90.dll
+...
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.30729.4148_x-ww_d495ac4e\msvcp90.dll
+...
+
+有问题版本
+...
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.DebugMFC_1fc8b3b9a1e18e3b_9.0.30729.1_x-ww_c94a3a24\mfc90ud.dll
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.DebugCRT_1fc8b3b9a1e18e3b_9.0.30729.1_x-ww_f863c71f\msvcr90d.dll
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.DebugCRT_1fc8b3b9a1e18e3b_9.0.30729.1_x-ww_f863c71f\msvcp90d.dll
+加载B用户DLL
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.30729.4148_x-ww_d495ac4e\msvcr90.dll
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.30729.4148_x-ww_d495ac4e\msvcp90.dll
+...
+
+修改1版本
+...
+加载B用户DLL
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.30729.4148_x-ww_d495ac4e\msvcr90.dll
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.30729.4148_x-ww_d495ac4e\msvcp90.dll
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.DebugMFC_1fc8b3b9a1e18e3b_9.0.30729.1_x-ww_c94a3a24\mfc90ud.dll
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.DebugCRT_1fc8b3b9a1e18e3b_9.0.30729.1_x-ww_f863c71f\msvcr90d.dll
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.DebugCRT_1fc8b3b9a1e18e3b_9.0.30729.1_x-ww_f863c71f\msvcp90d.dll
+...
+
+方案2版本(加载顺序类似正常老版本)
+...
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.DebugMFC_1fc8b3b9a1e18e3b_9.0.30729.1_x-ww_c94a3a24\mfc90ud.dll
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.DebugCRT_1fc8b3b9a1e18e3b_9.0.30729.1_x-ww_f863c71f\msvcr90d.dll
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.DebugCRT_1fc8b3b9a1e18e3b_9.0.30729.1_x-ww_f863c71f\msvcp90d.dll
+A用户DLL
+...(加载了一些其他的DLL，包括A用户DLL依赖，Microsoft.VC90.MFCLOC Microsoft.Windows.Common-Controls)
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.30729.4148_x-ww_d495ac4e\msvcr90.dll
+C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.30729.4148_x-ww_d495ac4e\msvcp90.dll
+...
+
+
+

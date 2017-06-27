@@ -1,0 +1,42 @@
+CREATE TABLE dm_det (
+	id_ INTEGER PRIMARY KEY,
+	fr_ TEXT NOT NULL,
+	frt_ TEXT NOT NULL,
+	to_ TEXT NOT NULL,
+	tot_ TEXT NOT NULL,
+	dt_ INTEGER NOT NULL,
+	mn_ REAL NOT NULL,
+	ar_ INTEGER NOT NULL,
+	nt_ TEXT
+);
+
+SELECT
+	dm_det.id_, -- 序号
+	dm_det.fr_, -- 来源账户
+	dm_det.frt_, -- 来源类别
+	dm_det.to_,  -- 目的账户
+	dm_det.tot_, -- 目的类别
+	dm_det.dt_,  -- 时间
+	dm_det.mn_,  -- 金额
+	dm_det.ar_,  -- 账本号?
+	dm_det.nt_   -- 备注
+FROM
+	dm_det
+
+
+CREATE TABLE dm_acc (
+	id_ TEXT PRIMARY KEY, 
+	nm_ TEXT NOT NULL, -- 账户名
+	tp_ TEXT NOT NULL,
+	ca_ INTEGER NULL,
+	iv_ REAL NOT NULL
+);
+
+SELECT
+	dm_acc.id_,  -- 标识
+	dm_acc.nm_,  -- 名称
+	dm_acc.tp_,  -- 类别
+	dm_acc.ca_,  -- 是否现金账户
+	dm_acc.iv_   -- 初始值
+FROM
+	dm_acc

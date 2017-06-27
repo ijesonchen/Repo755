@@ -1,0 +1,209 @@
+. added avi compressor options(avi option dlg)
+. fixed AddFilterByClsid or Name filter name error when name not specified explicitly
+. added DShow::LoadGraphFile&SaveGraphFile for debugging
+. move cmdline specified code to CConverterCMD
+. changed time format to human reading format
+
+notes:
+pos: directshow/ds tutorials/recompressing an avi file
+1. try to use capture graph builder2 to build graph
+2. try to retrieve IMediaSeeking from muxer
+3. By default, these parameters are expressed in units of 100 nanoseconds, also called reference time. Any filter that can seek must support seeking by reference time. 
+
+Error checking is omitted for clarity.
+
+. resume default value of #pragma pack in id3def.h
+. added id3 genres definition
+. skip writing vbr header in cbr mode
+. fixed Mp3OptionDlg::GetTask error
+. fixed CRangeCtrl display error(change clip rectangle to client rectangle)
+. fixed mp3 encode error(CBR frame length error)
+. modified bitrate list(added MPEG1 and MPEG2)
+. modified bitrate unit from bps to kbps
+error in UI CComboBox selectstring
+
+. added CComboBoxPlus,fixed mp3 option UI
+. added remove all task
+. changed Delete into Remove task
+. added mpegversion in MP3Config and related settings
+. added sample rate autoadjust feature
+. added call CWriter::End() in derived class avoid MediaType leak
+. not support change channel mode any longer
+. auto delete zero length output file
+. fixed CTaskList::DelAllTask m_nCount error
+. added mkx options UI
+. modified zh_cn,zh_tw resource
+
+. completed APE writer,
+. deleted MACDll.dll(because not needed)
+. removed MACDll.dll from setup script
+. added AudioConverter
+. added cmdline version mp3 parameter
+. removed audio task from video tasklist
+
+2006-01-15
+. added ogg options, had merged into zh_cn&zh_tw localization.
+. can not support 8000HZ or below
+. all ogg feature not tested
+. added cmdline options for ogg
+. ogg now support 8,16 bits per sample and 1,2 audio channels
+
+2006-01-22
+. PrxDllRegisterServer always failed, not found the reason yet
+. changed RawFileWriter, now using WTL instead, removed MFC.
+
+-------------------------------------------------------------
+2006-01-27
+. changed clean script, removed wavdest, added filters
+. changed packsrc.bat
+. added Filters\clean.bat
+. added CMediaType
+. added cmdline mpeg support
+
+2006-01-29
+. fixed RawWriter Filter Error MessageBox error.
+
+2006-02-03
+. added mpeg program stream, PES processing class.
+. modified mp3 compressor DMO
+
+2006-02-04
+. fixed web product page error: can't show version name, modified
+  latestrel.php and mmconvert.xml, need to be upload to website.
+. added mpgdef.h
+. renamed PES.* to mpgpes.*
+. removed util.* from MpgMultiplexer project
+--------------------------------------------------------------
+2006-02-25
+. added project SetupHelper
+. changed clean & build script for SetupHelper
+. changed setup script: added feature test if ffdshow is already installed
+. changed setup script: added desktop icons task
+
+2006-02-26
+. changed setup script: added vs2005 test
+. added testvs8.dll
+there is still a question: if a old version of ffdshow installed on user's
+computer, it will not be update. how to determine ffdshow's version?
+
+----------------------------------------------------------------
+2006-03-11
+. changed ffdshow version compare of setuphelper
+. added *.vob and *.mpa to supported formats list
+. added sysdevenumerator(enumerator and white and black items)
+
+2006-03-13
+. added testvs8 into src cvs
+. completed SysDevEnumerator cache feature
+
+2006-03-14
+. added compressor cache feature(avi, mkx)
+. added ExcludedCompressor.h(unicode 1200)
+. added settings "Settings\\Encoder" "VBlackItemCount"|"VBlackItemx"
+. added video and audio compressor black items support
+. added helper.h: macro DIM_OF
+
+2006-03-15
+. added WriteString and ReadString to basefile.h
+
+2006-03-16
+. improved CBaseFile implementation.
+. changed Filters\clean.bat: added clean project.h _i.c,_p.c
+
+2006-03-19
+. renamed CBaseFile to CStdioFilePort
+. added CFilePort as base class of File class
+. added CWin32File
+. changed basefile.h to Unix LF mode
+. added x264 component to setup package
+. added xvid component to setup package
+
+2006-03-22
+. changed aboutpage to propertysheet, removed CAboutBox class
+. added AboutGeneralPage, AboutCreditsPage, AboutHistoryPage class and related resource
+. added string table resource, for the caption of AboutPropertySheet
+. added string table resource, for error msg of loading history file
+. renamed IDD_ABOUTBOX to IDD_ABOUT_GENERAL_PAGE
+. added hyperlink.* to common\3rd
+. added about_general_page hyperlink feature
+
+2006-03-23
+. added tooltips for donate & mailto button of about_general_page and related string table resource(IDS_CAPTION_DONATE, IDS_CAPTION_MAILTO)
+
+2006-03-24
+. updated help, added faq.js, problem.htm, toape.htm, toogg.htm, 59s.png
+
+2006-03-27
+. added splash window and associated dialog resource
+. added Cache catalog function to sys enumerator
+. added compressor cache feature when app startup
+
+2006-03-30
+. added FlatProgress.*
+. added splash.bmp resource
+
+2006-03-31
+. added Asf Profile cache
+. completed Splash screen
+
+2006-04-02
+. added compressors property page and associated resource
+. added class CCompressorListCtrl
+. vfw compressor's setings saving not complete yet
+. changed Alpha.bat, it will not rebuild all sources, only build
+  modified files, also will not release any alpha version, it will
+  only for internal testing.
+
+2006-04-05
+. updated zh_cn & zh_tw resource
+
+2006-04-08
+............................question to resolve.........................
+* modify file type
+add multithread conversion
+asf profile custom(wmf sample)
+log and feedback
+mute multi-channel file
+preserve meta info<idtag>
+check question<88>
+multi-channel audio support-none audio stream issue
+check question<103>-audio only avi
+check question<103>-edit time clip
+vfw compressor's setings saving not complete yet
+.......................................................................
+- Output file automatically to same directory as initial file. No need to 
+fill in the "Output Path" field.
+
+- File rename. not just *original filename*.mp3, but I want *new 
+filename*.mp3
+
+- Speed: MMConverter does not seem as fast as Fairstars. Can you improve the 
+speed?
+IDC_EDIT_OUTPUTPATH
+
+2006-04-12
+. added output path history
+. added dest file name column into convertion task dialog
+
+----------------------------------------------------------------
+2006-04-14
+. added functionality of modify destination file name.
+<but the marin has some issue yet>
+. added illegal char checking in destination file name
+. added CBubbleMsgBox into Common
+. added resource string table
+
+2006-05-05
+. added Log.*
+. added MailSend.*
+. added help - feedback
+. added res/feedback.ico
+
+2006-05-06
+. modified setup script: ren history.txt to history.txt.tmp
+. modified build script: add history.txt auto generating for auto update
+  version number and release date
+. updated build\BPP.exe
+. history.txt must be ANSI encode
+
+cvs tag -R V1_0_5_236B

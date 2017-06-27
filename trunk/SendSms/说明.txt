@@ -1,0 +1,11 @@
+使用wavcom短信猫发送短信
+
+lib	短信库及说明文档
+lib\drivers	驱动
+SendSms	示例程序
+
+1. 安装驱动 drivers\PL-2303 Driver Installer.exe
+2. 插入USB设备，发现新硬件，一直点击下一步直到安装完成。
+3. 系统设备管理器查看端口号，以Prolific USB-to-Serial Comm Port开头的就是短信设备端口。
+4. 收发短信直接调用sms.dll中的函数即可实现。
+5. 如需振铃，需要通过串口通信发送AT指令实现。

@@ -1,0 +1,232 @@
+package PBNetTest;
+
+enum MsgType
+{
+MSG_UNKNOWN             = 0x0000;
+MSG_CONNECT_REQ         = 0x0001;
+MSG_CONNECT_RESP        = 0x0002;
+MSG_CONNECT_RELEASE     = 0x0008;
+MSG_ECHO_REQ            = 0x0011;
+MSG_ECHO_RESP           = 0x0012;
+MSG_CALL_PROCESS_REQ    = 0x0021;
+MSG_CALL_PROCESS_RESP   = 0x0022;
+MSG_HISTORY_SEARCH_REQ  = 0x0041;
+MSG_HISTORY_SEARCH_RESP = 0x0042;
+MSG_HISTORY_TRANS_REQ   = 0x0043;
+MSG_HISTORY_TRANS_RESP  = 0x0044;
+MSG_FILE_LOCATION_NOTIFY= 0x0045;
+MSG_TARGET_QUERY_REQ    = 0x0047;
+MSG_TARGET_QUERY_RESP   = 0x0048;
+MSG_SET_RULE_REQ        = 0x1001;
+MSG_SET_RULE_RESP       = 0x1002;
+MSG_QUERY_RULE_REQ      = 0x1003;
+MSG_QUERY_RULE_RESP     = 0x1004;
+MSG_SET_SYSPARA_REQ     = 0x1009;
+MSG_SET_SYSPARA_RESP    = 0x1010;
+MSG_QUERY_SYSPARA_REQ   = 0x1011;
+MSG_QUERY_SYSPARA_RESP  = 0x1012;
+MSG_ALARM_NOTIFY        = 0x1014;
+MSG_STAT_NOTIFY         = 0x1016;
+MSG_OBJECT_MANAGE_REQ   = 0x1017;
+MSG_OBJECT_MANAGE_RESP  = 0x1018;
+MSG_FEED_BACK_NOTIFY    = 0x1019;
+MSG_SEARCH_REQ          = 0x0401;
+MSG_SEARCH_ABORT_REQ    = 0x0402;
+MSG_SEARCH_RESULT       = 0x0403;
+MSG_SEARCH_RESP         = 0x0404;
+MSG_SEARCH_STATE_REQ    = 0x0405;
+MSG_SEARCH_STATE_RESP   = 0x0406;
+MSG_GET_FILE_REQ        = 0x0407;
+MSG_GET_FILE_RESP       = 0x0408;
+MSG_ADD_LANG_SAMP_REQ   = 0x0409;
+MSG_ADD_LANG_SAMP_RESP  = 0x040A;
+MSG_OBJECT_MANAGE_NOTIFY= 0x040B;
+}
+
+message HeadMsg
+{
+required    fixed32 syn     = 1 [default = 0xFF];
+required    fixed32 pro     = 2 [default = 100];
+required    fixed32 type    = 3;
+required    fixed64 seqno   = 4;
+required    fixed32 len     = 5;
+}
+
+message ConnectRequest
+{
+required    string  spyid   = 1;
+optional    string  srid    = 2;
+}
+
+message ConnectResponse
+{
+required    OperationStatus status  = 1;
+required    string  spyid   = 2;
+optional    string  srid    = 3;
+}
+
+message ConnectRelease
+{
+required    OperationStatus status  = 1;
+required    string  spyid   = 2;
+optional    string  srid    = 3;
+}
+
+message EchoReqRes
+{
+required    uint32  timestamp   = 1;
+}
+
+message CallProcessRequest
+{
+required    string  callid              = 1;
+required    AudioRecordMode flag        = 2;
+required    int32   terminals           = 3;
+required    AudioChannelType channeltype = 4;
+required    AudioTransFlag  transflag   = 5 [default = ATF_NotTrans];
+optional    string  caller              = 6;
+optional    string  callee              = 7;
+optional    string  third               = 8;
+optional    uint64  starttime           = 9;
+optional    uint64  endtime             = 10;
+optional    uint32  recogflag           = 11 [default = 7];
+optional    FileAcquireMethod   method  = 12 [default = FAM_URL];
+optional    PhoneNumber callerappendix  = 13;
+optional    PhoneNumber calleeappendix  = 14;
+optional    PhoneNumber thirdappendix   = 15;
+optional    PriorityType   priority     = 16 [default = PT_Normal];
+optional    SystemCode  syscode         = 17;
+optional    bool    isimport            = 18;
+repeated    FileLocationNotify  voicefiles = 19;
+}
+
+
+message FileLocationNotify
+{
+required    string  callid              = 1;
+required    AudioFileTag    filetag     = 2;
+required    string  path                = 3;
+required    AudioEncodingTag    code    = 4;
+optional    SystemCode  syscode         = 5;
+}
+
+enum AudioEncodingTag
+{
+AET_Unknown         = 0;
+AET_ALaw            = 1;
+AET_Gsm610          = 2;
+AET_G726            = 3;
+AET_LinearPCM       = 4;
+AET_G723_16         = 5;
+AET_G723_15         = 6;
+AET_G729            = 7;
+AET_ULaw            = 8;
+AET_INTEL_G723      = 9;
+AET_INTEL_G729      = 10;
+AET_INTEL_GSM690    = 11;
+AET_AMR_NB          = 12;
+AET_GSM_EFR         = 13;
+}
+
+enum AudioFileTag
+{
+AFT_Unknown         = 0;
+AFT_Combination     = 1;
+AFT_Caller_ClusterA = 2;
+AFT_Callee_ClusterB = 3;
+AFT_Third_ClusterC  = 4;
+AFT_NoTag           = 5;
+}
+
+
+message SearchAbortRequest
+{
+required    string  taskid              = 1;
+required    SystemCode  syscode         = 2;
+required    string  aborttaskid         = 3;
+}
+
+message SearchResponse
+{
+required    string  taskid              = 1;
+required    SystemCode  syscode         = 2;
+required    OperationStatus status      = 3;
+}
+
+message AlarmNotify
+{
+required    string  alarmtime           = 1;
+required    AlarmLevel  level           = 2;
+required    string  content             = 3;
+required    string  modulename          = 4;
+optional    SystemCode  syscode         = 5;
+}
+
+enum AlarmLevel
+{
+AL_Unknown                          = 0;
+AL_General                          = 1;
+AL_Important                        = 2;
+AL_Urgent                           = 3;
+}
+
+message OperationStatus
+{
+required    int32   code                = 1;
+optional    string  description         = 2;
+}
+
+message SystemCode
+{
+optional    string  spyid           = 1;
+optional    string  srid            = 2;
+repeated    string  datasource      = 3;
+}
+
+enum AudioRecordMode
+{
+ARM_Unknown         = 0;
+ARM_Combination     = 1;
+ARM_Separation      = 2;
+}
+
+enum AudioChannelType
+{
+ACT_Unknown         = 0;
+ACT_Pcm             = 1;
+ACT_Voip            = 2;
+ACT_TwoLines        = 3;
+ACT_AirSignal       = 4;
+ACT_WX              = 5;
+}
+
+
+enum AudioTransFlag
+{
+ATF_Unknown         = 0;
+ATF_Trans           = 1;
+ATF_NotTrans        = 2;
+}
+
+enum FileAcquireMethod
+{
+FAM_Unknown                         = 0;
+FAM_URL                             = 1;
+FAM_Data                            = 2;
+}
+
+message PhoneNumber
+{
+required    string  telnumber       = 1;
+optional    string  countrycode     = 2;
+optional    string  provincecode    = 3;
+optional    string  areacode        = 4;
+}
+
+enum PriorityType
+{
+PT_Unknown          = 0;
+PT_High             = 1;
+PT_Normal           = 2;
+PT_Low              = 3;
+}

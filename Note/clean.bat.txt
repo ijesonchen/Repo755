@@ -1,0 +1,7 @@
+for /f "delims=" %%i in ('dir/b/s/ad Debug')do rd/s/q "%%i"
+for /f "delims=" %%i in ('dir/b/s/ad release') do rd/s/q "%%i"
+rd/s/q debug
+rd/s/q release
+del *.ncb /a/s/f/q
+rem del *.suo /a/s/f/q
+del *.user /a/s/f/q

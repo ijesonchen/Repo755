@@ -1,0 +1,12 @@
+vcxproj：
+
+常规：
+$(SolutionDir)bin\run\
+$(SolutionDir)bin\inter\$(ProjectName)_$(Configuration)_$(Platform)\
+$(ProjectName)_$(Configuration)_$(Platform)
+
+调试：
+$(OutDir)
+
+生成后事件：
+dumpbin /dependents $(TargetPath)

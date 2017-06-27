@@ -1,0 +1,8 @@
+使用MFC VS2008 SP1可以实现目录浏览的界面
+使用msdn的测试/样例代码可以实现
+bin
+MultiDocNoTabOffice07
+MultiDocOffice07
+MultiDocVS05
+SingleDocOffice07
+SingleDocVS05

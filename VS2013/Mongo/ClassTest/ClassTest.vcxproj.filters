@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{1bf60256-8788-4adc-a3eb-0552269d614f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MongoFunc">
+      <UniqueIdentifier>{5590a534-b6df-424d-b8c6-d72d889c9121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mongo">
+      <UniqueIdentifier>{209a1b64-0025-429c-94c5-6ef6580ddb91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{8d3225c0-3cf6-40da-948b-d20b0d31b1e4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ClassTest.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonFunction.h">
+      <Filter>MongoFunc</Filter>
+    </ClInclude>
+    <ClInclude Include="TestFunc.h">
+      <Filter>MongoFunc</Filter>
+    </ClInclude>
+    <ClInclude Include="MongoClient.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="MongoAuto.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="MongocHelp.h">
+      <Filter>Mongo</Filter>
+    </ClInclude>
+    <ClInclude Include="StudentAccess.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Student.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ClassTest.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="CommonFunction.cpp">
+      <Filter>MongoFunc</Filter>
+    </ClCompile>
+    <ClCompile Include="TestFunc.cpp">
+      <Filter>MongoFunc</Filter>
+    </ClCompile>
+    <ClCompile Include="MongoClient.cpp">
+      <Filter>Mongo</Filter>
+    </ClCompile>
+    <ClCompile Include="MongoAuto.cpp">
+      <Filter>Mongo</Filter>
+    </ClCompile>
+    <ClCompile Include="MongocHelp.cpp">
+      <Filter>Mongo</Filter>
+    </ClCompile>
+    <ClCompile Include="StudentAccess.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Student.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ClassTest.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

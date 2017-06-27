@@ -1,0 +1,28 @@
+参考：
+http://blog.csdn.net/dragoo1/article/details/8594189
+c++ gsoap webservice入门.txt
+
+gSOAP readme.txt
+
+示例
+1. 下载gSOAP
+http://www.cs.fsu.edu/~engelen/soap.html
+并解压
+
+2. 命令行进入目录gsoap-2.8\gsoap\bin\win32
+wsdl2h.exe -s -o wth.h http://www.webxml.com.cn/WebServices/WeatherWebService.asmx?wsdl
+soapcpp2 wth.h -I[gsoap路径]\gsoap-2.8\gsoap\import
+
+3. 复制文件到VC项目：
+生成的文件：
+soapH.h soapStub.h
+soapC.cpp soapClient.cpp WeatherWebServiceSoap.nsmap
+gSOAP支持文件：gsoap-2.8\gsoap
+stdsoap2.h stdsoap2.cpp
+
+4. 添加上述.cpp文件到vc项目，包含的头文件
+#include "soapH.h"  
+#include "WeatherWebServiceSoap.nsmap"  
+
+备注：
+wth.h不是项目编译必须的文件。但是其中包含用到的函数的Doxygen信息。
