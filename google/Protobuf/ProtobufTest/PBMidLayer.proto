@@ -1,0 +1,816 @@
+package PBMidLayer;
+
+enum MsgType
+{
+MSG_UNKNOWN             = 0x0000;
+MSG_CONNECT_REQ         = 0x0001;
+MSG_CONNECT_RESP        = 0x0002;
+MSG_CONNECT_RELEASE     = 0x0008;
+MSG_ECHO_REQ            = 0x0011;
+MSG_ECHO_RESP           = 0x0012;
+MSG_CALL_PROCESS_REQ    = 0x0021;
+MSG_CALL_PROCESS_RESP   = 0x0022;
+MSG_HISTORY_SEARCH_REQ  = 0x0041;
+MSG_HISTORY_SEARCH_RESP = 0x0042;
+MSG_HISTORY_TRANS_REQ   = 0x0043;
+MSG_HISTORY_TRANS_RESP  = 0x0044;
+MSG_FILE_LOCATION_NOTIFY= 0x0045;
+MSG_TARGET_QUERY_REQ    = 0x0047;
+MSG_TARGET_QUERY_RESP   = 0x0048;
+MSG_SET_RULE_REQ        = 0x1001;
+MSG_SET_RULE_RESP       = 0x1002;
+MSG_QUERY_RULE_REQ      = 0x1003;
+MSG_QUERY_RULE_RESP     = 0x1004;
+MSG_SET_SYSPARA_REQ     = 0x1009;
+MSG_SET_SYSPARA_RESP    = 0x100A;
+MSG_QUERY_SYSPARA_REQ   = 0x1011;
+MSG_QUERY_SYSPARA_RESP  = 0x1012;
+MSG_ALARM_NOTIFY        = 0x1014;
+MSG_STAT_NOTIFY         = 0x1016;
+MSG_OBJECT_MANAGE_REQ   = 0x1017;
+MSG_OBJECT_MANAGE_RESP  = 0x1018;
+MSG_FEED_BACK_NOTIFY    = 0x1019;
+MSG_SEARCH_REQ          = 0x0401;
+MSG_SEARCH_ABORT_REQ    = 0x0402;
+MSG_SEARCH_RESULT       = 0x0403;
+MSG_SEARCH_RESP         = 0x0404;
+MSG_SEARCH_STATE_REQ    = 0x0405;
+MSG_SEARCH_STATE_RESP   = 0x0406;
+MSG_GET_FILE_REQ        = 0x0407;
+MSG_GET_FILE_RESP       = 0x0408;
+MSG_ADD_LANG_SAMP_REQ   = 0x0409;
+MSG_ADD_LANG_SAMP_RESP  = 0x040A;
+MSG_OBJECT_MANAGE_NOTIFY= 0x040B;
+}
+
+message HeadMsg
+{
+required    fixed32 syn     = 1 [default = 0xFF];
+required    fixed32 pro     = 2 [default = 100];
+required    fixed32 type    = 3;
+required    fixed64 seqno   = 4;
+required    fixed32 len     = 5;
+}
+
+message ConnectRequest
+{
+required    string  spyid   = 1;
+optional    string  srid    = 2;
+}
+
+message ConnectResponse
+{
+required    OperationStatus status  = 1;
+required    string  spyid   = 2;
+optional    string  srid    = 3;
+}
+
+message ConnectRelease
+{
+required    OperationStatus status  = 1;
+required    string  spyid   = 2;
+optional    string  srid    = 3;
+}
+
+message EchoReqRes
+{
+required    uint32  timestamp   = 1;
+}
+
+message CallProcessRequest
+{
+required    string  callid              = 1;
+required    AudioRecordMode flag        = 2;
+required    int32   terminals           = 3;
+required    AudioChannelType channeltype = 4;
+required    AudioTransFlag  transflag   = 5 [default = ATF_NotTrans];
+optional    string  caller              = 6;
+optional    string  callee              = 7;
+optional    string  third               = 8;
+optional    uint64  starttime           = 9;
+optional    uint64  endtime             = 10;
+optional    uint32  recogflag           = 11 [default = 7];
+optional    FileAcquireMethod   method  = 12 [default = FAM_URL];
+optional    PhoneNumber callerappendix  = 13;
+optional    PhoneNumber calleeappendix  = 14;
+optional    PhoneNumber thirdappendix   = 15;
+optional    PriorityType   priority     = 16 [default = PT_Normal];
+optional    SystemCode  syscode         = 17;
+optional    bool    isimport            = 18;
+repeated    FileLocationNotify  voicefiles = 19;
+}
+
+message CallProcessResponse
+{
+required    string  callid              = 1;
+required    OperationStatus status      = 2;
+required    AudioFileTag    filetag     = 3;
+optional    RecognitionType recotype    = 4;
+optional    uint32  count               = 5;
+optional    PreprocessResult    prelist = 6;
+optional    SpeakerResult   speakerlist = 7;
+optional    KeywordResult   keywordlist = 8;
+optional    TranscriptResult  translist = 9;
+optional    VADResult   vad             = 10;
+optional    SpeechSegResult speechseg   = 11;
+optional    DTMFResult  dtmfs           = 12;
+optional    uint32  resultflag          = 13 [default = 7];
+optional    uint64  starttime           = 14;
+optional    SystemCode  syscode         = 15;
+}
+
+message HistorySearchRequest
+{
+required    string  taskid              = 1;
+required    int32   packageseq          = 2;
+required    int32   endflag             = 3;
+required    int32   records             = 4;
+optional    TaskAttribute   attribute   = 5;
+repeated    string  calllist            = 6;
+optional    SystemCode  syscode         = 7;
+}
+
+message TaskAttribute
+{
+required    uint32  total               = 1;
+required    PriorityType    priority    = 2;
+required    SearchCondition condition   = 3;
+repeated    string  objectids           = 4;
+optional    string  languagename        = 5;
+repeated    string  keywords            = 6;
+optional    bytes   voice               = 7;
+}
+
+message HistorySearchResponse
+{
+required    string  taskid              = 1;
+required    OperationStatus status      = 2;
+required    SearchCondition condition   = 3;
+required    uint32  count               = 4;
+optional    SystemCode  syscode         = 5;
+}
+
+message HistoryTransRequest
+{
+required    string  taskid              = 1;
+required    SearchCondition condition   = 2;
+required    uint32  begin               = 3;
+required    uint32  end                 = 4;
+optional    SystemCode  syscode         = 5;
+}
+
+message HistoryTransResponse
+{
+required    string  taskid              = 1;
+required    OperationStatus status      = 2;
+required    uint32  count               = 3;
+repeated    PreprocessResult    prelist = 4;
+repeated    SpeakerResult   speakerlist = 5;
+repeated    KeywordResult   keywordlist = 6;
+repeated    TranscriptResult translist  = 7;
+repeated    VADResult   vad             = 8;
+repeated    SpeechSegResult speechseg   = 9;
+repeated    DTMFResult  dtmfs           = 10;
+optional    SystemCode  syscode         = 11;
+}
+
+message FileLocationNotify
+{
+required    string  callid              = 1;
+required    AudioFileTag    filetag     = 2;
+required    string  path                = 3;
+required    AudioEncodingTag    code    = 4;
+optional    SystemCode  syscode         = 5;
+}
+
+message TargetQueryRequest
+{
+required    string  taskid              = 1;
+required    string  target              = 2;
+required    uint64  starttime           = 3;
+required    uint64  endtime             = 4;
+optional    SystemCode  syscode         = 5;
+}
+
+message TargetQueryResponse
+{
+required    string  taskid              = 1;
+required    OperationStatus status      = 2;
+optional    int32   packageseq          = 3;
+optional    int32   endflag             = 4;
+optional    int32   records             = 5;
+repeated    string  calllist            = 6;
+optional    SystemCode  syscode         = 7;
+}
+
+message SetRuleRequest
+{
+required    OperationType   opertype    = 1;
+required    RuleType    operation       = 2;
+optional    SpeakerRule speaker         = 3;
+optional    KeywordRule keyword         = 4;
+optional    SpeechSegRule   speechseg   = 5;
+optional    SystemCode      syscode     = 6;
+}
+
+message SetRuleResponse
+{
+required    OperationStatus status      = 1;
+optional    SystemCode      syscode     = 2;
+}
+
+message QueryRuleRequest
+{
+required    RuleType    operation       = 1;
+optional    string  objectid            = 2;
+optional    string  languagename        = 3;
+optional    string  keyword             = 4;
+optional    string  speechseglang       = 5;
+optional    string  speechsegid         = 6;
+optional    SystemCode  syscode         = 7;
+}
+
+message QueryRuleResponse
+{
+required    OperationStatus status      = 1;
+required    uint32  count               = 2;
+repeated    SpeakerRule speakerlist     = 3;
+repeated    KeywordRule keywordlist     = 4;
+repeated    SpeechSegRule   speechseg   = 5;
+optional    SystemCode  syscode         = 6;
+}
+
+message SetSysParaRequest
+{
+required    SystemParaType  type        = 1;
+optional    float   languagethreshold   = 2;
+optional    float   speakerthreshold    = 3;
+optional    float   keywordthreshold    = 4;
+optional    int32   languagecount       = 5;
+optional    int32   speakercount        = 6;
+optional    SystemCode  syscode         = 7;
+}
+
+message SetSysParaResponse
+{
+required    OperationStatus status      = 1;
+optional    SystemCode  syscode         = 2;
+}
+
+message QuerySysParaRequest
+{
+optional    SystemCode  syscode         = 1;
+}
+
+message QuerySysParaResponse
+{
+required    OperationStatus status      = 1;
+optional    float   languagethreshold   = 2;
+optional    float   speakerthreshold    = 3;
+optional    float   keywordthreshold    = 4;
+optional    int32   languagecount       = 5;
+optional    int32   speakercount        = 6;
+required    uint32  supportlangs        = 7;
+repeated    LanguageInfo    langlist    = 8;
+optional    SystemCode  syscode         = 9;
+}
+
+message AlarmNotify
+{
+required    string  alarmtime           = 1;
+required    AlarmLevel  level           = 2;
+required    string  content             = 3;
+required    string  modulename          = 4;
+optional    SystemCode  syscode         = 5;
+}
+
+message StatusNotify
+{
+required    string  modulename          = 1;
+required    string  ip                  = 2;
+required    float   cpuusage            = 3;
+required    int32   totalmemory         = 4;
+required    int32   memoryused          = 5;
+required    int32   currenttasks        = 6;
+required    string  recordtime          = 7;
+optional    SystemCode  syscode         = 8;
+repeated    SystemStateItem     states  = 9;
+}
+
+message ObjectManageRequest
+{
+required    string  objectid            = 1;
+required    OperationType   opertype    = 2;
+required    uint32  count               = 3;
+repeated    TrainInfo   list            = 4;
+optional    string  objectname          = 5;
+optional    bool    isautotrain         = 6;
+optional    SystemCode  syscode         = 7;
+optional    GenderType  gender          = 8;
+}
+
+message  ObjectManageNotify
+{
+required    OperationStatus status      = 1;
+optional    string  objectid            = 2;
+optional    SystemCode  syscode         = 3;
+}
+
+message  ObjectManageResponse
+{
+required    OperationStatus status      = 1;
+optional    string  objectid            = 2;
+optional    SystemCode  syscode         = 3;
+}
+
+message FeedbackNotify
+{
+required    string  callid              = 1;
+required    AudioFileTag    filetag     = 2;
+optional    int32   type                = 3;
+optional    int32   result              = 4;
+optional    PreprocessResult    errorpp = 5;
+optional    PreprocessResult    rightpp = 6;
+optional    SpeakerResult   errorsp     = 7;
+optional    SpeakerResult   rightsp     = 8;
+optional    KeywordResult   errorkw     = 9;
+optional    KeywordResult   rightkw     = 10;
+optional    TranscriptResult    errorts = 11;
+optional    TranscriptResult    rightts = 12;
+optional    VADResult   rightvad        = 13;
+optional    VADResult   errorvad        = 14;
+optional    SpeechSegResult rightss     = 15;
+optional    SpeechSegResult errorss     = 16;
+optional    DTMFResult  rightdtmf       = 17;
+optional    DTMFResult  errordtmf       = 18;
+optional    SystemCode  syscode         = 19;
+}
+
+message SearchRequest
+{
+required    string  taskid              = 1;
+required    SystemCode  syscode         = 2;
+required    int32   maxresult           = 3;
+required    SearchTaskType  tasktype    = 4;
+optional    GenderType  gender          = 5;
+optional    uint64  starttime           = 6;
+optional    uint64  endtime             = 7;
+repeated    PhoneNumber telpattern      = 8;
+optional    string  lang                = 9;
+repeated    KeywordRule keywords        = 10;
+repeated    SpeechSegRule   speechseg   = 11;
+repeated    SpeakerRule speakers        = 12;
+optional    bytes   voice               = 13;
+repeated    string  calllist            = 14;
+}
+
+message SearchAbortRequest
+{
+required    string  taskid              = 1;
+required    SystemCode  syscode         = 2;
+required    string  aborttaskid         = 3;
+}
+
+message SearchResultNotify
+{
+required    string  taskid              = 1;
+required    SystemCode  syscode         = 2;
+required    OperationStatus status      = 3;
+optional    SearchTaskType  tasktype    = 4;
+repeated    SearchFileResult    voices  = 5;
+repeated    SpeakerItem speakers        = 6;
+}
+
+message SearchResponse
+{
+required    string  taskid              = 1;
+required    SystemCode  syscode         = 2;
+required    OperationStatus status      = 3;
+}
+
+message SearchStateRequest
+{
+required    string  operid              = 1;
+required    SystemCode  syscode         = 2;
+required    string  requesttaskid       = 3;
+}
+
+message SearchStateResponse
+{
+required    string  operid              = 1;
+required    SystemCode  syscode         = 2;
+required    OperationStatus status      = 3;
+required    SearchTaskState state       = 4;
+}
+
+message GetFileRequest
+{
+required    string  operid              = 1;
+required    SystemCode  syscode         = 2;
+required    string  callid              = 3;
+required    AudioFileTag    filetag     = 4;
+}
+
+message GetFileResponse
+{
+required    string  operid              = 1;
+required    SystemCode  syscode         = 2;
+required    bool    isdata              = 3;
+optional    FileLocationNotify filelocation = 4;
+optional    FileDataNotify  filedata    = 5;
+}
+
+message AddLangSampRequest
+{
+required    string  taskid              = 1;
+required    SystemCode  syscode         = 2;
+required    string  lang                = 3;
+repeated    FileLocationNotify  files   = 4;
+}
+
+message AddLangSampResponse
+{
+required    string  taskid              = 1;
+required    SystemCode  syscode         = 2;
+required    OperationStatus status      = 3;
+}
+
+message OperationStatus
+{
+required    int32   code                = 1;
+optional    string  description         = 2;
+}
+
+enum AudioRecordMode
+{
+ARM_Unknown         = 0;
+ARM_Combination     = 1;
+ARM_Separation      = 2;
+}
+
+enum AudioChannelType
+{
+ACT_Unknown         = 0;
+ACT_Pcm             = 1;
+ACT_Voip            = 2;
+ACT_TwoLines        = 3;
+ACT_AirSignal       = 4;
+ACT_WX              = 5;
+}
+
+enum AudioTransFlag
+{
+ATF_Unknown         = 0;
+ATF_Trans           = 1;
+ATF_NotTrans        = 2;
+}
+
+enum AudioFileTag
+{
+AFT_Unknown         = 0;
+AFT_Combination     = 1;
+AFT_Caller_ClusterA = 2;
+AFT_Callee_ClusterB = 3;
+AFT_Third_ClusterC  = 4;
+AFT_NoTag           = 5;
+}
+
+enum RecognitionType
+{
+RT_UnknownResult    = 0;
+RT_SpeakerResult    = 1;
+RT_KeywordResult    = 2;
+RT_PreprocessResult = 3;
+RT_TranscriptResult = 4;
+}
+
+message PreprocessResult
+{
+required    SpeechType  type        = 1;
+optional    string  languagename    = 2;
+optional    float   score           = 3;
+optional    uint32  validlen        = 4;
+optional    GenderType  gender      = 5;
+optional    int32   speakernum      = 6;
+optional    string  callid          = 7;
+optional    AudioFileTag    filetag = 8;
+}
+
+message SpeakerResult
+{
+required    int32   speakernum      = 1;
+repeated    SpeakerItem speakers    = 2;
+optional    string  callid          = 3;
+optional    AudioFileTag    filetag = 4;
+}
+
+message SpeakerItem
+{
+required    string  objectid        = 1;
+required    float   score           = 2;
+optional    string  spyid           = 3;
+}
+
+message KeywordResult
+{
+required    int32   keywordnum      = 1;
+repeated    KeywordSnippet  keywords= 2;
+optional    string  callid          = 3;
+optional    AudioFileTag    filetag = 4;
+}
+
+message KeywordSnippet
+{
+required    string  keyword         = 1;
+required    string  languagename    = 2;
+required    float   score           = 3;
+required    uint32  begintime       = 4;
+required    uint32  endtime         = 5;
+optional    string  text            = 6;
+optional    string  spyid           = 7;
+}
+
+message TranscriptResult
+{
+required    int32   segmentnum     = 1;
+repeated    SegmentTranscript segments = 2;
+optional    string  callid          = 3;
+optional    AudioFileTag    filetag = 4;
+}
+
+message SegmentTranscript
+{
+required    string  content         = 1;
+required    string  languagename    = 2;
+required    float   score           = 3;
+required    uint32  begintime       = 4;
+required    uint32  endtime         = 5;
+}
+
+enum PriorityType
+{
+PT_Unknown          = 0;
+PT_High             = 1;
+PT_Normal           = 2;
+PT_Low              = 3;
+}
+
+enum SearchCondition
+{
+SC_Unknown          = 0;
+SC_SpeakerResult    = 1;
+SC_KeywordResult    = 2;
+SC_LanguageResult   = 3;
+SC_TranscriptResult = 4;
+SC_VAD              = 5;
+SC_DTMF             = 6;
+SC_SpeechSegment    = 7;
+}
+
+enum SpeechType
+{
+ST_Unknown          = 0;
+ST_Voice            = 1;
+ST_DTMF             = 2;
+ST_Music            = 3;
+ST_Quiet            = 4;
+ST_NonVoice         = 5;
+}
+
+enum AudioEncodingTag
+{
+AET_Unknown         = 0;
+AET_ALaw            = 1;
+AET_Gsm610          = 2;
+AET_G726            = 3;
+AET_LinearPCM       = 4;
+AET_G723_16         = 5;
+AET_G723_15         = 6;
+AET_G729            = 7;
+AET_ULaw            = 8;
+AET_INTEL_G723      = 9;
+AET_INTEL_G729      = 10;
+AET_INTEL_GSM690    = 11;
+AET_AMR_NB          = 12;
+AET_GSM_EFR         = 13;
+}
+
+enum OperationType
+{
+OT_Unknown          = 0;
+OT_Create           = 1;
+OT_Delete           = 2;
+OT_Update           = 3;
+}
+
+enum RuleType
+{
+RT_Unknown          = 0;
+RT_Speaker          = 1;
+RT_Keyword          = 2;
+RT_SpeechSegment    = 3;
+}
+
+message SpeakerRule
+{
+required    string  objectid        = 1;
+optional    int32   thresholdflag   = 2;
+optional    float   lowthreshold    = 3;
+optional    float   highthreshold   = 4;
+repeated    PhoneNumber     telrule = 5;
+}
+
+message KeywordRule
+{
+required    string  languagename    = 1;
+required    string  keyword         = 2;
+optional    float   threshold       = 3;
+repeated    PhoneNumber     telrule = 5;
+}
+
+message SpeechSegRule
+{
+required    string  languagename    = 1;
+required    string  speechsegid     = 2;
+optional    bytes   data            = 3;
+optional    string  speechsegname   = 4;
+optional    float   threshold       = 5;
+repeated    PhoneNumber telrule     = 6;
+}
+
+enum SystemParaType
+{
+SPT_Unknown                         = 0;
+SPT_LanguageThreshold               = 1;
+SPT_SpeakerThreshold                = 2;
+SPT_KeywordThreshold                = 3;
+SPT_LanguageRetCount                = 4;
+SPT_SpeakerRetCount                 = 5;
+}
+
+message LanguageInfo
+{
+required    string  languagename    = 1;
+required    int32   keywordsupported= 2;
+required    int32   transsupported  = 3;
+}
+
+enum AlarmLevel
+{
+AL_Unknown                          = 0;
+AL_General                          = 1;
+AL_Important                        = 2;
+AL_Urgent                           = 3;
+}
+
+message TrainInfo
+{
+required    AudioEncodingTag code   = 1;
+required    bool    isdata          = 2;
+optional    bytes   voice           = 3;
+optional    string  path            = 4;
+}
+
+enum AudioRecogFlag
+{
+ARF_Unknown                         = 0;
+ARF_Preprocess                      = 1;
+ARF_Speaker                         = 2;
+ARF_Keyword                         = 4;
+ARF_Transcript                      = 8;
+ARF_VAD                             = 16;
+ARF_SpeechSegment                   = 32;
+ARF_DTMF                            = 64;
+}
+
+enum FileAcquireMethod
+{
+FAM_Unknown                         = 0;
+FAM_URL                             = 1;
+FAM_Data                            = 2;
+}
+
+message PhoneNumber
+{
+required    string  telnumber       = 1;
+optional    string  countrycode     = 2;
+optional    string  provincecode    = 3;
+optional    string  areacode        = 4;
+}
+
+enum SearchTaskType
+{
+STT_Unknown                         = 0;
+STT_CondToVoice                     = 1;
+STT_VoiceToVoice                    = 2;
+STT_VoiceToObject                   = 3;
+}
+
+enum SearchTaskRunState
+{
+STRS_Unknown                        = 0;
+STRS_Queue                          = 1;
+STRS_Running                        = 2;
+STRS_Finish                         = 3;
+STRS_Abort                          = 4;
+STRS_Error                          = 5;
+}
+
+message SearchTaskState
+{
+required    SearchTaskRunState  runstate = 1;
+required    uint64  queuetime       = 2;
+optional    uint64  starttime       = 3;
+optional    uint64  finishtime      = 4;
+optional    uint64  aborttime       = 5;
+optional    string  msg             = 6;
+}
+
+enum GenderType
+{
+GT_Unknown                          = 0;
+GT_Male                             = 1;
+GT_Female                           = 2;
+GT_Both                             = 3;
+}
+
+message SystemCode
+{
+optional    string  spyid           = 1;
+optional    string  srid            = 2;
+repeated    string  datasource      = 3;
+}
+
+message SearchFileResult
+{
+required    string  callid          = 1;
+required    AudioFileTag    filetag = 2;
+optional    float   score           = 3;
+repeated    SpeakerItem speakers    = 4;
+repeated    KeywordSnippet  keywords= 5;
+repeated    SpeechSegItem speechsegs= 6;
+required    string  datasource      = 7;
+}
+
+message SpeechSegResult
+{
+repeated    SpeechSegItem speechsegs= 1;
+optional    string  callid          = 2;
+optional    AudioFileTag    filetag = 3;
+}
+
+message SpeechSegItem
+{
+required    string  speechsegcode   = 1;
+required    int32   begin           = 2;
+required    int32   end             = 3;
+required    int32   hitbegin        = 4;
+required    int32   hitend          = 5;
+required    float   score           = 6;
+optional    string  spyid           = 7;
+}
+
+message VADResult
+{
+repeated    VADItem vads            = 1;
+optional    string  callid          = 2;
+optional    AudioFileTag    filetag = 3;
+}
+
+message VADItem
+{
+required    int32   begin           = 1;
+required    int32   end             = 2;
+optional    string  spk             = 3;
+}
+
+message DTMFResult
+{
+repeated    DTMFItem    dtms        = 1;
+optional    string  callid          = 2;
+optional    AudioFileTag    filetag = 3;
+}
+
+message DTMFItem
+{
+required    int32   code            = 1;
+required    int32   begin           = 2;
+required    int32   end             = 3;
+}
+
+message SystemStateItem
+{
+required    string  statename       = 1;
+required    string  statevalue      = 2;
+optional    string  remark          = 3;
+}
+
+message FileDataNotify
+{
+required    string  callid	    = 1;
+required    AudioFileTag    filetag = 2;
+required    AudioEncodingTag    code= 3;
+required    bytes   voice           = 4;
+required    SystemCode  syscode     = 5;
+}
+
